@@ -41,6 +41,8 @@ export function TileMap({ version, view, onViewChange, children }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ x: number; y: number; origin: GardenView } | null>(null);
   const [size, setSize] = useState({ width: 1, height: 1 });
+  // Always-current snapshot of the clamped view for the imperative wheel handler.
+  const clampedRef = useRef<GardenView | null>(null);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -57,7 +59,33 @@ export function TileMap({ version, view, onViewChange, children }: Props) {
     return () => observer.disconnect();
   }, []);
 
+  // React 19 wheel events are passive by default, so event.preventDefault()
+  // in the synthetic handler is a no-op. Wire the listener imperatively.
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const current = clampedRef.current;
+      if (!current) return;
+      const delta = event.deltaY > 0 ? -0.25 : 0.25;
+      onViewChange(
+        clampView(
+          {
+            ...current,
+            zoom: Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, current.zoom + delta)),
+          },
+          size.width,
+          size.height,
+        ),
+      );
+    };
+    wrapper.addEventListener("wheel", onWheel, { passive: false });
+    return () => wrapper.removeEventListener("wheel", onWheel);
+  }, [onViewChange, size.width, size.height]);
+
   const clamped = clampView(view, size.width, size.height);
+  clampedRef.current = clamped;
   const rect = worldRectForView(clamped, size.width, size.height);
   const counts = tileCounts(clamped.zoom);
   const tileStartX = Math.max(0, Math.floor((rect.left * rect.scale) / TILE_SIZE) - 1);
@@ -126,20 +154,6 @@ export function TileMap({ version, view, onViewChange, children }: Props) {
       }}
       onPointerLeave={() => {
         dragRef.current = null;
-      }}
-      onWheel={(event) => {
-        event.preventDefault();
-        const delta = event.deltaY > 0 ? -0.25 : 0.25;
-        onViewChange(
-          clampView(
-            {
-              ...clamped,
-              zoom: Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, clamped.zoom + delta)),
-            },
-            size.width,
-            size.height,
-          ),
-        );
       }}
       style={{
         position: "relative",

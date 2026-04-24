@@ -43,6 +43,12 @@ export function cancelArc(): ArcState {
   return IDLE_STATE;
 }
 
+function phaseForElapsed(elapsedMs: number): ArcPhase {
+  if (elapsedMs < ARC_ACT_DURATION_MS) return "act1";
+  if (elapsedMs < ARC_ACT_DURATION_MS * 2) return "act2";
+  return "act3";
+}
+
 /**
  * Progress the arc. Returns the new state. Pure.
  * `now` is monotonic (performance.now() or similar).
@@ -57,14 +63,7 @@ export function tickArc(state: ArcState, now: number): ArcState {
     return { phase: "complete", elapsedMs: ARC_TOTAL_MS, startedAt: state.startedAt };
   }
 
-  const phase: ArcPhase =
-    elapsedMs < ARC_ACT_DURATION_MS
-      ? "act1"
-      : elapsedMs < ARC_ACT_DURATION_MS * 2
-        ? "act2"
-        : "act3";
-
-  return { phase, elapsedMs, startedAt: state.startedAt };
+  return { phase: phaseForElapsed(elapsedMs), elapsedMs, startedAt: state.startedAt };
 }
 
 /**

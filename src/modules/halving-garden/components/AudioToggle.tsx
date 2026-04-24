@@ -12,6 +12,7 @@ const STORAGE_KEY = "praxeos-halving-audio";
 type OnToggle = (enabled: boolean, ctx: AudioContext | null) => void;
 
 export function AudioToggle({ onToggle }: { onToggle: OnToggle }) {
+  const [mounted, setMounted] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const ctxRef = useRef<AudioContext | null>(null);
 
@@ -23,6 +24,7 @@ export function AudioToggle({ onToggle }: { onToggle: OnToggle }) {
     // intentional: browsers will throw otherwise.
     const stored = window.localStorage.getItem(STORAGE_KEY) === "1";
     setEnabled(stored);
+    setMounted(true);
     onToggle(stored, null);
     return () => {
       // Clean up any context this component created.
@@ -69,10 +71,12 @@ export function AudioToggle({ onToggle }: { onToggle: OnToggle }) {
         padding: "0.45rem 0.8rem",
         border: "1px solid var(--rule)",
         borderRadius: "var(--radius-sm)",
-        color: enabled ? "var(--accent-action)" : "var(--ink-secondary)",
+        color: mounted && enabled ? "var(--accent-action)" : "var(--ink-secondary)",
+        // Reserve space before mount so layout doesn't shift when state resolves.
+        visibility: mounted ? "visible" : "hidden",
       }}
     >
-      Audio {enabled ? "on" : "off"}
+      Audio {mounted && enabled ? "on" : "off"}
     </button>
   );
 }

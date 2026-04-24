@@ -77,7 +77,12 @@ export interface ModuleExport {
   default: ComponentType;
 }
 
-/** Concept tag used for cross-linking (see /docs/PHILOSOPHY.md). */
+/**
+ * Concept tag used for cross-linking modules and thinkers (see /docs/PHILOSOPHY.md).
+ * Distinct from `GlossaryEntry` in `src/content/glossary.ts` — a Concept is a
+ * routing/tagging primitive (a string literal union); a GlossaryEntry is the
+ * full prose definition with cross-refs rendered at /glossary.
+ */
 export type Concept =
   | "action-axiom"
   | "time-preference"

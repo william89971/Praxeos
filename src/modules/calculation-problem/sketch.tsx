@@ -185,7 +185,10 @@ export default function CalculationProblemSketch() {
         setMetrics({
           marketSatisfaction: satMarket,
           plannedSatisfaction: satPlanned,
-          plannedWaste: plannedRef.current.totalWaste / plannedRef.current.tick,
+          plannedWaste:
+            plannedRef.current.tick > 0
+              ? plannedRef.current.totalWaste / plannedRef.current.tick
+              : 0,
         });
         // Refresh the snapshot used by PlannerControls.
         if (viewMode === "planner") setPlannerSnapshot(plannedRef.current);

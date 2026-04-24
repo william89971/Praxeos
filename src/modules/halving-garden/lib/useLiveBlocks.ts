@@ -97,7 +97,9 @@ function extractLiveBlocks(payload: string): Block[] {
 function collectBlockCandidates(value: unknown, depth = 0): unknown[] {
   if (depth > 3 || value === null || value === undefined) return [];
   if (Array.isArray(value)) {
-    return value.flatMap((entry) => collectBlockCandidates(entry, depth + 1));
+    return value
+      .slice(0, 64)
+      .flatMap((entry) => collectBlockCandidates(entry, depth + 1));
   }
   if (typeof value !== "object") return [];
 
@@ -109,7 +111,7 @@ function collectBlockCandidates(value: unknown, depth = 0): unknown[] {
     return [record];
   }
 
-  return Object.values(record).flatMap((entry) =>
-    collectBlockCandidates(entry, depth + 1),
-  );
+  return Object.values(record)
+    .slice(0, 64)
+    .flatMap((entry) => collectBlockCandidates(entry, depth + 1));
 }

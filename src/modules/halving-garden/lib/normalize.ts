@@ -12,6 +12,7 @@ export function normalizeBlock(raw: unknown): Block | null {
 
   if (
     typeof hashValue !== "string" ||
+    !/^[0-9a-fA-F]{64}$/.test(hashValue) ||
     typeof heightValue !== "number" ||
     typeof timestampValue !== "number" ||
     typeof sizeValue !== "number" ||
