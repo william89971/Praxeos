@@ -18,6 +18,47 @@ const PANELS = computePanels(
 );
 const BASE_ORGANISM_SCALE = 5.8;
 
+/**
+ * For a given tile, return the block heights whose Hilbert position falls
+ * inside the tile's world bounds. Completely self-contained — no pre-loaded
+ * block data required. Pair with `syntheticBlockForHeight` to render tiles
+ * without a baked tile pyramid.
+ *
+ * Density is adaptive: step coarsens at low zoom (many blocks per tile)
+ * and reaches 1 at zoom ≥ 3 so every block height is checked.
+ */
+export function heightsForTile(zoom: number, tileX: number, tileY: number): number[] {
+  const bounds = tileBounds(zoom, tileX, tileY);
+  const margin = 72 / bounds.scale;
+
+  // At zoom < 3 coarsen by powers of 2; at zoom ≥ 3 check every height.
+  const step = Math.max(1, 1 << Math.max(0, 3 - Math.min(Math.round(zoom), 3)));
+
+  const heights: number[] = [];
+  for (const panel of PANELS) {
+    // Quick x-reject — skip epochs whose panel doesn't touch this tile.
+    if (panel.x + panel.width < bounds.left - margin) continue;
+    if (panel.x > bounds.left + bounds.width + margin) continue;
+
+    const epoch = EPOCHS[panel.epochIndex];
+    if (!epoch) continue;
+
+    for (let h = epoch.startHeight; h <= epoch.endHeight; h += step) {
+      const pos = positionOfBlock(h, PANELS, 7);
+      if (!pos) continue;
+      if (
+        pos.x >= bounds.left - margin &&
+        pos.x <= bounds.left + bounds.width + margin &&
+        pos.y >= bounds.top - margin &&
+        pos.y <= bounds.top + bounds.height + margin
+      ) {
+        heights.push(h);
+      }
+    }
+  }
+  return heights;
+}
+
 export function tileCounts(zoom: number) {
   const scale = zoomScale(zoom);
   return {
@@ -90,7 +131,11 @@ export function renderTileSvg(
       continue;
     }
 
-    const organism = generateOrganism(block, BASE_ORGANISM_SCALE);
+    // At high zoom, shrink organism arms so they read as tight botanical glyphs
+    // rather than sprawling spiders. Scale factor approaches 0.4× at zoom 4.
+    const organismScale =
+      BASE_ORGANISM_SCALE * Math.min(1, 2 / Math.max(1, bounds.scale * 0.35));
+    const organism = generateOrganism(block, organismScale);
     const screenX = (worldX - bounds.left) * bounds.scale;
     const screenY = (worldY - bounds.top) * bounds.scale;
 

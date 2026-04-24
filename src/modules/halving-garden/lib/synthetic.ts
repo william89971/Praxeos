@@ -35,6 +35,15 @@ export function generateSyntheticBlocks(params: SyntheticParams): Block[] {
   return blocks;
 }
 
+/**
+ * Deterministic block for a single height, independent of any shared RNG.
+ * Used by the tile-local renderer so each tile request is self-contained.
+ */
+export function syntheticBlockForHeight(height: number): Block {
+  const rng = mulberry32(hashSeed(`praxeos-block-h${height}-v2`));
+  return syntheticBlockAt(height, rng);
+}
+
 function syntheticBlockAt(height: number, rng: () => number): Block {
   // Derive a hex hash from the rng — 64 characters.
   let hash = "";

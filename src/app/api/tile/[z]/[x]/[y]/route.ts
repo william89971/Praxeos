@@ -1,7 +1,11 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { loadHistoricalBlocks } from "@/modules/halving-garden/lib/data";
-import { renderTileSvg, tileCounts } from "@/modules/halving-garden/lib/tile";
+import { syntheticBlockForHeight } from "@/modules/halving-garden/lib/synthetic";
+import {
+  heightsForTile,
+  renderTileSvg,
+  tileCounts,
+} from "@/modules/halving-garden/lib/tile";
 
 export const runtime = "nodejs";
 
@@ -44,7 +48,11 @@ export async function GET(
       },
     });
   } catch {
-    const blocks = await loadHistoricalBlocks();
+    // No pre-baked tile file — generate organisms tile-locally.
+    // heightsForTile finds which block heights map into this tile's Hilbert
+    // bounds; syntheticBlockForHeight gives each a deterministic organism.
+    const heights = heightsForTile(zoom, tileX, tileY);
+    const blocks = heights.map(syntheticBlockForHeight);
     const svg = renderTileSvg(zoom, tileX, tileY, blocks);
     return new Response(svg, {
       headers: {
