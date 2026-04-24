@@ -4,9 +4,8 @@ import { PosterFallback } from "@/components/sketch/PosterFallback";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { AudioToggle } from "./components/AudioToggle";
-import { LiveLayer } from "./components/LiveLayer";
+import { HilbertField } from "./components/HilbertField";
 import { M2Meter } from "./components/M2Meter";
-import { TileMap } from "./components/TileMap";
 import { useLiveBlocks } from "./lib/useLiveBlocks";
 import { type GardenView, WORLD_HEIGHT, WORLD_WIDTH, clampView } from "./lib/viewport";
 
@@ -130,37 +129,37 @@ export default function HalvingGardenSketch() {
           borderBlockEnd: "1px solid var(--rule)",
         }}
       >
-        <TileMap version={newest?.height ?? 0} view={view} onViewChange={applyView}>
-          <LiveLayer
-            blocks={blocks}
-            view={view}
-            width={viewport.width}
-            height={viewport.height}
-          />
-          <M2Meter />
-          <div
-            className="label-mono"
-            style={{
-              position: "absolute",
-              insetBlockStart: "1rem",
-              insetInlineStart: "1rem",
-              padding: "0.75rem 0.9rem",
-              background: "rgba(245, 240, 230, 0.84)",
-              border: "1px solid var(--rule)",
-              borderRadius: "var(--radius-sm)",
-              backdropFilter: "blur(8px)",
-              maxWidth: "34ch",
-            }}
-          >
-            <div style={{ color: "var(--ink-secondary)" }}>Genesis to tip</div>
-            <div style={{ marginTop: "0.35rem", color: "var(--ink-primary)" }}>
-              Five epochs on a Hilbert field.
-            </div>
-            <div style={{ marginTop: "0.35rem", color: "var(--ink-tertiary)" }}>
-              Live source: {source}
-            </div>
+        <HilbertField
+          blocks={blocks}
+          view={view}
+          onViewChange={applyView}
+          width={viewport.width}
+          height={viewport.height}
+        />
+        <M2Meter />
+        <div
+          className="label-mono"
+          style={{
+            position: "absolute",
+            insetBlockStart: "1rem",
+            insetInlineStart: "1rem",
+            padding: "0.75rem 0.9rem",
+            background: "var(--paper-elevated)",
+            border: "1px solid var(--rule)",
+            borderRadius: "var(--radius-sm)",
+            backdropFilter: "blur(8px)",
+            maxWidth: "34ch",
+            zIndex: 1,
+          }}
+        >
+          <div style={{ color: "var(--ink-secondary)" }}>Genesis to tip</div>
+          <div style={{ marginTop: "0.35rem", color: "var(--ink-primary)" }}>
+            Five epochs on a Hilbert field.
           </div>
-        </TileMap>
+          <div style={{ marginTop: "0.35rem", color: "var(--ink-tertiary)" }}>
+            Live source: {source}
+          </div>
+        </div>
       </div>
 
       <div
