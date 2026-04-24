@@ -16,12 +16,18 @@ import path from "node:path";
 import { chromium } from "playwright";
 
 const BASE_URL =
-  process.env.PRAXEOS_BASE_URL ?? process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3001";
+  process.env.PRAXEOS_BASE_URL ??
+  process.env.PLAYWRIGHT_BASE_URL ??
+  "http://localhost:3001";
 
 const TARGETS: Array<{ slug: string; path: string; wait?: number }> = [
   { slug: "home", path: "/", wait: 2500 },
   { slug: "halving-garden", path: "/modules/halving-garden", wait: 3500 },
-  { slug: "time-preference-forest", path: "/modules/time-preference-forest", wait: 2000 },
+  {
+    slug: "time-preference-forest",
+    path: "/modules/time-preference-forest",
+    wait: 2000,
+  },
   { slug: "calculation-problem", path: "/modules/calculation-problem", wait: 2000 },
   { slug: "manifesto", path: "/manifesto", wait: 1000 },
   { slug: "glossary", path: "/glossary", wait: 1000 },
@@ -75,7 +81,9 @@ async function main() {
   }
 
   await browser.close();
-  console.log(`\n  ✓ captured ${TARGETS.length * THEMES.length} screenshots → ${path.relative(process.cwd(), OUT_DIR)}/`);
+  console.log(
+    `\n  ✓ captured ${TARGETS.length * THEMES.length} screenshots → ${path.relative(process.cwd(), OUT_DIR)}/`,
+  );
 }
 
 main().catch((err) => {

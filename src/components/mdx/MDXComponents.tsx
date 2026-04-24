@@ -13,14 +13,20 @@ import type { ComponentPropsWithoutRef } from "react";
  * Import: <MDXProvider components={essayMDXComponents}>
  */
 export const essayMDXComponents: MDXComponents = {
-  h1: (props: ComponentPropsWithoutRef<"h1">) => (
-    <h1 className="module-essay-h1" {...props} />
+  h1: ({ children, ...props }: ComponentPropsWithoutRef<"h1">) => (
+    <h1 className="module-essay-h1" {...props}>
+      {children}
+    </h1>
   ),
-  h2: (props: ComponentPropsWithoutRef<"h2">) => (
-    <h2 className="module-essay-h2" {...props} />
+  h2: ({ children, ...props }: ComponentPropsWithoutRef<"h2">) => (
+    <h2 className="module-essay-h2" {...props}>
+      {children}
+    </h2>
   ),
-  h3: (props: ComponentPropsWithoutRef<"h3">) => (
-    <h3 className="module-essay-h3" {...props} />
+  h3: ({ children, ...props }: ComponentPropsWithoutRef<"h3">) => (
+    <h3 className="module-essay-h3" {...props}>
+      {children}
+    </h3>
   ),
   p: (props: ComponentPropsWithoutRef<"p">) => (
     <p className="module-essay-p" {...props} />
