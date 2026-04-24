@@ -11,17 +11,13 @@ type M2Payload = {
   m2Usd: number | null;
 };
 
-let cache: { expiresAt: number; payload: M2Payload } | null = null;
-
+/**
+ * Live M2-vs-BTC-issuance comparison for the Halving Garden's corner
+ * widget. Cache-Control below carries the load; we deliberately do not
+ * keep an in-memory singleton — per-instance globals don't share on
+ * Vercel and would race under cold starts.
+ */
 export async function GET(): Promise<Response> {
-  if (cache && cache.expiresAt > Date.now()) {
-    return Response.json(cache.payload, {
-      headers: {
-        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=1800",
-      },
-    });
-  }
-
   const [latestBlock] = await getRecentBlocks(1);
   const blockHeight = latestBlock?.height ?? 0;
   const btcIssued = totalIssuedAtHeight(blockHeight);
@@ -63,11 +59,6 @@ export async function GET(): Promise<Response> {
       // Keep the degraded payload.
     }
   }
-
-  cache = {
-    expiresAt: Date.now() + 300_000,
-    payload,
-  };
 
   return Response.json(payload, {
     headers: {

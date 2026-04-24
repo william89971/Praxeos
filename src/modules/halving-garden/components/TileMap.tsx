@@ -1,18 +1,36 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import { tileCounts } from "../lib/tile";
+import { EPOCHS } from "../lib/epochs";
+import { computePanels, positionOfBlock } from "../lib/layout";
+import { tileCounts, tileIndexForPoint } from "../lib/tile";
 import type { GardenView } from "../lib/viewport";
 import {
   MAX_ZOOM,
   MIN_ZOOM,
   TILE_SIZE,
+  WORLD_HEIGHT,
+  WORLD_TOP_PADDING,
+  WORLD_WIDTH,
   clampView,
   worldRectForView,
   zoomScale,
 } from "../lib/viewport";
 
+const PANELS = computePanels(
+  WORLD_WIDTH,
+  WORLD_HEIGHT,
+  WORLD_TOP_PADDING,
+  EPOCHS.length,
+);
+
 type Props = {
+  /**
+   * Block height of the newest block the parent knows about. Used to
+   * invalidate the cache for the one tile that actually changed, while
+   * every other visible tile keeps a stable key and benefits from the
+   * browser/CDN cache.
+   */
   version: number;
   view: GardenView;
   onViewChange: (view: GardenView) => void;
@@ -64,6 +82,14 @@ export function TileMap({ version, view, onViewChange, children }: Props) {
       });
     }
   }
+
+  // Compute the single tile affected by the newest block; only that
+  // tile gets a version-stamped URL so the rest stay cacheable.
+  const zoomInt = Math.round(clamped.zoom);
+  const newestBlockPosition = version > 0 ? positionOfBlock(version, PANELS, 7) : null;
+  const affectedTile = newestBlockPosition
+    ? tileIndexForPoint(newestBlockPosition.x, newestBlockPosition.y, zoomInt)
+    : null;
 
   return (
     <div
@@ -125,24 +151,38 @@ export function TileMap({ version, view, onViewChange, children }: Props) {
         cursor: "grab",
       }}
     >
-      {tiles.map((tile) => (
-        <img
-          key={`${clamped.zoom}-${tile.x}-${tile.y}-${version}`}
-          src={`/api/tile/${Math.round(clamped.zoom)}/${tile.x}/${tile.y}?v=${version}`}
-          alt=""
-          aria-hidden="true"
-          draggable="false"
-          style={{
-            position: "absolute",
-            left: tile.left,
-            top: tile.top,
-            width: TILE_SIZE,
-            height: TILE_SIZE,
-            userSelect: "none",
-            pointerEvents: "none",
-          }}
-        />
-      ))}
+      {tiles.map((tile) => {
+        const isAffected =
+          affectedTile !== null &&
+          tile.x === affectedTile.x &&
+          tile.y === affectedTile.y;
+        const src = isAffected
+          ? `/api/tile/${zoomInt}/${tile.x}/${tile.y}?v=${version}`
+          : `/api/tile/${zoomInt}/${tile.x}/${tile.y}`;
+        // Stable key for cached tiles; version-stamped key only for the
+        // tile the new block actually touched.
+        const key = isAffected
+          ? `${zoomInt}-${tile.x}-${tile.y}-${version}`
+          : `${zoomInt}-${tile.x}-${tile.y}`;
+        return (
+          <img
+            key={key}
+            src={src}
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            style={{
+              position: "absolute",
+              left: tile.left,
+              top: tile.top,
+              width: TILE_SIZE,
+              height: TILE_SIZE,
+              userSelect: "none",
+              pointerEvents: "none",
+            }}
+          />
+        );
+      })}
 
       {children}
     </div>

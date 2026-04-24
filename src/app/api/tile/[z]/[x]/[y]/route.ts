@@ -25,7 +25,16 @@ export async function GET(
     return new Response("Tile out of range", { status: 404 });
   }
 
-  const localPath = path.join(process.cwd(), "data", "tiles", z, x, `${y}.svg`);
+  // Build the local tile path from the *parsed integers*, not the raw
+  // URL segments, and assert the resolved path stays inside data/tiles.
+  // Defense-in-depth against any future refactor that loosens the
+  // integer pre-check.
+  const tilesRoot = path.resolve(process.cwd(), "data", "tiles");
+  const localPath = path.join(tilesRoot, `${zoom}`, `${tileX}`, `${tileY}.svg`);
+  if (!path.resolve(localPath).startsWith(`${tilesRoot}${path.sep}`)) {
+    return new Response("Invalid tile path", { status: 400 });
+  }
+
   try {
     const svg = await readFile(localPath, "utf8");
     return new Response(svg, {
