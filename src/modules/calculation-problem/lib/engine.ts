@@ -30,10 +30,30 @@ import { DEFAULT_PARAMS, type Params, type State } from "./types";
 export { DEFAULT_PARAMS } from "./types";
 export type { Consumer, Params, Producer, Recipe, State } from "./types";
 
-export function step(state: State, params: Params = DEFAULT_PARAMS): State {
+/**
+ * Manual overrides supplied by the reader in "Be the Planner" mode.
+ *
+ *  - `recipeByProducer` replaces the deterministic-arbitrary hash choice
+ *    for a given producer with the reader's chosen recipe index. Without
+ *    an entry for a producer, the engine falls back to hash(tick, id).
+ *  - `capacityFractionByProducer` scales a producer's aspirational output.
+ *    0 = idle, 1 = full capacity. Absence is treated as 1.
+ *
+ * Both maps are read by stepPlanned only; stepMarket ignores them.
+ */
+export interface PlannerOverrides {
+  recipeByProducer?: ReadonlyMap<number, number>;
+  capacityFractionByProducer?: ReadonlyMap<number, number>;
+}
+
+export function step(
+  state: State,
+  params: Params = DEFAULT_PARAMS,
+  overrides?: PlannerOverrides,
+): State {
   return state.mode === "market"
     ? stepMarket(state, params)
-    : stepPlanned(state, params);
+    : stepPlanned(state, params, overrides);
 }
 
 /* ======================================================================= */
@@ -185,32 +205,54 @@ function findBestProducer(state: State, consumer: { x: number; y: number }, k: n
 /* PLANNED                                                                 */
 /* ======================================================================= */
 
-function stepPlanned(state: State, params: Params): State {
+function stepPlanned(
+  state: State,
+  params: Params,
+  overrides?: PlannerOverrides,
+): State {
   const next = structuredClone(state) as State;
   next.tick += 1;
   const G = next.G;
 
   injectPrimarySupply(next);
 
-  // 1. Planner picks recipe by hash(tick, id) for every multi-recipe producer.
-  //    The Misesian point: this choice is economically meaningless — the planner
-  //    has no common unit of valuation with which to compare recipes.
+  // 1. Planner picks recipe by hash(tick, id) for every multi-recipe producer,
+  //    unless the reader has supplied a manual override in "Be the Planner" mode.
+  //    The Misesian point is preserved either way: default is hash-arbitrary;
+  //    manual is reader-arbitrary. Neither amounts to economic calculation.
   for (const p of next.producers) {
     if (p.recipes.length <= 1) {
       p.chosenRecipeIdx = 0;
       continue;
     }
-    const h = plannerHash(next.seedBase, next.tick, p.id);
-    p.chosenRecipeIdx = h % p.recipes.length;
+    const manual = overrides?.recipeByProducer?.get(p.id);
+    if (typeof manual === "number" && Number.isFinite(manual)) {
+      const clamped = Math.floor(manual);
+      p.chosenRecipeIdx =
+        ((clamped % p.recipes.length) + p.recipes.length) % p.recipes.length;
+    } else {
+      const h = plannerHash(next.seedBase, next.tick, p.id);
+      p.chosenRecipeIdx = h % p.recipes.length;
+    }
   }
+
+  // Resolve effective capacity (per-producer scale) with overrides.
+  const effCap = (id: number, capacity: number): number => {
+    const frac = overrides?.capacityFractionByProducer?.get(id);
+    if (typeof frac === "number" && Number.isFinite(frac)) {
+      return capacity * Math.max(0, Math.min(1, frac));
+    }
+    return capacity;
+  };
 
   // 2. Planner's aspirational input demand from the chosen recipes, at capacity.
   const inputDemand = new Array<number>(G).fill(0);
   for (const p of next.producers) {
     const recipe = p.recipes[p.chosenRecipeIdx];
     if (!recipe) continue;
+    const cap = effCap(p.id, p.capacity);
     for (let k = 0; k < G; k++) {
-      inputDemand[k] = (inputDemand[k] ?? 0) + (recipe.inputs[k] ?? 0) * p.capacity;
+      inputDemand[k] = (inputDemand[k] ?? 0) + (recipe.inputs[k] ?? 0) * cap;
     }
   }
 
@@ -246,13 +288,14 @@ function stepPlanned(state: State, params: Params): State {
         recipeComplexity += need;
       }
     }
-    const output = p.capacity * limitingRatio;
+    const cap = effCap(p.id, p.capacity);
+    const output = cap * limitingRatio;
     p.inventory += output;
     p.producedLastTick = output;
     p.soldLastTick = 0;
     // Misallocation waste: unrealized capacity, weighted by the intended recipe complexity.
     // More complex recipes (longer production chains) waste more value when blocked.
-    inputWaste += (p.capacity - output) * (1 + recipeComplexity);
+    inputWaste += (cap - output) * (1 + recipeComplexity);
   }
 
   // 6. Consume the inputs that WERE used in production.
