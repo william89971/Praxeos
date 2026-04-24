@@ -16,6 +16,127 @@ Full architectural context: `/docs/ARCHITECTURE.md`. Design philosophy: `/docs/A
 
 ---
 
+## Model Routing & Token Efficiency
+
+Praxeos is expensive to build well. Most of the cost is in taste, not
+in typing. This section tells the human operator which Claude to run
+Claude Code under for each kind of work, and tells any agent reading
+this file whether it should be doing the work at all.
+
+**The principle: Opus decides. Sonnet executes.**
+
+Claude Opus 4.7 is for decisions that are hard to reverse — the
+aesthetic system in `/docs/AESTHETIC.md`, the editorial voice in
+`/docs/VOICE.md`, the shape of a generative sketch before a single
+pixel is drawn, the load-bearing function signatures that every future
+module will inherit. Claude Sonnet 4.6 is for executing work Opus has
+already shaped — scaffolding files from an approved template, writing
+unit tests against an engine whose invariants are already specified,
+wiring a Supabase migration, fixing a lint error with an obvious patch.
+Opus at max thinking holds the whole codebase's aesthetic system in
+mind at once; Sonnet at low thinking lands a typo fix without spending
+ten seconds on it.
+
+### Routing table
+
+| Task | Model | Thinking |
+|---|---|---|
+| Homepage *Teleology* sketch (first implementation) | Opus 4.7 | max |
+| Any new generative art sketch on first implementation | Opus 4.7 | max |
+| Architectural plans written in plan mode | Opus 4.7 | max |
+| Writing or revising `/docs/AESTHETIC.md`, `/docs/PHILOSOPHY.md`, `/docs/VOICE.md` | Opus 4.7 | max |
+| Designing the CLAUDE.md hierarchy itself | Opus 4.7 | max |
+| The Calculation Problem sketch (Module 3 — most aesthetically demanding) | Opus 4.7 | max |
+| Writing or revising MDX essay prose for any module | Opus 4.7 | high |
+| Implementing a new module end-to-end from a spec | Opus 4.7 | high |
+| Designing the module template and `ModuleLayout` component | Opus 4.7 | high |
+| OG image templates (they are design artifacts, not boilerplate) | Opus 4.7 | high |
+| Launch copy: Show HN, Twitter thread, outreach emails, `README.md` | Opus 4.7 | high |
+| Any refactor that touches ≥ 3 files | Opus 4.7 | high |
+| Debugging where the agent must form a design judgment | Opus 4.7 | high |
+| Reviewing a module against `/docs/AESTHETIC.md` | Opus 4.7 | medium |
+| Cross-linking modules via the concept graph | Opus 4.7 | medium |
+| Writing `sources.ts` for a module (needs real scholarly judgment) | Opus 4.7 | medium |
+| Scaffolding routes, layouts, `Metadata` exports | Sonnet 4.6 | medium |
+| Wiring Supabase tables, migrations, types | Sonnet 4.6 | medium |
+| Vitest unit tests for economic-model functions | Sonnet 4.6 | medium |
+| Playwright visual-regression specs | Sonnet 4.6 | medium |
+| Adding TypeScript types to existing untyped code | Sonnet 4.6 | medium |
+| Biome/tsconfig/`package.json` script config | Sonnet 4.6 | medium |
+| The `npm run new-module` CLI scaffolder implementation | Sonnet 4.6 | medium |
+| Adding remark/rehype plugins to the MDX pipeline | Sonnet 4.6 | medium |
+| Direction-set aesthetic tweaks ("tighten strokes to 0.5 px") | Sonnet 4.6 | low |
+| Renames, file moves, import-path updates after a rename | Sonnet 4.6 | low |
+| Adding alt text to existing images | Sonnet 4.6 | low |
+| Updating sitemap or RSS after a new module lands | Sonnet 4.6 | low |
+| Obvious lint / type errors | Sonnet 4.6 | low |
+| Copy typos and small content edits | Sonnet 4.6 | low |
+
+### Budgeting rules
+
+1. **Start every new feature in plan mode on Opus 4.7 at high or max
+   thinking.** Get the plan approved before a line of code is written.
+   This front-loads the expensive thinking into one well-scoped turn and
+   makes the rest of the feature a Sonnet job.
+2. **The moment a plan is approved and the task turns mechanical,
+   switch to Sonnet.** Opus tokens burned on follow-up boilerplate
+   are pure waste.
+3. **Iterative aesthetic refinement belongs on Sonnet** once Opus has
+   set the initial direction. "Make the halving garden's palette
+   warmer" after the sketch exists is a Sonnet job. Drop back to Opus
+   only if the refinement requires a new conceptual move — a new
+   layout algorithm, a new rendering primitive, a new editorial claim.
+4. **Never run Opus on multi-turn debugging of a localized bug.**
+   Debugging is mechanical search, not taste. Use Sonnet even when the
+   bug is in an Opus-authored sketch.
+5. **When unsure, ask:** "If this output is wrong, is it because of
+   missing taste / context, or because of a missing line of code?"
+   Missing taste → Opus. Missing code → Sonnet.
+6. **Long context windows are an Opus comparative advantage.** A
+   cross-module refactor, a design review pass across all three
+   modules, or a check against `/docs/AESTHETIC.md` for consistency —
+   pay the Opus cost. Each of those genuinely needs the whole system
+   held in one head.
+
+### Context hygiene (both models)
+
+Context is not free even when the model is. Load only what the task
+requires.
+
+- Keep the CLAUDE.md files terse and hierarchical. An agent drowning
+  in generic guidance performs worse than one with less, sharper
+  guidance.
+- Starting work on a module? Load only the root `CLAUDE.md`, this file,
+  `/src/modules/CLAUDE.md`, the specific module's directory, and
+  `/docs/AESTHETIC.md`. Skip everything else.
+- `/docs/MODULE_IDEAS.md` is for *creating* a new module. Do not pull
+  it in to edit an existing one.
+- For a bug fix, load the implicated files only — not the whole
+  feature area.
+- Prefer small, scoped edits ("tighten the correction cascade timing
+  in Time Preference Forest from 8 s to 6 s") over open-ended requests
+  ("refactor this whole component"), which balloon context for no
+  taste gain.
+
+### Self-check (run before responding)
+
+Before starting any substantive task, the agent checks:
+
+1. **Which model am I?** (Opus 4.7 or Sonnet 4.6.)
+2. **Is this task in the right row of the routing table above?**
+3. **If I am Opus and this task is mechanical:** surface that the user
+   could save tokens by switching to Sonnet for this turn, and proceed
+   only after acknowledging the mismatch.
+4. **If I am Sonnet and this task requires taste or architectural
+   judgment:** flag that the user should re-run this turn on Opus, and
+   offer to do the narrow, mechanical subset that's safe to land now.
+
+The self-check is the point. It makes the agent a participant in
+routing, not just a passive executor of whichever model happens to be
+loaded.
+
+---
+
 ## Dev commands
 
 ```bash
