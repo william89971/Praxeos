@@ -4,6 +4,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const LINKS: Array<{ href: string; label: string }> = [
   { href: "/modules", label: "Modules" },
   { href: "/thinkers", label: "Thinkers" },
+  { href: "/glossary", label: "Glossary" },
   { href: "/manifesto", label: "Manifesto" },
   { href: "/colophon", label: "Colophon" },
 ];
