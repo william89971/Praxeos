@@ -25,7 +25,8 @@
     "fetch:blocks": "tsx scripts/fetch-historical-blocks.ts",
     "bake-tiles": "tsx scripts/bake-tiles.ts",
     "generate:og": "tsx scripts/generate-og-batch.ts",
-    "print:manifesto": "tsx scripts/print-manifesto.ts"
+    "print:manifesto": "tsx scripts/print-manifesto.ts",
+    "capture:screenshots": "tsx scripts/capture-screenshots.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
