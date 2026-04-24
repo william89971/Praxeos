@@ -97,6 +97,32 @@ button {
   }
 }
 
+/* Hover utilities for server components */
+.hover-cta {
+  transition: opacity var(--dur-micro) var(--ease-organic), transform var(--dur-micro)
+    var(--ease-organic);
+}
+.hover-cta:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.hover-border {
+  transition: border-color var(--dur-micro) var(--ease-organic), background
+    var(--dur-micro) var(--ease-organic);
+}
+.hover-border:hover {
+  border-color: var(--rule) !important;
+  background: var(--paper-elevated) !important;
+}
+
+.hover-ink {
+  transition: color var(--dur-micro) var(--ease-organic);
+}
+.hover-ink:hover {
+  color: var(--accent-action) !important;
+}
+
 /* Skip to content */
 .skip-link {
   position: absolute;

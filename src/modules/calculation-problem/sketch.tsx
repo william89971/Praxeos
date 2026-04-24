@@ -1,5 +1,6 @@
 "use client";
 
+import { LiveMetric } from "@/components/interactive/LiveMetric";
 import { PosterFallback } from "@/components/sketch/PosterFallback";
 import { Sketch, type SketchRenderFn } from "@/components/sketch/Sketch";
 import {
@@ -36,6 +37,13 @@ const LETTER_BY_ROLE: Record<string, string> = {
 
 type ViewMode = "comparison" | "planner";
 
+/** History buffer for sparklines. */
+type MetricHistory = {
+  marketSat: number[];
+  plannedSat: number[];
+  plannedWaste: number[];
+};
+
 export default function CalculationProblemSketch() {
   const [viewMode, setViewMode] = useState<ViewMode>("comparison");
   const [manualG, setManualG] = useState(INITIAL_G);
@@ -58,6 +66,11 @@ export default function CalculationProblemSketch() {
     marketSatisfaction: 0,
     plannedSatisfaction: 0,
     plannedWaste: 0,
+  });
+  const [history, setHistory] = useState<MetricHistory>({
+    marketSat: [],
+    plannedSat: [],
+    plannedWaste: [],
   });
   const [plannerSnapshot, setPlannerSnapshot] = useState<State | null>(null);
   const [misesDismissed, setMisesDismissed] = useState(false);
@@ -85,6 +98,7 @@ export default function CalculationProblemSketch() {
       });
       setTick(0);
       setPlannerSnapshot(plannedRef.current);
+      setHistory({ marketSat: [], plannedSat: [], plannedWaste: [] });
     },
     [G],
   );
@@ -103,16 +117,12 @@ export default function CalculationProblemSketch() {
       if (arcRef.current.startedAt !== null && arcRef.current.phase !== "complete") {
         const nextArc = tickArc(arcRef.current, now);
         if (nextArc.phase !== arcRef.current.phase) {
-          // When the arc terminates, lock the slider to the final act's
-          // complexity so the reader isn't snapped back to the pre-arc
-          // value without warning.
           if (nextArc.phase === "complete") {
             setManualG(COMPLEXITY_BY_PHASE.act3);
           }
           arcRef.current = nextArc;
           setArc(nextArc);
         } else {
-          // Update elapsedMs less frequently to avoid re-rendering on every frame.
           if (Math.abs(nextArc.elapsedMs - arcRef.current.elapsedMs) > 240) {
             arcRef.current = nextArc;
             setArc(nextArc);
@@ -159,7 +169,7 @@ export default function CalculationProblemSketch() {
       ctx.lineTo(divider, height);
       ctx.stroke();
 
-      // Panel headers — two lines each: title + subtitle.
+      // Panel headers
       ctx.textBaseline = "top";
       ctx.textAlign = "left";
 
@@ -187,7 +197,7 @@ export default function CalculationProblemSketch() {
       ctx.fillText(`tick ${marketRef.current.tick}`, width - 16, 12);
       ctx.textAlign = "left";
 
-      // Legend at bottom: explain the letterform agents.
+      // Legend
       ctx.textBaseline = "bottom";
       ctx.fillStyle = "#8B8275";
       ctx.font = "400 10px ui-monospace, monospace";
@@ -197,37 +207,43 @@ export default function CalculationProblemSketch() {
 
       if (marketRef.current.tick % 12 === 0) {
         const satMarket =
-          marketRef.current.consumers.reduce((a, c) => a + c.lastSatisfaction, 0) /
-          Math.max(1, marketRef.current.consumers.length);
+          marketRef.current.consumers.reduce(
+            (a: number, c) => a + c.lastSatisfaction,
+            0,
+          ) / Math.max(1, marketRef.current.consumers.length);
         const satPlanned =
-          plannedRef.current.consumers.reduce((a, c) => a + c.lastSatisfaction, 0) /
-          Math.max(1, plannedRef.current.consumers.length);
+          plannedRef.current.consumers.reduce(
+            (a: number, c) => a + c.lastSatisfaction,
+            0,
+          ) / Math.max(1, plannedRef.current.consumers.length);
+        const waste =
+          plannedRef.current.tick > 0
+            ? plannedRef.current.totalWaste / plannedRef.current.tick
+            : 0;
         setTick(marketRef.current.tick);
         setMetrics({
           marketSatisfaction: satMarket,
           plannedSatisfaction: satPlanned,
-          plannedWaste:
-            plannedRef.current.tick > 0
-              ? plannedRef.current.totalWaste / plannedRef.current.tick
-              : 0,
+          plannedWaste: waste,
         });
-        // Refresh the snapshot used by PlannerControls.
+        setHistory((prev) => ({
+          marketSat: [...prev.marketSat.slice(-39), satMarket],
+          plannedSat: [...prev.plannedSat.slice(-39), satPlanned],
+          plannedWaste: [...prev.plannedWaste.slice(-39), waste],
+        }));
         if (viewMode === "planner") setPlannerSnapshot(plannedRef.current);
       }
     },
     [rebuildStates, viewMode],
   );
 
-  // Reset sims whenever effective G changes.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: effective G is the trigger — the effect body resets refs it does not read.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: effective G is the trigger.
   useEffect(() => {
     marketRef.current = null;
     plannedRef.current = null;
-    // Also reset Mises dismissal so it re-fades on new arc phases.
     if (arc.phase === "act3") setMisesDismissed(false);
   }, [G]);
 
-  // Handlers -----------------------------------------------------------
   const handleOverride = useCallback(
     (producerId: number, recipeIdx: number | null, capFrac: number | null) => {
       const prev = overridesRef.current;
@@ -239,7 +255,6 @@ export default function CalculationProblemSketch() {
         recipeByProducer: nextRecipe,
         capacityFractionByProducer: nextCap,
       };
-      // Bump snapshot so the card shows the new override immediately.
       setPlannerSnapshot(plannedRef.current);
     },
     [],
@@ -270,6 +285,9 @@ export default function CalculationProblemSketch() {
   const showMises =
     shouldShowMisesOverlay(viewMode, G, misesDismissed) && arc.phase !== "idle";
 
+  // Dynamic explanation text based on current state
+  const dynamicExplanation = getDynamicExplanation(metrics, G, viewMode, arc.phase);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <div
@@ -294,7 +312,7 @@ export default function CalculationProblemSketch() {
         <MisesOverlay visible={showMises} onDismiss={() => setMisesDismissed(true)} />
       </div>
 
-      {/* Two-column explainer — tells first-time visitors what each panel is */}
+      {/* Two-column explainer */}
       <div
         style={{
           display: "grid",
@@ -355,32 +373,82 @@ export default function CalculationProblemSketch() {
         </div>
       </div>
 
+      {/* Dynamic explanation */}
+      <div
+        style={{
+          maxWidth: "var(--measure-prose)",
+          marginInline: "auto",
+          paddingInline: "var(--gutter-inline)",
+        }}
+      >
+        <div
+          style={{
+            borderInlineStart: "3px solid var(--accent-action)",
+            background: "var(--accent-action-wash)",
+            padding: "1rem 1.25rem",
+            borderRadius: "0 var(--radius-md) var(--radius-md) 0",
+            transition: "opacity var(--dur-micro) var(--ease-organic)",
+          }}
+        >
+          <p
+            className="label-mono"
+            style={{
+              margin: 0,
+              marginBottom: "0.35rem",
+              color: "var(--accent-action)",
+              fontSize: "var(--step--2)",
+              letterSpacing: "0.06em",
+            }}
+          >
+            Live observation
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "var(--step-0)",
+              lineHeight: 1.55,
+              color: "var(--ink-primary)",
+              margin: 0,
+            }}
+          >
+            {dynamicExplanation}
+          </p>
+        </div>
+      </div>
+
+      {/* Metrics with sparklines */}
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-          gap: "1rem 2rem",
+          gap: "1rem",
           paddingInline: "var(--gutter-inline)",
-          alignItems: "baseline",
+          alignItems: "stretch",
         }}
       >
-        <Metric
-          label="MARKET SAT"
-          value={`${(metrics.marketSatisfaction * 100).toFixed(1)}%`}
-          color="var(--ink-primary)"
+        <LiveMetric
+          label="MARKET SATISFACTION"
+          value={`${(metrics.marketSatisfaction * 100).toFixed(1)}`}
+          unit="%"
+          color="var(--accent-capital)"
+          history={history.marketSat}
         />
-        <Metric
-          label={viewMode === "planner" ? "YOUR SAT" : "PLANNED SAT"}
-          value={`${(metrics.plannedSatisfaction * 100).toFixed(1)}%`}
+        <LiveMetric
+          label={viewMode === "planner" ? "YOUR SATISFACTION" : "PLANNED SATISFACTION"}
+          value={`${(metrics.plannedSatisfaction * 100).toFixed(1)}`}
+          unit="%"
           color="var(--accent-action)"
+          history={history.plannedSat}
         />
-        <Metric
+        <LiveMetric
           label="PLANNER WASTE / TICK"
           value={metrics.plannedWaste.toFixed(2)}
           color="var(--ink-tertiary)"
+          history={history.plannedWaste}
         />
       </div>
 
+      {/* Controls */}
       <div
         style={{
           display: "flex",
@@ -470,36 +538,55 @@ export default function CalculationProblemSketch() {
   );
 }
 
+/* -------------------------------------------------------------------------- */
+
+function getDynamicExplanation(
+  metrics: {
+    marketSatisfaction: number;
+    plannedSatisfaction: number;
+    plannedWaste: number;
+  },
+  G: number,
+  viewMode: ViewMode,
+  arcPhase: ArcState["phase"],
+): string {
+  const gap = metrics.marketSatisfaction - metrics.plannedSatisfaction;
+
+  if (viewMode === "planner") {
+    if (arcPhase === "act1") {
+      return "Act 1 — 8 goods. You can still see every producer. Try choosing recipes manually; the gap is small because the economy is simple.";
+    }
+    if (arcPhase === "act2") {
+      return "Act 2 — 48 goods. Your decision queue is lengthening. The market panel continues to coordinate while you struggle to keep up.";
+    }
+    if (arcPhase === "act3") {
+      return "Act 3 — 160 goods. Coordination has collapsed. This is not a moral failing on your part; it is the exact failure Mises described in 1920.";
+    }
+    return "You are the planner. Choose recipes and capacity for each producer. Watch your satisfaction fall behind the market as complexity rises.";
+  }
+
+  if (G <= 10) {
+    return "With few goods, both panels look similar. The planner can more or less guess. The Misesian problem is invisible at this scale.";
+  }
+  if (G <= 40) {
+    if (gap < 0.15) {
+      return "The gap is opening. With ~30 goods, the market panel is still converging, but the planned panel is already accumulating hidden waste.";
+    }
+    return "The divergence is visible. Prices let the market coordinate locally; the planner must allocate globally, and every arbitrary choice compounds.";
+  }
+  if (G <= 100) {
+    if (gap > 0.3) {
+      return `At ${G} goods, the market satisfies ${(metrics.marketSatisfaction * 100).toFixed(0)}% of demand while the planner achieves ${(metrics.plannedSatisfaction * 100).toFixed(0)}%. The gap is not a bug; it is the Misesian theorem made visible.`;
+    }
+    return `With ${G} goods, the combinatorics have outpaced any single mind. The market panel continues to self-organise; the planned panel accumulates waste at ${metrics.plannedWaste.toFixed(1)} units per tick.`;
+  }
+  return `At ${G} goods, the concept of a "plan" loses its meaning. The market coordinates through local price signals; the planner has no common unit of valuation. Waste: ${metrics.plannedWaste.toFixed(1)} per tick.`;
+}
+
+/* -------------------------------------------------------------------------- */
+
 const LETTER_COMBINED_ALT =
   "Two panels side by side. The market panel shows letterform agents — c (consumers), p (producers), r (resources), g (goods) — moving and exchanging with visible supply chains. The planned panel has no prices: agents queue, surpluses decay, and as the complexity slider rises, its failure becomes visible while the market panel continues to coordinate. A 'Be the Planner' mode lets the reader manually choose recipes and watch their satisfaction fall behind the market as complexity rises.";
-
-function Metric({
-  label,
-  value,
-  color,
-}: {
-  label: string;
-  value: string;
-  color: string;
-}) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-      <span className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
-        {label}
-      </span>
-      <span
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: "var(--step-2)",
-          color,
-          fontVariantNumeric: "tabular-nums",
-        }}
-      >
-        {value}
-      </span>
-    </div>
-  );
-}
 
 function modeToggleStyle(viewMode: ViewMode): CSSProperties {
   const active = viewMode === "planner";

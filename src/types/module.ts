@@ -60,6 +60,8 @@ export interface ModuleMetadata {
   sketchDescription: string;
   /** Open question shown at end of module essay. */
   discussionPrompt: string;
+  /** What the reader will understand after completing this module. */
+  learningOutcomes?: readonly string[];
 }
 
 /** Fully resolved module record used by the registry and routes. */

@@ -1,3 +1,4 @@
+import { PathCard } from "@/components/interactive/PathCard";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { MODULE_REGISTRY } from "@/modules/registry";
 import { Teleology } from "@/sketches/teleology/Teleology";
@@ -9,8 +10,9 @@ export default function HomePage() {
     <>
       <WebsiteJsonLd />
       <HeroSection />
-      <ManifestoExcerpt />
-      <ModulesTeaser />
+      <WhatIsSection />
+      <StartHereSection />
+      <ChoosePathSection />
       <ThinkersPreview />
       <FooterNote />
     </>
@@ -39,7 +41,7 @@ function HeroSection() {
         style={{
           position: "absolute",
           inset: 0,
-          opacity: 0.62,
+          opacity: 0.55,
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -99,17 +101,37 @@ function HeroSection() {
           style={{
             fontFamily: "var(--font-serif)",
             fontSize: "var(--step-1)",
-            maxWidth: "60ch",
+            maxWidth: "56ch",
             lineHeight: 1.55,
             color: "var(--ink-primary)",
             marginBlock: 0,
+            marginBlockEnd: "2rem",
           }}
         >
-          A library of interactive, generative, philosophically rigorous investigations
-          of human action — the action axiom, time preference, subjective value,
-          economic calculation, spontaneous order. Conceived as an open-source cultural
-          artifact.
+          Interactive investigations of human action, sound money, and economic
+          calculation — built as an open-source cultural artifact.
         </p>
+        <Link
+          href="#paths"
+          className="hover-cta"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.7rem 1.4rem",
+            borderRadius: "var(--radius-md)",
+            background: "var(--ink-primary)",
+            color: "var(--paper)",
+            fontFamily: "var(--font-sans)",
+            fontSize: "var(--step-0)",
+            fontWeight: 500,
+            letterSpacing: "-0.01em",
+            textDecoration: "none",
+          }}
+        >
+          Start exploring
+          <span aria-hidden="true">→</span>
+        </Link>
       </div>
 
       {/* Scroll cue */}
@@ -180,7 +202,7 @@ function ScrollMark() {
 
 /* ------------------------------------------------------------------------- */
 
-function ManifestoExcerpt() {
+function WhatIsSection() {
   return (
     <section
       style={{
@@ -192,11 +214,11 @@ function ManifestoExcerpt() {
     >
       <div
         style={{
+          maxWidth: "var(--measure-wide)",
+          marginInline: "auto",
           display: "grid",
           gridTemplateColumns: "minmax(0, 1fr) minmax(0, 2fr)",
           gap: "clamp(2rem, 6vw, 6rem)",
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
         }}
       >
         <div>
@@ -220,8 +242,7 @@ function ManifestoExcerpt() {
           <p>
             Praxeos is a small protest against that. Each module pairs a generative or
             interactive piece with a primary-source-backed essay, at a craft level we
-            would not be embarrassed to print on acid-free paper. The site is its own
-            argument: that these ideas deserve the treatment they receive here.
+            would not be embarrassed to print on acid-free paper.
           </p>
           <p
             style={{
@@ -240,7 +261,71 @@ function ManifestoExcerpt() {
 
 /* ------------------------------------------------------------------------- */
 
-async function ModulesTeaser() {
+function StartHereSection() {
+  return (
+    <section
+      style={{
+        borderBlockStart: "1px solid var(--rule)",
+        paddingInline: "var(--gutter-inline)",
+        paddingBlock: "calc(var(--gutter-block) * 1.2)",
+        background: "var(--paper-elevated)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "var(--measure-wide)",
+          marginInline: "auto",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr) minmax(0, 2fr)",
+          gap: "clamp(2rem, 6vw, 6rem)",
+        }}
+      >
+        <div>
+          <p className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
+            § II — Start here
+          </p>
+        </div>
+        <div style={{ maxWidth: "var(--measure-prose)" }}>
+          <p
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "var(--step-2)",
+              lineHeight: 1.45,
+              marginBlockStart: 0,
+            }}
+          >
+            If you are new to Austrian economics, begin with{" "}
+            <Link href="/modules/time-preference-forest">
+              The Time Preference Forest
+            </Link>
+            . It is the most accessible module — no prior knowledge assumed — and its
+            argument (why patience builds civilisation) is intuitive before it is
+            technical.
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "var(--step-1)",
+              lineHeight: 1.5,
+              color: "var(--ink-secondary)",
+              marginBlockEnd: 0,
+            }}
+          >
+            If you already know the action axiom and want to see the strongest argument
+            first, go to{" "}
+            <Link href="/modules/calculation-problem">The Calculation Problem</Link>. It
+            is Mises's 1920 proof that socialist planning cannot compute — rendered as a
+            live simulation you can touch.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------------- */
+
+async function ChoosePathSection() {
   const modules = await Promise.all(
     MODULE_REGISTRY.map(async (entry) => {
       const mod = await entry.load();
@@ -248,12 +333,38 @@ async function ModulesTeaser() {
     }),
   );
 
+  const pathModules = [
+    {
+      title: "Bitcoin & Money",
+      slug: "halving-garden",
+      accent: "bitcoin" as const,
+      description:
+        "Why fixed supply matters. How Bitcoin enforces a monetary rule no government can rewrite. A living manuscript of every block from genesis to tip.",
+    },
+    {
+      title: "Human Action",
+      slug: "time-preference-forest",
+      accent: "capital" as const,
+      description:
+        "Time preference as the root of interest, capital, and growth. Why patience builds civilisation — and why credit expansion pretends it away.",
+    },
+    {
+      title: "Economic Calculation",
+      slug: "calculation-problem",
+      accent: "action" as const,
+      description:
+        "Mises's 1920 proof that socialist planning cannot compute. Prices are not incentives; they are the only way to compare alternative production plans.",
+    },
+  ];
+
   return (
     <section
+      id="paths"
       style={{
         borderBlockStart: "1px solid var(--rule)",
         paddingInline: "var(--gutter-inline)",
         paddingBlock: "calc(var(--gutter-block) * 1.2)",
+        background: "var(--paper)",
       }}
     >
       <div
@@ -262,67 +373,69 @@ async function ModulesTeaser() {
           marginInline: "auto",
         }}
       >
+        <p
+          className="label-mono"
+          style={{ color: "var(--ink-tertiary)", marginBottom: "1rem" }}
+        >
+          § III — Choose your path
+        </p>
+        <h2 style={{ marginBlockStart: 0, marginBlockEnd: "1rem" }}>Three doors.</h2>
+        <p
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: "var(--step-1)",
+            lineHeight: 1.5,
+            color: "var(--ink-secondary)",
+            maxWidth: "52ch",
+            marginBlockEnd: "2.5rem",
+          }}
+        >
+          Each path leads to a single idea, rendered as an interactive piece you can
+          touch, explore, and share. No prior knowledge assumed.
+        </p>
+
         <div
           style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            marginBlockEnd: "2rem",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(18rem, 1fr))",
+            gap: "1.5rem",
           }}
         >
-          <p className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
-            § II — Fascicle I
-          </p>
-          <Link
-            href="/modules"
-            className="label-mono"
-            style={{ textDecoration: "none" }}
-          >
-            All modules →
-          </Link>
+          {pathModules.map((path) => {
+            const mod = modules.find((m) => m.entry.slug === path.slug);
+            return (
+              <PathCard
+                key={path.slug}
+                href={`/modules/${path.slug}`}
+                title={path.title}
+                description={path.description}
+                accent={path.accent}
+                meta={
+                  mod
+                    ? `${mod.meta.readingTimeMin}-min read · ${complexityToLabel(mod.meta.complexity)}`
+                    : undefined
+                }
+              />
+            );
+          })}
         </div>
 
-        <h2 style={{ marginBlockStart: 0, marginBlockEnd: "1.5rem" }}>
-          Action, Time, and Calculation.
-        </h2>
-
-        <ul
-          style={{
-            listStyle: "none",
-            padding: 0,
-            margin: 0,
-            display: "grid",
-            gap: "2rem",
-          }}
-        >
-          {modules.map(({ entry, meta }) => (
-            <li
-              key={entry.slug}
-              style={{
-                borderBlockStart: "1px solid var(--rule)",
-                paddingBlockStart: "1.5rem",
-              }}
-            >
-              <Link
-                href={`/modules/${entry.slug}`}
-                style={{ textDecoration: "none", display: "block" }}
-              >
-                <h3 style={{ margin: 0, marginBlockEnd: "0.4rem" }}>{meta.title}</h3>
-                <p
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontStyle: "italic",
-                    fontSize: "var(--step-1)",
-                    color: "var(--ink-secondary)",
-                    margin: 0,
-                  }}
-                >
-                  {meta.subtitle}
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div style={{ marginTop: "2rem", textAlign: "center" }}>
+          <Link
+            href="/modules"
+            className="label-mono hover-border"
+            style={{
+              textDecoration: "none",
+              color: "var(--ink-tertiary)",
+              display: "inline-block",
+              padding: "0.5rem 1rem",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid transparent",
+            }}
+          >
+            View all modules →
+          </Link>
+        </div>
       </div>
     </section>
   );
@@ -354,7 +467,7 @@ function ThinkersPreview() {
           }}
         >
           <p className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
-            § III — The thinkers
+            § IV — The thinkers
           </p>
           <Link
             href="/thinkers"
@@ -394,6 +507,7 @@ function ThinkersPreview() {
             <li key={slug}>
               <Link
                 href={`/thinkers/${slug}`}
+                className="hover-ink"
                 style={{
                   textDecoration: "none",
                   color: "var(--ink-primary)",
@@ -452,6 +566,9 @@ function FooterNote() {
           <Link href="/manifesto" className="label-mono">
             Manifesto
           </Link>
+          <Link href="/built" className="label-mono">
+            Built
+          </Link>
           <Link href="/colophon" className="label-mono">
             Colophon
           </Link>
@@ -487,4 +604,10 @@ function formatThinker(slug: string): string {
     ammous: "Saifedean Ammous",
   };
   return map[slug] ?? slug;
+}
+
+function complexityToLabel(c: number): string {
+  if (c <= 2) return "Beginner";
+  if (c === 3) return "Intermediate";
+  return "Advanced";
 }

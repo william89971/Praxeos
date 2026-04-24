@@ -1,3 +1,5 @@
+import { ModuleNavigator } from "@/components/interactive/ModuleNavigator";
+import { ReadingProgress } from "@/components/interactive/ReadingProgress";
 import { DisplayTitle } from "@/components/typography/DisplayTitle";
 import { Fleuron } from "@/components/typography/Fleuron";
 import { adjacentModules } from "@/modules/registry";
@@ -14,6 +16,8 @@ type Props = {
   sketchCaption: string;
   /** Module essay body (MDX content). */
   children: ReactNode;
+  /** Optional content after the essay but before sources. */
+  postlude?: ReactNode;
 };
 
 export function ModuleLayout({
@@ -22,11 +26,16 @@ export function ModuleLayout({
   sketch,
   sketchCaption,
   children,
+  postlude,
 }: Props) {
   const { prev, next } = adjacentModules(metadata.slug);
 
+  const difficultyLabel = complexityToLabel(metadata.complexity);
+
   return (
     <article className="module-layout" data-module-slug={metadata.slug}>
+      <ReadingProgress />
+
       {/* 1 · Hero */}
       <header
         style={{
@@ -41,7 +50,10 @@ export function ModuleLayout({
           {metadata.moduleNumber} of ∞
         </p>
         <DisplayTitle subtitle={metadata.subtitle}>{metadata.title}</DisplayTitle>
-        <MetaLine metadata={metadata} />
+
+        {/* Module intro bar */}
+        <ModuleIntroBar metadata={metadata} difficultyLabel={difficultyLabel} />
+
         {metadata.bestOn === "desktop" ? (
           <p
             className="label-mono"
@@ -85,7 +97,72 @@ export function ModuleLayout({
         {sketchCaption}
       </p>
 
-      {/* 4 · Essay column */}
+      {/* 4 · What you'll learn */}
+      {metadata.learningOutcomes && metadata.learningOutcomes.length > 0 ? (
+        <section
+          aria-labelledby="learn-heading"
+          style={{
+            maxWidth: "var(--measure-prose)",
+            marginInline: "auto",
+            paddingInline: "var(--gutter-inline)",
+            paddingBlock: "0 2.5rem",
+          }}
+        >
+          <p
+            id="learn-heading"
+            className="label-mono"
+            style={{
+              marginBlock: 0,
+              marginBlockEnd: "0.75rem",
+              color: "var(--ink-tertiary)",
+              fontSize: "var(--step--2)",
+              letterSpacing: "0.06em",
+            }}
+          >
+            What you will understand after this
+          </p>
+          <ul
+            style={{
+              listStyle: "none",
+              padding: 0,
+              margin: 0,
+              display: "grid",
+              gap: "0.6rem",
+            }}
+          >
+            {metadata.learningOutcomes.map((outcome, i) => (
+              <li
+                key={outcome}
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: "0.75rem",
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "var(--step-0)",
+                  lineHeight: 1.5,
+                  color: "var(--ink-primary)",
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    color: "var(--accent-action)",
+                    fontFamily: "var(--font-serif)",
+                    fontSize: "var(--step--1)",
+                    fontWeight: 600,
+                    flexShrink: 0,
+                  }}
+                >
+                  {toRoman(i + 1).toLowerCase()}.
+                </span>
+                {outcome}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {/* 5 · Essay column */}
       <section
         className="module-essay drop-cap"
         style={{
@@ -98,9 +175,23 @@ export function ModuleLayout({
         {children}
       </section>
 
+      {/* 6 · Postlude (interactive demos, etc.) */}
+      {postlude ? (
+        <section
+          style={{
+            maxWidth: "var(--measure-prose)",
+            marginInline: "auto",
+            paddingInline: "var(--gutter-inline)",
+            paddingBlock: "0 var(--gutter-block)",
+          }}
+        >
+          {postlude}
+        </section>
+      ) : null}
+
       <Fleuron variant="fleuron" />
 
-      {/* 5 · Primary sources */}
+      {/* 7 · Primary sources */}
       <section
         aria-labelledby="sources-heading"
         style={{
@@ -150,7 +241,7 @@ export function ModuleLayout({
         </ol>
       </section>
 
-      {/* 6 · Related modules — populated once graph exists */}
+      {/* 8 · Related modules — populated once graph exists */}
       {metadata.thinkers.length > 0 ? (
         <section
           aria-labelledby="related-heading"
@@ -192,7 +283,7 @@ export function ModuleLayout({
         </section>
       ) : null}
 
-      {/* 7 · Discussion prompt */}
+      {/* 9 · Discussion prompt */}
       <section
         aria-label="Discussion prompt"
         style={{
@@ -223,7 +314,7 @@ export function ModuleLayout({
 
       <Fleuron variant="rule" />
 
-      {/* 8 · Signature */}
+      {/* 10 · Signature */}
       <footer
         style={{
           maxWidth: "var(--measure-prose)",
@@ -241,67 +332,135 @@ export function ModuleLayout({
         </p>
       </footer>
 
-      {/* 9 · Prev / Next */}
-      <nav
-        aria-label="Module navigation"
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-          paddingInline: "var(--gutter-inline)",
-          paddingBlock: "var(--gutter-block)",
-          display: "flex",
-          justifyContent: "space-between",
-          borderBlockStart: "1px solid var(--rule)",
-        }}
-      >
-        {prev ? (
-          <Link href={`/modules/${prev.slug}`} className="label">
-            ← Previous module
-          </Link>
-        ) : (
-          <span />
-        )}
-        {next ? (
-          <Link href={`/modules/${next.slug}`} className="label">
-            Next module →
-          </Link>
-        ) : (
-          <Link href="/modules" className="label">
-            All modules ↑
-          </Link>
-        )}
-      </nav>
+      {/* 11 · Prev / Next */}
+      <ModuleNavigator
+        prev={
+          prev
+            ? {
+                slug: prev.slug,
+                title: prev.title,
+                subtitle: prev.subtitle,
+              }
+            : null
+        }
+        next={
+          next
+            ? {
+                slug: next.slug,
+                title: next.title,
+                subtitle: next.subtitle,
+              }
+            : null
+        }
+      />
     </article>
   );
 }
 
-function MetaLine({ metadata }: { metadata: ModuleMetadata }) {
+/* -------------------------------------------------------------------------- */
+
+function ModuleIntroBar({
+  metadata,
+  difficultyLabel,
+}: {
+  metadata: ModuleMetadata;
+  difficultyLabel: string;
+}) {
   return (
-    <p
-      className="label-mono"
+    <div
       style={{
         display: "flex",
-        gap: "1.5rem",
         flexWrap: "wrap",
+        alignItems: "center",
+        gap: "0.75rem 1.5rem",
         marginBlockStart: "1.5rem",
-        color: "var(--ink-tertiary)",
       }}
     >
-      <span>
-        {metadata.thinkers.slice(0, 3).map(formatThinker).join(" · ")}
-        {metadata.thinkers.length > 3 ? " et al." : ""}
-      </span>
-      <span>{metadata.readingTimeMin}-min read</span>
-      <span>
-        {new Date(metadata.publishedAt).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </span>
-      <span>Complexity {"◆".repeat(metadata.complexity)}</span>
-    </p>
+      <DifficultyBadge label={difficultyLabel} complexity={metadata.complexity} />
+      <MetaPill>
+        <span style={{ color: "var(--ink-tertiary)" }}>Read time</span>{" "}
+        <span style={{ color: "var(--ink-primary)", fontWeight: 500 }}>
+          {metadata.readingTimeMin} min
+        </span>
+      </MetaPill>
+      <MetaPill>
+        <span style={{ color: "var(--ink-tertiary)" }}>Complexity</span>{" "}
+        <span style={{ color: "var(--ink-primary)", fontWeight: 500 }}>
+          {"◆".repeat(metadata.complexity)}
+        </span>
+      </MetaPill>
+      <MetaPill>
+        <span style={{ color: "var(--ink-tertiary)" }}>Published</span>{" "}
+        <span style={{ color: "var(--ink-primary)", fontWeight: 500 }}>
+          {new Date(metadata.publishedAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </span>
+      </MetaPill>
+    </div>
   );
+}
+
+function DifficultyBadge({
+  label,
+  complexity,
+}: {
+  label: string;
+  complexity: number;
+}) {
+  const color =
+    complexity <= 2
+      ? "var(--accent-capital)"
+      : complexity === 3
+        ? "var(--accent-bitcoin)"
+        : "var(--accent-action)";
+
+  return (
+    <span
+      className="label"
+      style={{
+        padding: "0.25rem 0.6rem",
+        borderRadius: "var(--radius-sm)",
+        border: `1px solid ${color}`,
+        color,
+        fontWeight: 600,
+        fontSize: "var(--step--2)",
+        letterSpacing: "0.04em",
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+function MetaPill({ children }: { children: ReactNode }) {
+  return (
+    <span
+      className="label"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "0.35rem",
+        padding: "0.25rem 0.6rem",
+        borderRadius: "var(--radius-sm)",
+        background: "var(--paper-sunk)",
+        border: "1px solid var(--rule)",
+        fontSize: "var(--step--2)",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+function complexityToLabel(c: number): string {
+  if (c <= 2) return "Beginner";
+  if (c === 3) return "Intermediate";
+  return "Advanced";
 }
 
 function formatThinker(slug: string): string {

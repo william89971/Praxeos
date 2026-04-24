@@ -14,6 +14,8 @@ type RegistryEntry = {
   slug: string;
   fascicle: number;
   moduleNumber: number;
+  title: string;
+  subtitle: string;
   /** Lazy loader returning the module's exports. */
   load: () => Promise<{
     metadata: ModuleMetadata;
@@ -27,18 +29,27 @@ export const MODULE_REGISTRY: readonly RegistryEntry[] = [
     slug: "halving-garden",
     fascicle: 1,
     moduleNumber: 1,
+    title: "The Halving Garden",
+    subtitle:
+      "Every Bitcoin block from genesis to tip, rendered as a living generative manuscript.",
     load: () => import("@/modules/halving-garden"),
   },
   {
     slug: "time-preference-forest",
     fascicle: 1,
     moduleNumber: 2,
+    title: "The Time Preference Forest",
+    subtitle:
+      "Austrian capital theory as an eighteenth-century woodcut. Roots go where saving goes; the canopy is only as real as the roots.",
     load: () => import("@/modules/time-preference-forest"),
   },
   {
     slug: "calculation-problem",
     fascicle: 1,
     moduleNumber: 3,
+    title: "The Calculation Problem",
+    subtitle:
+      "Mises's 1920 argument rendered as a two-panel typographic particle system.",
     load: () => import("@/modules/calculation-problem"),
   },
   // <-- new-module CLI inserts entries here -->

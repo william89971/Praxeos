@@ -1,12 +1,18 @@
+import { PathCard } from "@/components/interactive/PathCard";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { MODULE_REGISTRY } from "@/modules/registry";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Modules",
   description:
     "Every Praxeos module — explorable explanations of Austrian economics and praxeology.",
+};
+
+const ACCENT_MAP: Record<string, "bitcoin" | "action" | "capital"> = {
+  "halving-garden": "bitcoin",
+  "time-preference-forest": "capital",
+  "calculation-problem": "action",
 };
 
 export default async function ModulesIndexPage() {
@@ -57,76 +63,32 @@ export default async function ModulesIndexPage() {
             Fascicle I is in preparation. Return soon.
           </p>
         ) : (
-          <ul
+          <div
             style={{
-              listStyle: "none",
-              padding: 0,
               display: "grid",
-              gap: "2.5rem",
+              gridTemplateColumns: "repeat(auto-fit, minmax(18rem, 1fr))",
+              gap: "1.5rem",
             }}
           >
             {modules.map(({ entry, meta }) => (
-              <li
+              <PathCard
                 key={entry.slug}
-                style={{
-                  borderBlockStart: "1px solid var(--rule)",
-                  paddingBlockStart: "2rem",
-                }}
-              >
-                <Link
-                  href={`/modules/${entry.slug}`}
-                  style={{ textDecoration: "none", display: "block" }}
-                >
-                  <p className="label-mono" style={{ marginBottom: "0.5rem" }}>
-                    Fascicle {toRoman(meta.fascicle)} · Module {meta.moduleNumber}
-                  </p>
-                  <h2 style={{ margin: 0, marginBottom: "0.5rem" }}>{meta.title}</h2>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      fontStyle: "italic",
-                      fontSize: "var(--step-1)",
-                      color: "var(--ink-secondary)",
-                      margin: 0,
-                    }}
-                  >
-                    {meta.subtitle}
-                  </p>
-                  <p
-                    className="label-mono"
-                    style={{
-                      color: "var(--ink-tertiary)",
-                      marginTop: "1rem",
-                    }}
-                  >
-                    {meta.readingTimeMin}-min read · Complexity{" "}
-                    {"◆".repeat(meta.complexity)}
-                  </p>
-                </Link>
-              </li>
+                href={`/modules/${entry.slug}`}
+                title={meta.title}
+                description={meta.subtitle}
+                accent={ACCENT_MAP[entry.slug] ?? "action"}
+                meta={`${meta.readingTimeMin}-min read · ${complexityToLabel(meta.complexity)} · ${"◆".repeat(meta.complexity)}`}
+              />
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </SiteChrome>
   );
 }
 
-function toRoman(n: number): string {
-  const map: Array<[number, string]> = [
-    [10, "X"],
-    [9, "IX"],
-    [5, "V"],
-    [4, "IV"],
-    [1, "I"],
-  ];
-  let out = "";
-  let r = n;
-  for (const [v, g] of map) {
-    while (r >= v) {
-      out += g;
-      r -= v;
-    }
-  }
-  return out || "I";
+function complexityToLabel(c: number): string {
+  if (c <= 2) return "Beginner";
+  if (c === 3) return "Intermediate";
+  return "Advanced";
 }

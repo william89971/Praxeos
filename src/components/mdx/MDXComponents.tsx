@@ -1,3 +1,5 @@
+import { ExplorePrompt } from "@/components/interactive/ExplorePrompt";
+import { KeyIdeaCard } from "@/components/interactive/KeyIdeaCard";
 import { Citation } from "@/components/typography/Citation";
 import { Fleuron } from "@/components/typography/Fleuron";
 import { Footnote } from "@/components/typography/Footnote";
@@ -42,6 +44,9 @@ export const essayMDXComponents: MDXComponents = {
   PullQuote,
   Footnote,
   SmallCaps,
+  // Interactive pedagogical components
+  KeyIdeaCard,
+  ExplorePrompt,
   // Module-specific inline mini-interactives
   RoundaboutnessDiagram,
 };
