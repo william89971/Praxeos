@@ -1,0 +1,40 @@
+The Calculation Problem's engine has a feature that reviewers kept trying
+to fix: when the planner faces a producer with multiple recipes for the
+same good, it picks by `hash(tick, producer_id) mod recipeCount`. Not by
+an optimiser. Not by a neural heuristic. Not even by round-robin. By a
+hash.
+
+This is not a performance shortcut. It is the Misesian point, put in
+arithmetic. In <SmallCaps>mises</SmallCaps>'s 1920 argument, the planner
+lacks a common unit of valuation — no prices for the means of production.
+Faced with a choice between two viable recipes, the planner has no
+non-arbitrary procedure. Any rule would do equally badly; no rule is
+economic.
+
+<Marginalia label="Temptation resisted">
+  In early drafts I ran the planner through a genetic algorithm. It
+  produced plausibly good allocations. It also made the simulation worse
+  pedagogically — the whole point is that a planner *cannot* compute this
+  well, and if the code seems to, readers infer the wrong thing.
+</Marginalia>
+
+The engine therefore does the most deliberately useless thing available: a
+deterministic, reproducible, economically meaningless choice. It is
+reproducible so the invariant tests pass. It is deterministic so that
+identical inputs produce identical failures. It is meaningless so that
+no reader walks away thinking socialism was *almost* going to work.
+
+One subtle consequence: because the choice is deterministic, the same tick
+and producer pair always gets the same recipe. Bad ones stay bad. In a
+real socialist economy the planner could at least *vary*; here it can't.
+If anything the simulation is too kind.
+
+Everything else in the engine — the Cobb-Douglas demand formation, the
+adaptive tâtonnement in the market panel, the rationing of scarce inputs
+when arbitrary recipe choices collide — is straightforward. The hard
+discipline was keeping one function stupid on purpose.
+
+Tests in `tests/unit/calc-engine.test.ts` pin the invariants: prices
+converge under shocks; socialist waste grows superlinearly with G; seeds
+reproduce. If any of those ever regresses, the engine has drifted off the
+Misesian claim and should not ship.

@@ -1,0 +1,36 @@
+The Halving Garden is rendered from pre-baked SVG tiles on disk. The obvious
+alternative — paint every organism live on the client as the user pans — was
+the first thing I tried, and it was a cliff. At 880,000 blocks the naïve
+approach is ~50 MB of vertex data and a sustained 200 MB of heap churn on a
+16-inch laptop; on a 2020 iPhone it was a blank screen and a thermal
+throttle.
+
+So the pipeline became: `scripts/bake-tiles.ts` walks every block once,
+calls `renderTileSvg()` per `{z, x, y}` cell, writes SVG into
+`data/tiles/{z}/{x}/{y}.svg`. The dev server loads them like a slippy map;
+production serves them off a CDN. The live layer — for new blocks arriving
+via the mempool.space WebSocket — is a thin React overlay that fades in
+fresh organisms until the next incremental bake catches up.
+
+<Marginalia label="Numbers">
+  z=0 is 2 × 2 tiles (the whole garden in four panels). z=4 is 32 × 32. A
+  full bake writes ~1,100 files at roughly 3 KB each — under 4 MB total on
+  disk. The cost is mostly CPU.
+</Marginalia>
+
+The layout decision was harder. I tried three: row-major grid, a phyllotactic
+spiral, and a Hilbert curve. The Hilbert curve wins because it preserves
+**locality**: consecutive blocks stay spatially close, so difficulty
+adjustments show up as visible ripples rather than invisible discontinuities
+two rows down. The spiral was prettier in isolation and destroyed any sense
+that time was horizontal. The grid was legible and unmoving.
+
+The thing I did not anticipate: how small the organisms have to be at
+zoom 0 for the reader to actually perceive the four-epoch rhythm. They
+ended up at around one device pixel each. Any larger and the halving
+boundaries drown in the texture. Any smaller and it looks like static.
+Calibrated by eye on ink, not algorithm.
+
+The code that writes tiles is 33 lines of orchestration over a 120-line
+renderer. The renderer is where the craft lives; the pipeline is
+thoughtless plumbing. In retrospect the right ratio.
