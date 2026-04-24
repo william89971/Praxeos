@@ -2,6 +2,7 @@
 
 import { PosterFallback } from "@/components/sketch/PosterFallback";
 import { Sketch, type SketchRenderFn } from "@/components/sketch/Sketch";
+import { cssVar } from "@/sketches/lib/cssVar";
 import { useRef } from "react";
 import { TeleologySim } from "./simulation";
 
@@ -109,24 +110,4 @@ export function Teleology({
       fill={fill}
     />
   );
-}
-
-/**
- * Resolve a CSS custom property at render time with alpha.
- * Fallback used for Edge/OG contexts (unused here but safe).
- */
-function cssVar(name: string, fallback: string, alpha: number): string {
-  const value =
-    typeof window !== "undefined"
-      ? getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-      : "";
-  const hex = value || fallback;
-  // Assume hex in form #RRGGBB.
-  if (hex.startsWith("#") && hex.length === 7) {
-    const r = Number.parseInt(hex.slice(1, 3), 16);
-    const g = Number.parseInt(hex.slice(3, 5), 16);
-    const b = Number.parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  }
-  return hex;
 }

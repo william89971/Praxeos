@@ -49,7 +49,10 @@ export async function GET(): Promise<Response> {
         const observation = data.observations?.[0];
         const value = observation ? Number(observation.value) : Number.NaN;
         if (Number.isFinite(value)) {
-          payload.m2Usd = value * 1_000_000_000_000;
+          // FRED's M2SL series is published in BILLIONS of dollars.
+          // Multiply by 1e9 to get raw USD. Earlier code used 1e12 which
+          // rendered the meter ~1000× too high. See tests/unit/m2-units.test.ts.
+          payload.m2Usd = value * 1_000_000_000;
           payload.asOf = observation?.date
             ? new Date(`${observation.date}T00:00:00.000Z`).toISOString()
             : payload.asOf;

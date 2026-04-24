@@ -1,5 +1,6 @@
 "use client";
 
+import { cssVar } from "@/sketches/lib/cssVar";
 import { useEffect, useRef } from "react";
 import { EPOCHS } from "../lib/epochs";
 import { computePanels, positionOfBlock } from "../lib/layout";
@@ -33,7 +34,14 @@ export function LiveLayer({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bornAtRef = useRef(new Map<number, number>());
+  // Latest-values refs let the raf loop read changing props without
+  // tearing down and restarting the animation on every React render.
+  const blocksRef = useRef<readonly Block[]>(blocks);
+  const viewRef = useRef<GardenView>(view);
+  blocksRef.current = blocks;
+  viewRef.current = view;
 
+  // Record a "born at" timestamp per block height for the fade-in.
   useEffect(() => {
     const now = performance.now();
     for (const block of blocks) {
@@ -43,6 +51,21 @@ export function LiveLayer({
     }
   }, [blocks]);
 
+  // Resize the canvas buffer exactly when the viewport changes — not on
+  // every animation frame.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || width <= 0 || height <= 0) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+  }, [width, height]);
+
+  // Render loop: start/stop gated by IntersectionObserver +
+  // prefers-reduced-motion. This is the LiveLayer's analogue of the
+  // canonical <Sketch> wrapper's contract.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || width <= 0 || height <= 0) return;
@@ -50,25 +73,53 @@ export function LiveLayer({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let frame = 0;
     let rafId = 0;
+    let running = false;
+    let destroyed = false;
+    let frame = 0;
+
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reducedMotion = motionQuery.matches;
+    const onMotionChange = (event: MediaQueryListEvent) => {
+      reducedMotion = event.matches;
+      if (reducedMotion) stop();
+      else if (onScreen) start();
+    };
+    motionQuery.addEventListener("change", onMotionChange);
+
+    let onScreen = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          onScreen = entry.isIntersecting;
+        }
+        if (reducedMotion || destroyed) return;
+        if (onScreen) start();
+        else stop();
+      },
+      { threshold: 0.05 },
+    );
+    observer.observe(canvas);
+
     const draw = (now: number) => {
+      if (destroyed || !running) return;
       frame += 1;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
       ctx.save();
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, width, height);
 
-      const rect = worldRectForView(view, width, height);
-      for (const block of blocks) {
+      const rect = worldRectForView(viewRef.current, width, height);
+      const bornAt = bornAtRef.current;
+
+      const orange = (alpha: number) => cssVar("--accent-bitcoin", "#E87722", alpha);
+      const ink = (alpha: number) => cssVar("--ink-primary", "#1C1814", alpha);
+
+      for (const block of blocksRef.current) {
         const positioned = positionOfBlock(block.height, PANELS, 7);
         if (!positioned) continue;
 
-        const age = now - (bornAtRef.current.get(block.height) ?? now);
+        const age = now - (bornAt.get(block.height) ?? now);
         const alpha = Math.max(0, 1 - age / 10_000);
         if (alpha <= 0) continue;
 
@@ -90,7 +141,7 @@ export function LiveLayer({
         ctx.scale(rect.scale * pulse, rect.scale * pulse);
 
         if (organism.hasOrangeCore) {
-          ctx.strokeStyle = `rgba(232, 119, 34, ${0.95 * alpha})`;
+          ctx.strokeStyle = orange(0.95 * alpha);
           ctx.lineWidth = 1.1;
           ctx.beginPath();
           ctx.arc(0, 0, organism.radius * 0.24, 0, Math.PI * 2);
@@ -100,8 +151,8 @@ export function LiveLayer({
         for (const segment of organism.segments) {
           ctx.strokeStyle =
             segment.kind === 3 && organism.hasOrangeCore
-              ? `rgba(232, 119, 34, ${0.95 * alpha})`
-              : `rgba(28, 24, 20, ${0.82 * alpha})`;
+              ? orange(0.95 * alpha)
+              : ink(0.82 * alpha);
           ctx.lineWidth = Math.max(0.7, segment.weight * 0.9);
           ctx.lineCap = "round";
           ctx.beginPath();
@@ -117,9 +168,27 @@ export function LiveLayer({
       rafId = requestAnimationFrame(draw);
     };
 
-    rafId = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(rafId);
-  }, [blocks, height, view, width]);
+    const start = () => {
+      if (running || reducedMotion || destroyed) return;
+      running = true;
+      rafId = requestAnimationFrame(draw);
+    };
+
+    const stop = () => {
+      running = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+    };
+
+    if (!reducedMotion) start();
+
+    return () => {
+      destroyed = true;
+      stop();
+      observer.disconnect();
+      motionQuery.removeEventListener("change", onMotionChange);
+    };
+  }, [width, height]);
 
   return (
     <canvas

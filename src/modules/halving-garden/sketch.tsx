@@ -24,9 +24,16 @@ export default function HalvingGardenSketch() {
   const [view, setView] = useState<GardenView>(DEFAULT_VIEW);
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
   const containerRef = useRef<HTMLDivElement>(null);
+  // Set only by the AudioToggle click handler (a user gesture), so the
+  // Web Audio API will allow playback on Safari/Chrome.
   const audioContextRef = useRef<AudioContext | null>(null);
   const bakedHeightRef = useRef<number | null>(null);
   const heardHeightRef = useRef<number | null>(null);
+
+  const handleAudioToggle = (enabled: boolean, ctx: AudioContext | null) => {
+    audioContextRef.current = ctx;
+    setAudioEnabled(enabled);
+  };
 
   const applyView = (next: GardenView) => {
     setView(clampView(next, viewport.width, viewport.height));
@@ -63,14 +70,19 @@ export default function HalvingGardenSketch() {
 
   useEffect(() => {
     if (!audioEnabled || !newest || heardHeightRef.current === newest.height) return;
-    heardHeightRef.current = newest.height;
 
-    const context =
-      audioContextRef.current ??
-      new AudioContext({
-        latencyHint: "interactive",
-      });
-    audioContextRef.current = context;
+    // If the toggle is on but the AudioContext has not been created yet
+    // (e.g. first load after a prior session persisted enabled=true),
+    // skip this tick — the user needs to click Audio once to give us a
+    // gesture. No silent failures, no auto-resume from a timer.
+    const context = audioContextRef.current;
+    if (!context) return;
+    if (context.state === "suspended") {
+      void context.resume();
+    }
+    if (context.state !== "running") return;
+
+    heardHeightRef.current = newest.height;
 
     const startAt = context.currentTime + 0.02;
     const frequencies = [220, 330, 440];
@@ -87,6 +99,16 @@ export default function HalvingGardenSketch() {
       osc.stop(startAt + 0.42 + index * 0.03);
     }
   }, [audioEnabled, newest]);
+
+  // Sketch-level cleanup: close any AudioContext when the page unmounts.
+  useEffect(() => {
+    return () => {
+      audioContextRef.current?.close().catch(() => {
+        /* already closed */
+      });
+      audioContextRef.current = null;
+    };
+  }, []);
 
   if (prefersReducedMotion) {
     return (
@@ -184,7 +206,7 @@ export default function HalvingGardenSketch() {
           >
             Zoom in
           </button>
-          <AudioToggle onToggle={setAudioEnabled} />
+          <AudioToggle onToggle={handleAudioToggle} />
         </div>
       </div>
     </div>
