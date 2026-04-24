@@ -2,6 +2,7 @@
 
 import { PosterFallback } from "@/components/sketch/PosterFallback";
 import { Sketch, type SketchRenderFn } from "@/components/sketch/Sketch";
+import { cssVar } from "@/sketches/lib/cssVar";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   CORRECTION_DURATION_MS,
@@ -223,7 +224,7 @@ function drawForestScene(
 ) {
   // Ground hatching (below line) — soft parallel strokes indicating soil.
   ctx.save();
-  ctx.strokeStyle = "rgba(28, 24, 20, 0.09)";
+  ctx.strokeStyle = cssVar("--ink-primary", "#1C1814", 0.09);
   ctx.lineWidth = 0.5;
   for (
     let y = forest.groundY + 8;
@@ -239,7 +240,7 @@ function drawForestScene(
   ctx.restore();
 
   // Ground line itself.
-  ctx.strokeStyle = "rgba(28, 24, 20, 0.6)";
+  ctx.strokeStyle = cssVar("--ink-primary", "#1C1814", 0.55);
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(0, forest.groundY);
@@ -249,7 +250,7 @@ function drawForestScene(
   // Mycorrhiza first (so roots draw on top).
   if (forest.mycorrhiza.length > 0) {
     ctx.save();
-    ctx.strokeStyle = "rgba(58, 90, 74, 0.28)"; // forest green wash
+    ctx.strokeStyle = cssVar("--accent-capital", "#3A5A4A", 0.32);
     ctx.lineWidth = 0.8;
     for (const seg of forest.mycorrhiza) {
       // Curved connection.
@@ -284,14 +285,13 @@ function drawForestScene(
 
     for (const seg of tree.segments) {
       // Color logic.
-      let color = "rgba(28, 24, 20, 0.92)";
+      let color = cssVar("--ink-primary", "#1C1814", 0.92);
       let lineWidth = seg.weight;
 
       if (seg.artificial) {
         if (blackness > 0) {
-          // Blackening during correction.
           const a = 0.4 + blackness * 0.55;
-          color = `rgba(12, 10, 8, ${a})`;
+          color = cssVar("--ink-primary", "#1C1814", a);
         } else {
           // Highlighted orange-tinted ink while intervention is active.
           const orangeTint = Math.min(1, orangeVisible * 1.2);

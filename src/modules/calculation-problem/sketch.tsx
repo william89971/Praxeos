@@ -159,18 +159,39 @@ export default function CalculationProblemSketch() {
       ctx.lineTo(divider, height);
       ctx.stroke();
 
+      // Panel headers — two lines each: title + subtitle.
+      ctx.textBaseline = "top";
+      ctx.textAlign = "left";
+
+      ctx.fillStyle = "#5C5348";
+      ctx.font = "600 11px ui-monospace, monospace";
+      ctx.fillText("MARKET ECONOMY", 16, 12);
+      ctx.fillStyle = "#8B8275";
+      ctx.font = "400 10px ui-monospace, monospace";
+      ctx.fillText("prices coordinate supply & demand", 16, 26);
+
+      ctx.fillStyle = "#5C5348";
+      ctx.font = "600 11px ui-monospace, monospace";
+      ctx.fillText(
+        viewMode === "planner" ? "CENTRAL PLAN (YOU)" : "CENTRAL PLAN",
+        panelWidth + 16,
+        12,
+      );
+      ctx.fillStyle = "#8B3A3A";
+      ctx.font = "400 10px ui-monospace, monospace";
+      ctx.fillText("no prices — allocation by decree", panelWidth + 16, 26);
+
+      ctx.textAlign = "right";
       ctx.fillStyle = "#8B8275";
       ctx.font = "500 11px ui-monospace, monospace";
-      ctx.textBaseline = "top";
-      ctx.fillText("MARKET", 16, 14);
-      ctx.fillText(
-        viewMode === "planner" ? "PLANNED (YOU)" : "PLANNED",
-        panelWidth + 16,
-        14,
-      );
-      ctx.textAlign = "right";
-      ctx.fillText(`tick ${marketRef.current.tick}`, width - 16, 14);
+      ctx.fillText(`tick ${marketRef.current.tick}`, width - 16, 12);
       ctx.textAlign = "left";
+
+      // Legend at bottom: explain the letterform agents.
+      ctx.textBaseline = "bottom";
+      ctx.fillStyle = "#8B8275";
+      ctx.font = "400 10px ui-monospace, monospace";
+      ctx.fillText("c = consumer · p = producer · r = resource", 16, height - 8);
 
       ctx.restore();
 
@@ -271,6 +292,67 @@ export default function CalculationProblemSketch() {
           maxDpr={2}
         />
         <MisesOverlay visible={showMises} onDismiss={() => setMisesDismissed(true)} />
+      </div>
+
+      {/* Two-column explainer — tells first-time visitors what each panel is */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "0",
+          borderBlockEnd: "1px solid var(--rule)",
+          paddingInline: "var(--gutter-inline)",
+          paddingBlock: "0.75rem",
+        }}
+      >
+        <div
+          style={{ paddingInlineEnd: "1rem", borderInlineEnd: "1px solid var(--rule)" }}
+        >
+          <p
+            className="label-mono"
+            style={{
+              color: "var(--ink-secondary)",
+              margin: 0,
+              marginBlockEnd: "0.2rem",
+            }}
+          >
+            Market Economy
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "var(--step--1)",
+              color: "var(--ink-tertiary)",
+              margin: 0,
+            }}
+          >
+            Price signals coordinate buyers and sellers — supply chains emerge without
+            anyone in charge.
+          </p>
+        </div>
+        <div style={{ paddingInlineStart: "1rem" }}>
+          <p
+            className="label-mono"
+            style={{
+              color: "var(--accent-action)",
+              margin: 0,
+              marginBlockEnd: "0.2rem",
+            }}
+          >
+            Central Plan
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "var(--step--1)",
+              color: "var(--ink-tertiary)",
+              margin: 0,
+            }}
+          >
+            No prices. A planner allocates by decree — shortages compound and
+            satisfaction falls as complexity rises.
+          </p>
+        </div>
       </div>
 
       <div
