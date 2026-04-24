@@ -4,6 +4,7 @@ import { Footnote } from "@/components/typography/Footnote";
 import { Marginalia } from "@/components/typography/Marginalia";
 import { PullQuote } from "@/components/typography/PullQuote";
 import { SmallCaps } from "@/components/typography/SmallCaps";
+import { RoundaboutnessDiagram } from "@/modules/time-preference-forest/components/RoundaboutnessDiagram";
 import type { MDXComponents } from "mdx/types";
 import type { ComponentPropsWithoutRef } from "react";
 
@@ -35,6 +36,8 @@ export const essayMDXComponents: MDXComponents = {
   PullQuote,
   Footnote,
   SmallCaps,
+  // Module-specific inline mini-interactives
+  RoundaboutnessDiagram,
 };
 
 /**
