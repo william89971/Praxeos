@@ -103,6 +103,12 @@ export default function CalculationProblemSketch() {
       if (arcRef.current.startedAt !== null && arcRef.current.phase !== "complete") {
         const nextArc = tickArc(arcRef.current, now);
         if (nextArc.phase !== arcRef.current.phase) {
+          // When the arc terminates, lock the slider to the final act's
+          // complexity so the reader isn't snapped back to the pre-arc
+          // value without warning.
+          if (nextArc.phase === "complete") {
+            setManualG(COMPLEXITY_BY_PHASE.act3);
+          }
           arcRef.current = nextArc;
           setArc(nextArc);
         } else {
@@ -344,6 +350,21 @@ export default function CalculationProblemSketch() {
           {viewMode === "comparison" ? "Be the Planner →" : "← Comparison"}
         </button>
       </div>
+
+      {viewMode === "comparison" ? (
+        <p
+          className="label-mono"
+          style={{
+            paddingInline: "var(--gutter-inline)",
+            color: "var(--ink-tertiary)",
+            fontStyle: "italic",
+            marginBlock: 0,
+          }}
+        >
+          You can also take the planner's seat. Press the button above and try to
+          coordinate the right panel manually as complexity rises.
+        </p>
+      ) : null}
 
       {viewMode === "planner" && plannerSnapshot ? (
         <PlannerControls
