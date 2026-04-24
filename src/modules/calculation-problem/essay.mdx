@@ -1,0 +1,107 @@
+In 1920 Ludwig von Mises published a short paper in the *Archiv für
+Sozialwissenschaft und Sozialpolitik* that did something rare in the history of
+economics. It settled an argument, in advance of the empirical material that
+would confirm the settlement, about whether a kind of economy could exist.
+
+That paper — *Die Wirtschaftsrechnung im sozialistischen Gemeinwesen*,
+translated as *Economic Calculation in the Socialist Commonwealth* — made a
+single philosophical observation. A socialist economy, Mises argued, cannot
+compute. It cannot compare one production plan against another. It cannot
+determine which of several available techniques for producing a given good
+uses scarce means most economically. Not because planners are stupid, nor
+because data processing is slow, but because there is no *common unit of
+valuation* with which to compare the alternatives. Without markets for
+capital goods, there are no prices for capital goods. Without prices for
+capital goods, a planner faced with the choice between recipe A (which needs
+ten units of steel and two of oil) and recipe B (which needs three units of
+steel and fifteen of oil) has no non-arbitrary way to choose. Either answer
+is a guess.
+
+<Marginalia label="Source">
+  Mises, *Socialism*, 1922 ed., Jonathan Cape 1936 trans., ch. 5: "The
+  Impossibility of Economic Calculation under Socialism."
+</Marginalia>
+
+The simulation above encodes this point directly. Both panels begin with the
+same consumers, the same producers, the same primary resources, the same
+recipes. The only difference is how goods are allocated. In the market panel,
+prices emerge through local bilateral exchange: producers post asks,
+consumers choose by Cobb-Douglas preference weighted against price,
+producers adjust their asks upward when they sell out and downward when
+inventory piles up. These are not cosmic truths; they are adaptive signals
+that converge, noisily, on the relative scarcities of everything at once.
+
+In the planned panel there are no prices. The central planner observes only
+aggregate resource supply and the set of possible techniques. When a good
+can be produced by more than one recipe, the planner must pick one. It does
+so, in this model, by a hash of the current tick and the producer's id —
+the simulation's direct encoding of Mises's 1920 insight. The choice is
+**deterministic** (a planner does not pick by flipping coins in public), but
+**economically meaningless** (any other recipe would have been equally
+defensible in the absence of a common valuation). Input demand from the
+chosen recipes collides with finite input supply; producers are rationed;
+output falls below capacity; consumers are allocated what remains by fair
+share. Shortages pile up. Surpluses decay.
+
+<PullQuote cite="Mises, 1920">
+  Where there is no market, there is no price system; and where there is no
+  price system, there can be no economic calculation.
+</PullQuote>
+
+Drag the complexity slider. As the number of goods rises, the market panel
+continues to coordinate — a bit slower, noisier, with more edges on the
+supply graph, but still coherent. The planned panel's waste grows faster
+than the growth of its coordinating apparatus. The Misesian point is exactly
+here: adding a good to a market economy is a local problem. Adding a good to
+a planned economy is a global one, because every arbitrary recipe choice
+makes the next arbitrary recipe choice more costly.
+
+In the decades after 1920, Oskar Lange and Abba Lerner published a sequence
+of responses that argued Mises had misunderstood his own argument. A
+"simulated market," they claimed, could reproduce what actual prices do.
+<SmallCaps>joseph salerno</SmallCaps>'s 1990 reconstruction, *Ludwig von Mises
+as Social Rationalist*, showed that the Lange–Lerner solution had smuggled
+the market back in: its trial-and-error price adjustment presupposes
+precisely the distributed knowledge that Mises said socialism lacked.
+Lange's simulated planner was, in the relevant sense, a market. The
+literature for much of the twentieth century obscured this. The collapse of
+the Soviet economy in 1989–91 was what finally convinced the textbooks.
+
+<Marginalia label="Cross-reference">
+  <SmallCaps>f. a. hayek</SmallCaps>'s *The Use of Knowledge in Society*
+  (1945) reframes Mises's argument in terms of distributed, tacit,
+  locally-owned knowledge. Prices are the signal mechanism that lets this
+  knowledge coordinate economic activity without any central observer.
+</Marginalia>
+
+The simulation's third button invites the reader to try. Enter planner
+mode. You will be shown a set of allocation choices — which recipe for each
+good, how much of each primary resource to direct where. Make your picks.
+Watch your decision queue lengthen as goods multiply. Watch the market
+panel, visible beside you, coordinate quietly while you struggle. The
+failure is not a moral failing on your part. It is the exact failure Mises
+described, experienced first-hand.
+
+<Fleuron variant="asterism" />
+
+A last caveat. The simulation is a model, not a proof. It cannot establish
+Mises's conclusion; it can only make it *visible*. The proof lives in the
+reasoning: that valuation requires a common unit, that a common unit for
+producer goods can arise only from markets in those goods, that a socialist
+economy by definition lacks those markets, and therefore that its planner,
+however brilliant, must pick among alternatives without the apparatus that
+would let the picking be economic. The twentieth century supplied the
+empirical confirmation. The simulation supplies something prior to
+empiricism: the experience of trying, and the look of the thing.
+
+<PullQuote cite="Hayek, 1945">
+  The economic problem of society is thus not merely a problem of how to
+  allocate 'given' resources — if 'given' is taken to mean given to a single
+  mind which deliberately solves the problem set by these 'data.' It is
+  rather a problem of how to secure the best use of resources known to any
+  of the members of society, for ends whose relative importance only these
+  individuals know.
+</PullQuote>
+
+Homo agit. Man acts. Men act in markets because they must; markets are what
+lets them act coherently at all.

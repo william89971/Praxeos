@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Praxeos Logo</title>
+  <desc id="desc">Circular monogram built from a P and directional action marks.</desc>
+  <rect width="512" height="512" rx="72" fill="#F5F0E6"/>
+  <circle cx="256" cy="256" r="190" fill="none" stroke="#C5BAA3" stroke-width="8"/>
+  <path d="M176 132h92c76 0 124 39 124 102 0 64-48 103-124 103h-49v79h-43V132Zm43 39v127h47c54 0 82-22 82-64 0-42-28-63-82-63h-47Z" fill="#1C1814"/>
+  <path d="M112 398c42-31 82-49 145-57" fill="none" stroke="#A54B1A" stroke-width="11" stroke-linecap="round"/>
+  <path d="M340 114c31 24 53 51 69 92" fill="none" stroke="#A54B1A" stroke-width="11" stroke-linecap="round"/>
+</svg>

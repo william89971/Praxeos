@@ -77,6 +77,8 @@ web_modules/
 # Next.js build output
 .next
 out
+playwright-report
+test-results
 
 # Nuxt.js build / generate output
 .nuxt
@@ -137,3 +139,12 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Praxeos — generated / large artifacts
+data/
+data/tiles/
+public/tiles/
+playwright-report/
+test-results/
+coverage/
+

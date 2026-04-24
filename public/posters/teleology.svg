@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Teleology poster</title>
+  <desc id="desc">Purposeful agents forming orbital traces across paper.</desc>
+  <rect width="1600" height="900" fill="#f5f0e6" />
+  <g fill="none" stroke-linecap="round">
+    <path d="M120 660 C260 420 480 382 680 520 S1080 720 1460 320" stroke="#1c1814" stroke-opacity="0.18" stroke-width="3" />
+    <path d="M160 244 C344 402 560 434 760 300 S1120 160 1450 478" stroke="#8b3a3a" stroke-opacity="0.18" stroke-width="3" />
+    <path d="M80 440 C280 700 530 740 810 560 S1210 160 1520 276" stroke="#3a5a4a" stroke-opacity="0.18" stroke-width="3" />
+  </g>
+  <g>
+    <circle cx="240" cy="602" r="8" fill="#1c1814" />
+    <circle cx="388" cy="438" r="7" fill="#8b3a3a" />
+    <circle cx="548" cy="490" r="8" fill="#1c1814" />
+    <circle cx="706" cy="344" r="9" fill="#3a5a4a" />
+    <circle cx="892" cy="532" r="8" fill="#1c1814" />
+    <circle cx="1084" cy="276" r="7" fill="#8b3a3a" />
+    <circle cx="1324" cy="378" r="9" fill="#1c1814" />
+  </g>
+  <text x="80" y="844" fill="#1c1814" font-family="Georgia, serif" font-size="72">Teleology</text>
+  <text x="80" y="880" fill="#5c5348" font-family="Georgia, serif" font-size="28" font-style="italic">
+    Purposeful agents moving toward chosen ends
+  </text>
+</svg>

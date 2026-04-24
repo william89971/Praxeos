@@ -1,0 +1,90 @@
+/* ==========================================================================
+   PRAXEOS — Print stylesheet
+   Austrian economists are serious readers. Essays must print beautifully.
+   ========================================================================== */
+
+@media print {
+  :root {
+    --paper: #ffffff;
+    --paper-elevated: #ffffff;
+    --ink-primary: #1c1814;
+    --ink-secondary: #3c342a;
+    --rule: #c0b89f;
+  }
+
+  @page {
+    size: A4;
+    margin: 24mm 22mm 28mm 22mm;
+
+    @bottom-center {
+      content: "Homo agit.";
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 9pt;
+      color: var(--ink-tertiary);
+    }
+
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: var(--font-mono);
+      font-size: 9pt;
+      color: var(--ink-tertiary);
+    }
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.55;
+    color: #1c1814;
+    background: #ffffff;
+  }
+
+  /* Hide interactive chrome */
+  nav,
+  header,
+  footer,
+  .sketch,
+  .cursor,
+  button,
+  [data-no-print] {
+    display: none !important;
+  }
+
+  h1,
+  h2,
+  h3 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  p,
+  li,
+  blockquote {
+    orphans: 3;
+    widows: 3;
+  }
+
+  a {
+    color: #1c1814;
+    text-decoration: none;
+  }
+
+  /* Expand URLs after inline links */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--ink-tertiary);
+  }
+
+  /* Footnotes at page bottom via CSS — browsers with float:footnote */
+  .footnote {
+    float: footnote;
+  }
+
+  img,
+  svg {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+}

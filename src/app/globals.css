@@ -1,0 +1,118 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/typography.css";
+@import "../styles/print.css";
+
+/* ==========================================================================
+   Tailwind v4 theme bridge
+   Token colors are sourced from tokens.css so data-theme switching works.
+   @theme is used only for spacing, radii, and type families — things that
+   do not switch by theme.
+   ========================================================================== */
+
+@theme {
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, Menlo, monospace;
+
+  --color-paper: var(--paper);
+  --color-paper-elevated: var(--paper-elevated);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-ink: var(--ink-primary);
+  --color-ink-primary: var(--ink-primary);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-tertiary: var(--ink-tertiary);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-bitcoin: var(--accent-bitcoin);
+  --color-action: var(--accent-action);
+  --color-capital: var(--accent-capital);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+
+  --ease-organic: var(--ease-organic);
+  --ease-overshoot: var(--ease-overshoot);
+}
+
+/* ==========================================================================
+   Reset + base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink-primary);
+  min-height: 100dvh;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-action);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Hide on desktop; show on mobile & vice versa — used sparingly */
+.only-desktop {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.only-mobile {
+  @media (min-width: 768px) {
+    display: none !important;
+  }
+}
+
+/* Skip to content */
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  inset-block-start: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--paper);
+  border: 1px solid var(--ink-primary);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: var(--step--1);
+  z-index: 100;
+  transform: translateY(-200%);
+  transition: transform var(--dur-micro) var(--ease-organic);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}

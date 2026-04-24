@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">Praxeos Wordmark</title>
+  <desc id="desc">The word Praxeos in a high-contrast serif with a warm action rule.</desc>
+  <rect width="1200" height="320" fill="#F5F0E6"/>
+  <text x="86" y="196" fill="#1C1814" font-family="Fraunces, Georgia, serif" font-size="164" font-style="italic" letter-spacing="-6">Praxeos</text>
+  <path d="M92 236h1008" fill="none" stroke="#C5BAA3" stroke-width="4"/>
+  <path d="M92 258c145-22 262-33 388-33 187 0 351 22 620 22" fill="none" stroke="#A54B1A" stroke-width="8" stroke-linecap="round"/>
+</svg>

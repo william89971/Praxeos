@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">The Time Preference Forest poster</title>
+  <desc id="desc">A woodcut forest with deep roots, a ground line, and a subtle orange glow beneath the canopy.</desc>
+  <rect width="1600" height="900" fill="#f5f0e6" />
+  <rect x="0" y="0" width="1600" height="900" fill="url(#wash)" opacity="0.18" />
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="68%" r="38%">
+      <stop offset="0%" stop-color="#e87722" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#e87722" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="wash" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ede6d6" />
+      <stop offset="100%" stop-color="#f5f0e6" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1600" height="900" fill="url(#glow)" />
+  <g stroke="#1c1814" fill="none" stroke-linecap="round">
+    <line x1="0" x2="1600" y1="560" y2="560" stroke-width="2.4" opacity="0.6" />
+    <g transform="translate(220 560)">
+      <path d="M0 0 L0 -250" stroke-width="7" />
+      <path d="M0 -160 L-70 -240" stroke-width="3.5" />
+      <path d="M0 -176 L76 -276" stroke-width="3.5" />
+      <path d="M0 0 L-42 142" stroke-width="2.8" stroke-dasharray="10 12" />
+      <path d="M0 0 L38 158" stroke-width="2.8" stroke-dasharray="10 12" />
+      <path d="M0 0 L0 196" stroke-width="2.8" stroke-dasharray="10 12" />
+    </g>
+    <g transform="translate(520 560)">
+      <path d="M0 0 L0 -300" stroke-width="7.5" />
+      <path d="M0 -182 L-84 -278" stroke-width="4" />
+      <path d="M0 -212 L92 -330" stroke-width="4" />
+      <path d="M0 0 L-56 156" stroke-width="3" stroke-dasharray="10 12" />
+      <path d="M0 0 L52 174" stroke-width="3" stroke-dasharray="10 12" />
+      <path d="M0 0 L0 214" stroke-width="3" stroke-dasharray="10 12" />
+    </g>
+    <g transform="translate(830 560)">
+      <path d="M0 0 L0 -340" stroke-width="8" />
+      <path d="M0 -210 L-100 -332" stroke-width="4.2" />
+      <path d="M0 -236 L108 -372" stroke-width="4.2" />
+      <path d="M0 0 L-64 170" stroke-width="3.2" stroke-dasharray="10 12" />
+      <path d="M0 0 L60 196" stroke-width="3.2" stroke-dasharray="10 12" />
+      <path d="M0 0 L0 232" stroke-width="3.2" stroke-dasharray="10 12" />
+    </g>
+    <g transform="translate(1130 560)">
+      <path d="M0 0 L0 -286" stroke-width="7.5" />
+      <path d="M0 -170 L-84 -258" stroke-width="3.8" />
+      <path d="M0 -198 L84 -312" stroke-width="3.8" />
+      <path d="M0 0 L-54 152" stroke-width="3" stroke-dasharray="10 12" />
+      <path d="M0 0 L58 170" stroke-width="3" stroke-dasharray="10 12" />
+      <path d="M0 0 L0 212" stroke-width="3" stroke-dasharray="10 12" />
+    </g>
+  </g>
+  <path d="M250 694 C430 662 660 678 870 720 S1260 730 1400 700" stroke="#3a5a4a" stroke-width="5" opacity="0.22" fill="none" />
+  <text x="80" y="844" fill="#1c1814" font-family="Georgia, serif" font-size="72">The Time Preference Forest</text>
+  <text x="80" y="880" fill="#5c5348" font-family="Georgia, serif" font-size="28" font-style="italic">
+    Roots go where saving goes; the canopy is only as real as the roots
+  </text>
+</svg>

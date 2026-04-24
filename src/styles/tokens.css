@@ -1,0 +1,138 @@
+/* ==========================================================================
+   PRAXEOS — Design Tokens
+   Editorial brutalism with organic soul.
+   Every token is justified in /docs/AESTHETIC.md.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* ---------- Color: paper (light) ---------- */
+    --paper: #f5f0e6;
+    --paper-elevated: #ede6d6;
+    --paper-sunk: #ebe4d1;
+
+    --ink-primary: #1c1814;
+    --ink-secondary: #5c5348;
+    --ink-tertiary: #8b8275;
+
+    --rule: #d8cfbe;
+    --rule-strong: #b8ad97;
+
+    /* ---------- Color: accents (theme-invariant) ---------- */
+    --accent-bitcoin: #e87722;
+    --accent-action: #8b3a3a;
+    --accent-capital: #3a5a4a;
+
+    /* Derived tints for subtle washes */
+    --accent-bitcoin-wash: rgb(232 119 34 / 0.08);
+    --accent-action-wash: rgb(139 58 58 / 0.08);
+    --accent-capital-wash: rgb(58 90 74 / 0.08);
+
+    /* ---------- Typography: families ---------- */
+    --font-serif: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo,
+      monospace;
+
+    /* ---------- Typography: fluid scale (utopia.fyi) ---------- */
+    --step--2: clamp(0.78rem, 0.76rem + 0.1vw, 0.83rem);
+    --step--1: clamp(0.89rem, 0.86rem + 0.15vw, 0.95rem);
+    --step-0: clamp(1.06rem, 1.03rem + 0.25vw, 1.125rem);
+    --step-1: clamp(1.27rem, 1.22rem + 0.35vw, 1.35rem);
+    --step-2: clamp(1.52rem, 1.45rem + 0.5vw, 1.62rem);
+    --step-3: clamp(1.82rem, 1.7rem + 0.75vw, 1.95rem);
+    --step-4: clamp(2.18rem, 2rem + 1vw, 2.34rem);
+    --step-5: clamp(2.62rem, 2.35rem + 1.5vw, 2.81rem);
+    --step-6: clamp(3.15rem, 2.75rem + 2.2vw, 3.38rem);
+    --step-7: clamp(4.5rem, 3.5rem + 4vw, 6.5rem);
+    --step-8: clamp(6rem, 4rem + 8vw, 9rem);
+
+    /* ---------- Measures (line length) ---------- */
+    --measure-prose: 64ch;
+    --measure-narrow: 48ch;
+    --measure-wide: 80ch;
+
+    /* ---------- Motion ---------- */
+    --ease-organic: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-slack: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-micro: 300ms;
+    --dur-std: 600ms;
+    --dur-hero: 1200ms;
+
+    /* ---------- Layout ---------- */
+    --rule-width: 1px;
+    --radius-sm: 2px;
+    --radius-md: 6px;
+    --gutter-inline: clamp(1rem, 4vw, 3rem);
+    --gutter-block: clamp(2rem, 6vw, 5rem);
+    --shadow-sheet: 0 1px 0 var(--rule);
+    --shadow-lift: 0 1px 0 var(--rule), 0 8px 24px -12px rgb(28 24 20 / 0.15);
+
+    /* ---------- Semantic aliases for Tailwind v4 @theme ---------- */
+    --color-paper: var(--paper);
+    --color-paper-elevated: var(--paper-elevated);
+    --color-paper-sunk: var(--paper-sunk);
+    --color-ink-primary: var(--ink-primary);
+    --color-ink-secondary: var(--ink-secondary);
+    --color-ink-tertiary: var(--ink-tertiary);
+    --color-rule: var(--rule);
+    --color-rule-strong: var(--rule-strong);
+    --color-bitcoin: var(--accent-bitcoin);
+    --color-action: var(--accent-action);
+    --color-capital: var(--accent-capital);
+  }
+
+  /* ---------- Color: parallel edition (dark) ---------- */
+  [data-theme="dark"] {
+    --paper: #14110d;
+    --paper-elevated: #1e1a14;
+    --paper-sunk: #0d0b08;
+
+    --ink-primary: #f0eada;
+    --ink-secondary: #b5ac99;
+    --ink-tertiary: #7a7265;
+
+    --rule: #2e2820;
+    --rule-strong: #4a4133;
+
+    /* Wash tokens recompute against dark paper */
+    --accent-bitcoin-wash: rgb(232 119 34 / 0.14);
+    --accent-action-wash: rgb(139 58 58 / 0.18);
+    --accent-capital-wash: rgb(58 90 74 / 0.18);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --paper: #14110d;
+      --paper-elevated: #1e1a14;
+      --paper-sunk: #0d0b08;
+      --ink-primary: #f0eada;
+      --ink-secondary: #b5ac99;
+      --ink-tertiary: #7a7265;
+      --rule: #2e2820;
+      --rule-strong: #4a4133;
+      --accent-bitcoin-wash: rgb(232 119 34 / 0.14);
+      --accent-action-wash: rgb(139 58 58 / 0.18);
+      --accent-capital-wash: rgb(58 90 74 / 0.18);
+    }
+  }
+
+  /* Reduced motion: state jumps, not faster animation. */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --dur-micro: 0ms;
+      --dur-std: 0ms;
+      --dur-hero: 0ms;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
