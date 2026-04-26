@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="The Coordination Engine poster — concentric rings of agents linked by curved signal edges.">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="55%" r="65%">
+      <stop offset="0%" stop-color="#F5F0E6" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#1C1814" stop-opacity="0.4"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E87722" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#E87722" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#EBE4D1"/>
+
+  <!-- Three concentric rings -->
+  <circle cx="800" cy="500" r="360" fill="none" stroke="#D8CFBE" stroke-width="1" stroke-dasharray="4 6" opacity="0.55"/>
+  <circle cx="800" cy="500" r="240" fill="none" stroke="#D8CFBE" stroke-width="1" stroke-dasharray="4 6" opacity="0.55"/>
+  <circle cx="800" cy="500" r="128" fill="none" stroke="#D8CFBE" stroke-width="1" stroke-dasharray="4 6" opacity="0.55"/>
+
+  <!-- Edge web (sample curves) -->
+  <g stroke="#E87722" stroke-width="2" fill="none" opacity="0.7">
+    <path d="M 800 372 Q 720 380 672 500" />
+    <path d="M 672 500 Q 700 580 800 628" />
+    <path d="M 800 628 Q 880 600 928 500" />
+    <path d="M 928 500 Q 880 400 800 372" />
+    <path d="M 672 500 Q 600 460 560 500" />
+    <path d="M 928 500 Q 1000 540 1040 500" />
+    <path d="M 800 372 Q 800 240 800 220" />
+    <path d="M 800 628 Q 800 760 800 780" />
+  </g>
+  <g stroke="#8B3A3A" stroke-width="2" fill="none" opacity="0.4" stroke-dasharray="2 6">
+    <path d="M 560 500 Q 480 540 440 540" />
+    <path d="M 1040 500 Q 1130 480 1170 480" />
+    <path d="M 800 220 Q 720 200 660 200" />
+    <path d="M 800 780 Q 880 800 940 800" />
+  </g>
+
+  <!-- Inner ring nodes (synchronized halo) -->
+  <g>
+    <circle cx="800" cy="372" r="50" fill="url(#halo)" opacity="0.55"/>
+    <circle cx="672" cy="500" r="50" fill="url(#halo)" opacity="0.55"/>
+    <circle cx="800" cy="628" r="50" fill="url(#halo)" opacity="0.55"/>
+    <circle cx="928" cy="500" r="50" fill="url(#halo)" opacity="0.55"/>
+  </g>
+  <g fill="#E87722" stroke="#8B3A3A" stroke-width="1">
+    <polygon points="800,360 814,375 800,390 786,375"/>
+    <polygon points="672,488 686,503 672,518 658,503"/>
+    <polygon points="800,616 814,631 800,646 786,631"/>
+    <polygon points="928,488 942,503 928,518 914,503"/>
+  </g>
+
+  <!-- Middle and outer ring nodes -->
+  <g fill="#E87722">
+    <polygon points="800,228 812,240 800,252 788,240"/>
+    <polygon points="980,320 992,332 980,344 968,332"/>
+    <polygon points="1040,500 1052,512 1040,524 1028,512"/>
+    <polygon points="980,680 992,692 980,704 968,692"/>
+    <polygon points="800,772 812,784 800,796 788,784"/>
+    <polygon points="620,680 632,692 620,704 608,692"/>
+    <polygon points="560,500 572,512 560,524 548,512"/>
+    <polygon points="620,320 632,332 620,344 608,332"/>
+  </g>
+  <g fill="#8B3A3A">
+    <polygon points="800,140 810,150 800,160 790,150"/>
+    <polygon points="1040,200 1050,210 1040,220 1030,210"/>
+    <polygon points="1170,500 1180,510 1170,520 1160,510"/>
+    <polygon points="1040,800 1050,810 1040,820 1030,810"/>
+    <polygon points="800,860 810,870 800,880 790,870"/>
+    <polygon points="560,800 570,810 560,820 550,810"/>
+    <polygon points="430,500 440,510 430,520 420,510"/>
+    <polygon points="560,200 570,210 560,220 550,210"/>
+  </g>
+
+  <rect width="1600" height="900" fill="url(#vig)"/>
+
+  <g fill="#1C1814" font-family="Times New Roman, Noto Serif, serif">
+    <text x="80" y="120" font-size="44" font-style="italic">The Coordination Engine</text>
+    <text x="80" y="160" font-size="20" fill="#5C5348" letter-spacing="0.06em">MONEY AS SIGNAL · MISES · HAYEK · ROTHBARD · LACHMANN</text>
+  </g>
+</svg>

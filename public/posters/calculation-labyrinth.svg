@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="The Calculation Labyrinth poster — top-down maze with a chain of glowing price markers along the canonical path.">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="55%" r="65%">
+      <stop offset="0%" stop-color="#F5F0E6" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#1C1814" stop-opacity="0.45"/>
+    </radialGradient>
+    <radialGradient id="marker" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E87722" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#E87722" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#EBE4D1"/>
+
+  <!-- Maze walls — top-down -->
+  <g stroke="#3a342a" stroke-width="6" stroke-linecap="round">
+    <path d="M 480 200 L 1120 200"/>
+    <path d="M 480 200 L 480 700"/>
+    <path d="M 1120 200 L 1120 700"/>
+    <path d="M 480 700 L 1120 700"/>
+    <!-- internal walls -->
+    <path d="M 580 200 L 580 360"/>
+    <path d="M 580 460 L 580 600"/>
+    <path d="M 680 260 L 680 460"/>
+    <path d="M 780 200 L 780 360"/>
+    <path d="M 780 540 L 780 700"/>
+    <path d="M 880 260 L 880 540"/>
+    <path d="M 980 200 L 980 460"/>
+    <path d="M 580 360 L 780 360"/>
+    <path d="M 680 460 L 980 460"/>
+    <path d="M 580 540 L 880 540"/>
+    <path d="M 780 600 L 1080 600"/>
+  </g>
+
+  <!-- Path glow (start lower-left → goal upper-right) -->
+  <g>
+    <circle cx="540" cy="660" r="50" fill="url(#marker)" opacity="0.6"/>
+    <circle cx="640" cy="660" r="50" fill="url(#marker)" opacity="0.55"/>
+    <circle cx="640" cy="600" r="50" fill="url(#marker)" opacity="0.5"/>
+    <circle cx="640" cy="500" r="50" fill="url(#marker)" opacity="0.45"/>
+    <circle cx="740" cy="500" r="50" fill="url(#marker)" opacity="0.45"/>
+    <circle cx="740" cy="400" r="50" fill="url(#marker)" opacity="0.4"/>
+    <circle cx="840" cy="400" r="50" fill="url(#marker)" opacity="0.4"/>
+    <circle cx="840" cy="260" r="50" fill="url(#marker)" opacity="0.35"/>
+    <circle cx="1040" cy="260" r="55" fill="url(#marker)" opacity="0.45"/>
+  </g>
+
+  <!-- Price markers (small octahedra) -->
+  <g fill="#E87722" stroke="#8B3A3A" stroke-width="1">
+    <polygon points="540,650 555,665 540,680 525,665"/>
+    <polygon points="640,650 655,665 640,680 625,665"/>
+    <polygon points="640,590 655,605 640,620 625,605"/>
+    <polygon points="640,490 655,505 640,520 625,505"/>
+    <polygon points="740,490 755,505 740,520 725,505"/>
+    <polygon points="740,390 755,405 740,420 725,405"/>
+    <polygon points="840,390 855,405 840,420 825,405"/>
+    <polygon points="840,250 855,265 840,280 825,265"/>
+    <polygon points="1040,250 1055,265 1040,280 1025,265"/>
+  </g>
+
+  <!-- Pawn at start -->
+  <polygon points="540,650 558,668 540,686 522,668" fill="#1C1814" stroke="#E87722" stroke-width="2"/>
+  <!-- Goal at upper right -->
+  <circle cx="1040" cy="260" r="22" fill="none" stroke="#E87722" stroke-width="3"/>
+  <circle cx="1040" cy="260" r="10" fill="#E87722"/>
+
+  <rect width="1600" height="900" fill="url(#vig)"/>
+
+  <g fill="#1C1814" font-family="Times New Roman, Noto Serif, serif">
+    <text x="80" y="120" font-size="44" font-style="italic">The Calculation Labyrinth</text>
+    <text x="80" y="160" font-size="20" fill="#5C5348" letter-spacing="0.06em">MISES · HAYEK · ROTHBARD · SALERNO</text>
+  </g>
+</svg>

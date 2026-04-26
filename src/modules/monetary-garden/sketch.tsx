@@ -24,6 +24,15 @@ export default function MonetaryGardenSketch() {
     <div style={frameStyle}>
       <MonetaryGardenScene distortion={distortion} />
 
+      {/* Cinematic title — sits in the upper-right corner of the frame, not duplicating the page hero. */}
+      <div style={titleOverlayStyle} aria-hidden="true">
+        <span className="label-mono" style={titleEyebrow}>
+          Module 01 · Praxeos
+        </span>
+        <span style={titleStyle}>The Monetary Garden</span>
+        <span style={titleSublineStyle}>A living model of monetary distortion</span>
+      </div>
+
       <div style={overlayWrapperStyle}>
         <div style={topOverlayStyle}>
           <ExplanationPanel distortion={distortion} />
@@ -69,6 +78,40 @@ const bottomOverlayStyle: CSSProperties = {
   maxWidth: "min(56ch, 100%)",
   marginInlineStart: "auto",
   marginInlineEnd: 0,
+};
+
+const titleOverlayStyle: CSSProperties = {
+  position: "absolute",
+  insetBlockStart: "clamp(1rem, 2.5vw, 1.6rem)",
+  insetInlineEnd: "clamp(1rem, 2.5vw, 1.6rem)",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+  gap: "0.35rem",
+  textAlign: "right",
+  pointerEvents: "none",
+  textShadow: "0 1px 12px rgba(20, 17, 13, 0.35)",
+};
+
+const titleEyebrow: CSSProperties = {
+  color: "color-mix(in oklab, var(--paper-elevated) 92%, transparent)",
+  letterSpacing: "0.18em",
+};
+
+const titleStyle: CSSProperties = {
+  fontFamily: "var(--font-serif)",
+  fontStyle: "italic",
+  fontSize: "clamp(1.4rem, 2.8vw, 2.4rem)",
+  lineHeight: 1.05,
+  fontWeight: 400,
+  color: "var(--ink-primary)",
+};
+
+const titleSublineStyle: CSSProperties = {
+  fontFamily: "var(--font-serif)",
+  fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
+  color: "var(--ink-secondary)",
+  fontStyle: "italic",
 };
 
 const vignetteStyle: CSSProperties = {

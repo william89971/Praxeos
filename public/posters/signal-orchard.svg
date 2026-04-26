@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="The Signal Orchard — concentric rings of cypresses connected by faint signal lines.">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="55%" r="65%">
+      <stop offset="0%" stop-color="#F5F0E6" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#1C1814" stop-opacity="0.4"/>
+    </radialGradient>
+    <radialGradient id="pulse" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E87722" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#E87722" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#EBE4D1"/>
+
+  <!-- Plot rings -->
+  <circle cx="800" cy="500" r="360" fill="none" stroke="#D8CFBE" stroke-width="2" opacity="0.7"/>
+  <circle cx="800" cy="500" r="220" fill="none" stroke="#D8CFBE" stroke-width="1.5" opacity="0.5"/>
+  <circle cx="800" cy="500" r="100" fill="none" stroke="#D8CFBE" stroke-width="1" opacity="0.4"/>
+
+  <!-- Edges -->
+  <g stroke="#8B8275" stroke-width="1" fill="none" opacity="0.45">
+    <path d="M 600 380 L 800 290 L 1000 380 L 1100 540 L 950 700 L 700 720 L 540 600 Z"/>
+    <path d="M 760 360 L 850 360 L 880 460"/>
+    <path d="M 720 540 L 880 460 L 950 600 L 760 600 Z"/>
+    <path d="M 800 290 L 540 600 L 950 700 L 1100 540"/>
+  </g>
+
+  <!-- Pulse on one tree (origin) -->
+  <circle cx="800" cy="290" r="110" fill="url(#pulse)" opacity="0.65"/>
+
+  <!-- Cypresses (slim spires) -->
+  <g>
+    <!-- Inner ring -->
+    <Cypress cx="800" cy="430"/>
+    <Cypress cx="850" cy="510"/>
+    <Cypress cx="780" cy="580"/>
+    <Cypress cx="720" cy="510"/>
+    <!-- Middle ring -->
+    <Cypress cx="800" cy="290"/>
+    <Cypress cx="950" cy="370"/>
+    <Cypress cx="980" cy="530"/>
+    <Cypress cx="900" cy="680"/>
+    <Cypress cx="700" cy="700"/>
+    <Cypress cx="600" cy="540"/>
+    <Cypress cx="630" cy="380"/>
+    <!-- Outer ring -->
+    <Cypress cx="800" cy="160"/>
+    <Cypress cx="1100" cy="280"/>
+    <Cypress cx="1180" cy="540"/>
+    <Cypress cx="1080" cy="760"/>
+    <Cypress cx="540" cy="780"/>
+    <Cypress cx="450" cy="540"/>
+    <Cypress cx="520" cy="280"/>
+  </g>
+
+  <rect width="1600" height="900" fill="url(#vig)"/>
+
+  <g fill="#1C1814" font-family="Times New Roman, Noto Serif, serif">
+    <text x="80" y="120" font-size="44" font-style="italic">The Signal Orchard</text>
+    <text x="80" y="160" font-size="20" fill="#5C5348" letter-spacing="0.06em">HUMAN ACTION · MISES · HAYEK · KIRZNER · LACHMANN</text>
+  </g>
+
+  <style><![CDATA[
+    Cypress { display: none; }
+  ]]></style>
+</svg>

@@ -1,5 +1,6 @@
 "use client";
 
+import { GltfAsset } from "@/sketches/lib/GltfAsset";
 import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
@@ -111,20 +112,25 @@ function Tree({
 
   return (
     <group position={[tree.x, 0, tree.z]}>
-      <mesh position={[0, trunkH * 0.5, 0]} castShadow={false}>
-        <cylinderGeometry args={[0.06, 0.09, trunkH, 5]} />
-        <meshStandardMaterial color={trunkColor} roughness={0.9} />
-      </mesh>
-      <mesh position={[0, trunkH + canopyH * 0.45, 0]}>
-        <coneGeometry args={[canopyR, canopyH, canopySegments]} />
-        <meshStandardMaterial
-          ref={canopyMatRef}
-          color={healthyCanopy}
-          roughness={0.7}
-          metalness={0}
-          flatShading
-        />
-      </mesh>
+      <GltfAsset
+        src={`/models/monetary-garden/tree-${tree.variant}.glb`}
+        scale={[0.85 + tree.seed * 0.4, heightSeed, 0.85 + tree.seed * 0.4]}
+      >
+        <mesh position={[0, trunkH * 0.5, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.06, 0.09, trunkH, 6]} />
+          <meshStandardMaterial color={trunkColor} roughness={0.92} metalness={0.02} />
+        </mesh>
+        <mesh position={[0, trunkH + canopyH * 0.45, 0]} castShadow>
+          <coneGeometry args={[canopyR, canopyH, canopySegments]} />
+          <meshStandardMaterial
+            ref={canopyMatRef}
+            color={healthyCanopy}
+            roughness={0.62}
+            metalness={0}
+            flatShading
+          />
+        </mesh>
+      </GltfAsset>
     </group>
   );
 }

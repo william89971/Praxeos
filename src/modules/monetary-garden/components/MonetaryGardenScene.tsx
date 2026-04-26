@@ -4,6 +4,8 @@ import { useIsOnScreen } from "@/hooks/useIsOnScreen";
 import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
+import { ACESFilmicToneMapping } from "three";
+import { paramsFor } from "../lib/distortion";
 import { DistortionContext, useDistortionRefs } from "../lib/distortionContext";
 import { AmbientParticles } from "./scene/AmbientParticles";
 import { CameraRig } from "./scene/CameraRig";
@@ -41,15 +43,22 @@ export function MonetaryGardenScene({ distortion }: Props) {
       {onScreen ? (
         <DistortionContext.Provider value={{ target: targetRef, eased: easedRef }}>
           <Canvas
-            shadows={false}
+            shadows={deviceClass === "desktop" ? "soft" : false}
             dpr={[1, 2]}
-            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+            gl={{
+              antialias: true,
+              alpha: true,
+              powerPreference: "high-performance",
+              toneMapping: ACESFilmicToneMapping,
+              toneMappingExposure: 1.05,
+            }}
             camera={{ position: [0, 9, 14], fov: 38, near: 0.1, far: 80 }}
             style={{ width: "100%", height: "100%" }}
           >
             <Suspense fallback={null}>
               <SceneBackground />
-              <SceneLighting />
+              <SceneFog />
+              <SceneLighting deviceClass={deviceClass} />
               <Easer />
 
               <Ground />
@@ -83,6 +92,32 @@ function Easer() {
 function SceneBackground() {
   const colors = useSceneColors();
   return <color attach="background" args={[colors["--paper-sunk"]]} />;
+}
+
+/**
+ * Atmospheric fog that thickens with distortion. The far plane recedes
+ * as the system loses coherence, so dead zones at the periphery dissolve
+ * into mist rather than ending abruptly.
+ */
+function SceneFog() {
+  const colors = useSceneColors();
+  const { eased } = useDistortionRefs();
+  const ref = useRef<{
+    near: number;
+    far: number;
+    color: { set: (c: unknown) => void };
+  } | null>(null);
+
+  useFrame(() => {
+    const fog = ref.current;
+    if (!fog) return;
+    const params = paramsFor(eased.current);
+    fog.near = 14 - params.signalCorruption * 4;
+    fog.far = 56 - params.signalCorruption * 18;
+    fog.color.set(colors["--paper-sunk"]);
+  });
+
+  return <fog ref={ref} attach="fog" args={[colors["--paper-sunk"], 14, 56]} />;
 }
 
 function useDeviceClass(): "desktop" | "mobile" {

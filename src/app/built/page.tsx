@@ -200,8 +200,91 @@ export default function BuiltPage() {
         </Section>
 
         <Section
+          id="blender-pipeline"
+          label="§ VI — Blender Pipeline"
+          title="From .blend to the browser."
+        >
+          <p>
+            The 3D modules — Monetary Garden, Signal Orchard, Calculation Labyrinth,
+            Coordination Engine — are designed to receive Blender exports without code
+            changes. Each scene element is wrapped in a <code>GltfAsset</code> component
+            (<code>src/sketches/lib/GltfAsset.tsx</code>) that fetches a{" "}
+            <code>.glb</code> from <code>/public/models/&lt;module-slug&gt;/</code> and
+            falls back to procedural geometry when the file is absent. Drop a Blender
+            export into the right folder and the next page load uses it.
+          </p>
+
+          <h4>Folder convention</h4>
+          <pre
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--step--2)",
+              background: "var(--paper-elevated)",
+              padding: "1rem",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid var(--rule)",
+              overflowX: "auto",
+              lineHeight: 1.55,
+              color: "var(--ink-secondary)",
+            }}
+          >{`/public/models/
+  monetary-garden/
+    tree-0.glb       tree-1.glb       tree-2.glb
+    production-node.glb
+  signal-orchard/
+    cypress.glb
+  calculation-labyrinth/
+    planner.glb      goal.glb
+  coordination-engine/
+    agent.glb`}</pre>
+
+          <h4>Blender export checklist</h4>
+          <ul>
+            <li>
+              <strong>Format:</strong> File → Export → glTF 2.0 (.glb / .gltf), choose{" "}
+              <em>glTF Binary (.glb)</em> with embedded textures.
+            </li>
+            <li>
+              <strong>Geometry:</strong> apply transforms before export (Object → Apply
+              → All Transforms); include normals and tangents.
+            </li>
+            <li>
+              <strong>Materials:</strong> Principled BSDF only — node groups do not
+              survive the export. Use baseline colour, roughness, metalness; the scene
+              already provides HDR-driven IBL via drei's <code>Environment</code>.
+            </li>
+            <li>
+              <strong>Scale:</strong> 1 Blender unit = 1 metre. Most Praxeos elements
+              expect ~0.5 m to 2 m on the longest axis.
+            </li>
+            <li>
+              <strong>Up axis:</strong> +Y up, +Z forward (the glTF default).
+            </li>
+            <li>
+              <strong>Compression:</strong>{" "}
+              <code>npx gltf-pipeline -i in.glb -o out.glb -d</code> for Draco. drei's{" "}
+              <code>useGLTF</code> auto-resolves Draco and KTX2 transcoders.
+            </li>
+            <li>
+              <strong>Drop in:</strong> place the file at the path expected by the scene
+              component (e.g. <code>/public/models/monetary-garden/tree-0.glb</code>);
+              no code change required.
+            </li>
+          </ul>
+
+          <h4>Why the procedural fallback exists</h4>
+          <p>
+            The fallback is not a placeholder for "later" — it is the canonical first
+            paint, designed to look intentional. The Blender pipeline is an asset
+            upgrade path, not a dependency: if the .glb is missing, slow, or corrupted,
+            the procedural geometry takes over and the module remains shippable. This
+            decouples the design pipeline from the engineering pipeline.
+          </p>
+        </Section>
+
+        <Section
           id="design"
-          label="§ VI — Design System"
+          label="§ VII — Design System"
           title="Editorial brutalism with organic soul."
         >
           <p>

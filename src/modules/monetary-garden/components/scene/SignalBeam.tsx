@@ -1,6 +1,7 @@
 "use client";
 
 import { useSceneColors } from "@/sketches/lib/tokenColors";
+import { Float } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color, type Mesh, type MeshBasicMaterial } from "three";
@@ -40,17 +41,24 @@ export function SignalBeam() {
   });
 
   return (
-    <mesh ref={meshRef} position={[0, 8, 0]}>
-      <coneGeometry args={[3.4, 12, 28, 1, true]} />
-      <meshBasicMaterial
-        ref={matRef}
-        color={sound}
-        transparent
-        opacity={0.18}
-        depthWrite={false}
-        side={2}
-        toneMapped={false}
-      />
-    </mesh>
+    <Float
+      speed={0.6}
+      rotationIntensity={0.05}
+      floatIntensity={0.4}
+      position={[0, 8, 0]}
+    >
+      <mesh ref={meshRef}>
+        <coneGeometry args={[3.4, 12, 32, 1, true]} />
+        <meshBasicMaterial
+          ref={matRef}
+          color={sound}
+          transparent
+          opacity={0.18}
+          depthWrite={false}
+          side={2}
+          toneMapped={false}
+        />
+      </mesh>
+    </Float>
   );
 }

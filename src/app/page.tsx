@@ -1,4 +1,4 @@
-import { PathCard } from "@/components/interactive/PathCard";
+import { ModuleCard } from "@/components/interactive/ModuleCard";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { MODULE_REGISTRY } from "@/modules/registry";
 import { Teleology } from "@/sketches/teleology/Teleology";
@@ -295,11 +295,9 @@ function StartHereSection() {
             }}
           >
             If you are new to Austrian economics, begin with{" "}
-            <Link href="/modules/time-preference-forest">
-              The Time Preference Forest
-            </Link>
-            . It is the most accessible module — no prior knowledge assumed — and its
-            argument (why patience builds civilisation) is intuitive before it is
+            <Link href="/modules/signal-orchard">The Signal Orchard</Link>. It is the
+            most accessible module — no prior knowledge assumed — and its argument (that
+            coordination is the residue of human action) is intuitive before it is
             technical.
           </p>
           <p
@@ -313,9 +311,9 @@ function StartHereSection() {
           >
             If you already know the action axiom and want to see the strongest argument
             first, go to{" "}
-            <Link href="/modules/calculation-problem">The Calculation Problem</Link>. It
-            is Mises's 1920 proof that socialist planning cannot compute — rendered as a
-            live simulation you can touch.
+            <Link href="/modules/calculation-labyrinth">The Calculation Labyrinth</Link>
+            . It is Mises's 1920 proof that socialist planning cannot compute — rendered
+            as a maze you can switch between with-prices and without.
           </p>
         </div>
       </div>
@@ -335,32 +333,40 @@ async function ChoosePathSection() {
 
   const pathModules = [
     {
-      title: "Bitcoin & Money",
-      slug: "halving-garden",
-      accent: "bitcoin" as const,
-      description:
-        "Why fixed supply matters. How Bitcoin enforces a monetary rule no government can rewrite. A living manuscript of every block from genesis to tip.",
-    },
-    {
-      title: "Human Action",
-      slug: "time-preference-forest",
-      accent: "capital" as const,
-      description:
-        "Time preference as the root of interest, capital, and growth. Why patience builds civilisation — and why credit expansion pretends it away.",
-    },
-    {
-      title: "Economic Calculation",
-      slug: "calculation-problem",
-      accent: "action" as const,
-      description:
-        "Mises's 1920 proof that socialist planning cannot compute. Prices are not incentives; they are the only way to compare alternative production plans.",
-    },
-    {
-      title: "Money & Coordination",
+      title: "The Monetary Garden",
       slug: "monetary-garden",
-      accent: "capital" as const,
+      accent: "bitcoin" as const,
+      variant: "monetary-garden" as const,
+      difficulty: "Advanced" as const,
       description:
-        "A living model of what happens when the money signal is distorted. One slider drives an entire economic ecosystem from steady to broken.",
+        "Watch an economy bloom or decay as the money signal changes. One slider drives an entire ecosystem from steady to broken.",
+    },
+    {
+      title: "The Signal Orchard",
+      slug: "signal-orchard",
+      accent: "capital" as const,
+      variant: "signal-orchard" as const,
+      difficulty: "Intermediate" as const,
+      description:
+        "See how human choices become social coordination. Click any cypress to broadcast an action and watch the orchard reorganize.",
+    },
+    {
+      title: "The Calculation Labyrinth",
+      slug: "calculation-labyrinth",
+      accent: "action" as const,
+      variant: "calculation-labyrinth" as const,
+      difficulty: "Advanced" as const,
+      description:
+        "Try to plan without prices — and watch the map disappear. Mises's 1920 argument made literal as a 3D maze.",
+    },
+    {
+      title: "The Coordination Engine",
+      slug: "coordination-engine",
+      accent: "bitcoin" as const,
+      variant: "coordination-engine" as const,
+      difficulty: "Advanced" as const,
+      description:
+        "Follow the signal layer that lets millions act together. A network of agents whose synchrony breaks as money quality falls.",
     },
   ];
 
@@ -410,18 +416,17 @@ async function ChoosePathSection() {
         >
           {pathModules.map((path) => {
             const mod = modules.find((m) => m.entry.slug === path.slug);
+            const meta = mod ? `${mod.meta.readingTimeMin}-min read` : undefined;
             return (
-              <PathCard
+              <ModuleCard
                 key={path.slug}
                 href={`/modules/${path.slug}`}
                 title={path.title}
                 description={path.description}
                 accent={path.accent}
-                meta={
-                  mod
-                    ? `${mod.meta.readingTimeMin}-min read · ${complexityToLabel(mod.meta.complexity)}`
-                    : undefined
-                }
+                variant={path.variant}
+                difficulty={path.difficulty}
+                {...(meta ? { meta } : {})}
               />
             );
           })}
@@ -611,10 +616,4 @@ function formatThinker(slug: string): string {
     ammous: "Saifedean Ammous",
   };
   return map[slug] ?? slug;
-}
-
-function complexityToLabel(c: number): string {
-  if (c <= 2) return "Beginner";
-  if (c === 3) return "Intermediate";
-  return "Advanced";
 }

@@ -44,13 +44,13 @@ export function Ground() {
   });
 
   return (
-    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} receiveShadow={false}>
-      <planeGeometry args={[PLOT_HALF * 2.4, PLOT_HALF * 2.4, 32, 32]} />
+    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+      <planeGeometry args={[PLOT_HALF * 2.6, PLOT_HALF * 2.6, 64, 64]} />
       <meshStandardMaterial
         ref={matRef}
         color={baseColor}
-        roughness={0.92}
-        metalness={0}
+        roughness={0.95}
+        metalness={0.02}
       />
     </mesh>
   );

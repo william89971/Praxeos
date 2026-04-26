@@ -26,39 +26,36 @@ type RegistryEntry = {
 
 export const MODULE_REGISTRY: readonly RegistryEntry[] = [
   {
-    slug: "halving-garden",
-    fascicle: 1,
-    moduleNumber: 1,
-    title: "The Halving Garden",
-    subtitle:
-      "Every Bitcoin block from genesis to tip, rendered as a living generative manuscript.",
-    load: () => import("@/modules/halving-garden"),
-  },
-  {
-    slug: "time-preference-forest",
-    fascicle: 1,
-    moduleNumber: 2,
-    title: "The Time Preference Forest",
-    subtitle:
-      "Austrian capital theory as an eighteenth-century woodcut. Roots go where saving goes; the canopy is only as real as the roots.",
-    load: () => import("@/modules/time-preference-forest"),
-  },
-  {
-    slug: "calculation-problem",
-    fascicle: 1,
-    moduleNumber: 3,
-    title: "The Calculation Problem",
-    subtitle:
-      "Mises's 1920 argument rendered as a two-panel typographic particle system.",
-    load: () => import("@/modules/calculation-problem"),
-  },
-  {
     slug: "monetary-garden",
     fascicle: 1,
-    moduleNumber: 4,
+    moduleNumber: 1,
     title: "The Monetary Garden",
-    subtitle: "A living model of what happens when the money signal is distorted.",
+    subtitle: "Watch an economy bloom or decay as the money signal changes.",
     load: () => import("@/modules/monetary-garden"),
+  },
+  {
+    slug: "signal-orchard",
+    fascicle: 1,
+    moduleNumber: 2,
+    title: "The Signal Orchard",
+    subtitle: "See how human choices become social coordination.",
+    load: () => import("@/modules/signal-orchard"),
+  },
+  {
+    slug: "calculation-labyrinth",
+    fascicle: 1,
+    moduleNumber: 3,
+    title: "The Calculation Labyrinth",
+    subtitle: "Try to plan without prices — and watch the map disappear.",
+    load: () => import("@/modules/calculation-labyrinth"),
+  },
+  {
+    slug: "coordination-engine",
+    fascicle: 1,
+    moduleNumber: 4,
+    title: "The Coordination Engine",
+    subtitle: "Follow the signal layer that lets millions act together.",
+    load: () => import("@/modules/coordination-engine"),
   },
   // <-- new-module CLI inserts entries here -->
 ] as const;
