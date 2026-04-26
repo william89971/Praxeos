@@ -1,5 +1,6 @@
 "use client";
 
+import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { Instance, Instances } from "@react-three/drei";
 import { useMemo } from "react";
 import { Color } from "three";
@@ -9,7 +10,6 @@ import {
   PAGE_TILT,
   buildEpochMarkers,
 } from "../../lib/sceneLayout";
-import { useSceneColors } from "../../lib/tokenColors";
 
 interface Props {
   readonly layout: EpochLayout;

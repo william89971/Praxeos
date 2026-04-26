@@ -1,11 +1,11 @@
 "use client";
 
 import { mulberry32 } from "@/sketches/lib/rng";
+import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import type { BufferAttribute, BufferGeometry, Points } from "three";
 import { HALL_HALF_WIDTH, HALL_TOTAL_DEPTH } from "../../lib/sceneLayout";
-import { useSceneColors } from "../../lib/tokenColors";
 
 interface Props {
   readonly count?: number;

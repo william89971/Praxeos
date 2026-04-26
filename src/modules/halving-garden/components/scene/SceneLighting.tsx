@@ -1,7 +1,7 @@
 "use client";
 
+import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { HALL_TOTAL_DEPTH } from "../../lib/sceneLayout";
-import { useSceneColors } from "../../lib/tokenColors";
 
 export function SceneLighting() {
   const colors = useSceneColors();

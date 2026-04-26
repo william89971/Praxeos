@@ -1,12 +1,12 @@
 "use client";
 
 import { useIsOnScreen } from "@/hooks/useIsOnScreen";
+import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { type CameraPreset, type FocusKind, presetFor } from "../lib/cameraPresets";
 import { EPOCHS } from "../lib/epochs";
 import { HALL_TOTAL_DEPTH, gateZ, getEpochLayouts } from "../lib/sceneLayout";
-import { useSceneColors } from "../lib/tokenColors";
 import type { Block } from "../lib/types";
 import { AmbientParticles } from "./scene/AmbientParticles";
 import { CameraRig } from "./scene/CameraRig";

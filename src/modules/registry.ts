@@ -52,6 +52,14 @@ export const MODULE_REGISTRY: readonly RegistryEntry[] = [
       "Mises's 1920 argument rendered as a two-panel typographic particle system.",
     load: () => import("@/modules/calculation-problem"),
   },
+  {
+    slug: "monetary-garden",
+    fascicle: 1,
+    moduleNumber: 4,
+    title: "The Monetary Garden",
+    subtitle: "A living model of what happens when the money signal is distorted.",
+    load: () => import("@/modules/monetary-garden"),
+  },
   // <-- new-module CLI inserts entries here -->
 ] as const;
 

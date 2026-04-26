@@ -1,10 +1,10 @@
 "use client";
 
+import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import { Color, type Mesh, type MeshStandardMaterial } from "three";
 import { liveBlockToWorld } from "../../lib/sceneLayout";
-import { useSceneColors } from "../../lib/tokenColors";
 import type { Block } from "../../lib/types";
 
 interface Props {

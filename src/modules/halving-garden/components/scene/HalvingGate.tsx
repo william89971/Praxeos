@@ -1,10 +1,10 @@
 "use client";
 
+import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type { Group, MeshStandardMaterial } from "three";
 import { HALL_HALF_WIDTH } from "../../lib/sceneLayout";
-import { useSceneColors } from "../../lib/tokenColors";
 
 interface Props {
   /** World-space Z of the gate. */

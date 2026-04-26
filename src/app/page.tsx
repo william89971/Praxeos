@@ -355,6 +355,13 @@ async function ChoosePathSection() {
       description:
         "Mises's 1920 proof that socialist planning cannot compute. Prices are not incentives; they are the only way to compare alternative production plans.",
     },
+    {
+      title: "Money & Coordination",
+      slug: "monetary-garden",
+      accent: "capital" as const,
+      description:
+        "A living model of what happens when the money signal is distorted. One slider drives an entire economic ecosystem from steady to broken.",
+    },
   ];
 
   return (
@@ -379,7 +386,7 @@ async function ChoosePathSection() {
         >
           § III — Choose your path
         </p>
-        <h2 style={{ marginBlockStart: 0, marginBlockEnd: "1rem" }}>Three doors.</h2>
+        <h2 style={{ marginBlockStart: 0, marginBlockEnd: "1rem" }}>Four doors.</h2>
         <p
           style={{
             fontFamily: "var(--font-serif)",

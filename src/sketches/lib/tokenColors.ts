@@ -1,5 +1,5 @@
 /**
- * Halving Garden — CSS-token-driven THREE.Color reader.
+ * Shared CSS-token → THREE.Color reader for any R3F sketch.
  *
  * Reads computed CSS custom properties at hook time and re-runs when the
  * `data-theme` attribute changes on `<html>`. Returns plain `THREE.Color`

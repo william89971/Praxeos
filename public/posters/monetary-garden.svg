@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="The Monetary Garden — a top-down garden with healthy and wilting elements at mid-distortion.">
+  <defs>
+    <radialGradient id="vignette" cx="50%" cy="55%" r="65%">
+      <stop offset="0%" stop-color="#F5F0E6" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#1C1814" stop-opacity="0.45"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#E87722" stop-opacity="0"/>
+      <stop offset="40%" stop-color="#E87722" stop-opacity="0.18"/>
+      <stop offset="80%" stop-color="#8B3A3A" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#8B3A3A" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="dead" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8B3A3A" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#8B3A3A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="water" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3A5A4A" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#3A5A4A" stop-opacity="0.15"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#EBE4D1"/>
+
+  <!-- Signal beam -->
+  <ellipse cx="800" cy="80" rx="320" ry="70" fill="url(#beam)" opacity="0.6"/>
+  <path d="M 600 80 L 480 820 L 1120 820 L 1000 80 Z" fill="url(#beam)" opacity="0.55"/>
+
+  <!-- Ground plot edge -->
+  <ellipse cx="800" cy="510" rx="640" ry="280" fill="#E2D9C3" opacity="0.55"/>
+
+  <!-- Water (half-drained) at left -->
+  <ellipse cx="380" cy="450" rx="180" ry="80" fill="url(#water)" opacity="0.85"/>
+  <ellipse cx="380" cy="450" rx="120" ry="50" fill="#3A5A4A" opacity="0.55"/>
+
+  <!-- Dead zones -->
+  <circle cx="1080" cy="560" r="120" fill="url(#dead)" opacity="0.85"/>
+  <circle cx="900" cy="700" r="85" fill="url(#dead)" opacity="0.7"/>
+  <circle cx="600" cy="660" r="65" fill="url(#dead)" opacity="0.55"/>
+
+  <!-- Grass scatter (small streaks) -->
+  <g stroke="#3A5A4A" stroke-width="2" stroke-linecap="round" opacity="0.85">
+    <line x1="240" y1="610" x2="240" y2="595"/>
+    <line x1="265" y1="620" x2="265" y2="603"/>
+    <line x1="290" y1="615" x2="290" y2="600"/>
+    <line x1="320" y1="625" x2="320" y2="608"/>
+    <line x1="350" y1="630" x2="350" y2="612"/>
+    <line x1="700" y1="540" x2="700" y2="525"/>
+    <line x1="720" y1="548" x2="720" y2="530"/>
+    <line x1="740" y1="540" x2="740" y2="522"/>
+    <line x1="760" y1="552" x2="760" y2="535"/>
+    <line x1="1180" y1="540" x2="1180" y2="525"/>
+    <line x1="1200" y1="548" x2="1200" y2="530"/>
+    <line x1="1220" y1="540" x2="1220" y2="522"/>
+    <line x1="1300" y1="500" x2="1300" y2="485"/>
+    <line x1="1330" y1="510" x2="1330" y2="492"/>
+    <line x1="1360" y1="505" x2="1360" y2="490"/>
+  </g>
+  <g stroke="#8B3A3A" stroke-width="2" stroke-linecap="round" opacity="0.7">
+    <line x1="980" y1="560" x2="980" y2="552"/>
+    <line x1="1010" y1="568" x2="1010" y2="555"/>
+    <line x1="1050" y1="572" x2="1050" y2="558"/>
+    <line x1="900" y1="650" x2="900" y2="640"/>
+    <line x1="930" y1="660" x2="930" y2="648"/>
+  </g>
+
+  <!-- Trees: healthy upright (left and back), tilted (middle), collapsed (right) -->
+  <!-- Healthy: left -->
+  <g transform="translate(220 340)">
+    <line x1="0" y1="0" x2="0" y2="-50" stroke="#5C5348" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="0,-130 28,-50 -28,-50" fill="#3A5A4A"/>
+  </g>
+  <g transform="translate(440 320)">
+    <line x1="0" y1="0" x2="0" y2="-46" stroke="#5C5348" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="0,-120 24,-46 -24,-46" fill="#3A5A4A"/>
+  </g>
+  <g transform="translate(620 360)">
+    <line x1="0" y1="0" x2="0" y2="-52" stroke="#5C5348" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="0,-138 30,-52 -30,-52" fill="#3A5A4A"/>
+  </g>
+
+  <!-- Tilted -->
+  <g transform="translate(820 380) rotate(-10)">
+    <line x1="0" y1="0" x2="0" y2="-46" stroke="#5C5348" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="0,-126 26,-46 -26,-46" fill="#5C7361"/>
+  </g>
+  <g transform="translate(1000 360) rotate(8)">
+    <line x1="0" y1="0" x2="0" y2="-50" stroke="#5C5348" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="0,-128 28,-50 -28,-50" fill="#5C7361"/>
+  </g>
+
+  <!-- Collapsed -->
+  <g transform="translate(1180 480) rotate(72)">
+    <line x1="0" y1="0" x2="0" y2="-44" stroke="#5C5348" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="0,-118 22,-44 -22,-44" fill="#8B6A5A"/>
+  </g>
+  <g transform="translate(1320 500) rotate(60)">
+    <line x1="0" y1="0" x2="0" y2="-42" stroke="#5C5348" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="0,-114 22,-42 -22,-42" fill="#8B6A5A"/>
+  </g>
+
+  <!-- Production nodes (octahedrons as diamonds) -->
+  <g fill="#E87722">
+    <polygon points="800,470 818,488 800,506 782,488" opacity="0.85"/>
+    <polygon points="700,560 716,576 700,592 684,576" opacity="0.8"/>
+    <polygon points="900,560 916,576 900,592 884,576" opacity="0.6"/>
+  </g>
+  <g fill="#8B3A3A">
+    <polygon points="1080,470 1094,484 1080,498 1066,484" opacity="0.7"/>
+    <polygon points="600,500 614,514 600,528 586,514" opacity="0.65"/>
+  </g>
+
+  <!-- Paths (slim curving lines) -->
+  <g stroke="#E87722" stroke-width="2.5" fill="none" opacity="0.7">
+    <path d="M 800 488 Q 750 520 700 576" stroke-linecap="round"/>
+    <path d="M 800 488 Q 850 520 900 576" stroke-linecap="round"/>
+    <path d="M 700 576 Q 650 540 600 514" stroke-linecap="round" opacity="0.45"/>
+    <path d="M 900 576 Q 980 530 1080 484" stroke-linecap="round" opacity="0.45"/>
+  </g>
+  <g stroke="#8B3A3A" stroke-width="2" fill="none" opacity="0.55" stroke-dasharray="4 6">
+    <path d="M 1080 484 Q 1140 540 1180 600" stroke-linecap="round"/>
+  </g>
+
+  <!-- Vignette -->
+  <rect width="1600" height="900" fill="url(#vignette)"/>
+
+  <!-- Title -->
+  <g fill="#1C1814" font-family="Times New Roman, Noto Serif, serif">
+    <text x="80" y="120" font-size="44" font-style="italic">The Monetary Garden</text>
+    <text x="80" y="160" font-size="20" fill="#5C5348" letter-spacing="0.06em">A LIVING MODEL · MISES · HAYEK · ROTHBARD · LACHMANN</text>
+  </g>
+</svg>
