@@ -164,12 +164,14 @@ export function ModuleLayout({
 
       {/* 5 · Essay column */}
       <section
+        id="module-essay"
         className="module-essay drop-cap"
         style={{
           maxWidth: "var(--measure-prose)",
           marginInline: "auto",
           paddingInline: "var(--gutter-inline)",
           paddingBlock: "0 var(--gutter-block)",
+          scrollMarginBlockStart: "2rem",
         }}
       >
         {children}

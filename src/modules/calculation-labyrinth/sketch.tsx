@@ -1,7 +1,9 @@
 "use client";
 
+import { ModuleHeroChrome } from "@/components/sketch/ModuleHeroChrome";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import dynamic from "next/dynamic";
-import { type CSSProperties, useState } from "react";
+import { useState } from "react";
 import { ModeToggle } from "./components/ModeToggle";
 import { ReducedMotionPoster } from "./components/ReducedMotionPoster";
 
@@ -11,42 +13,24 @@ const LabyrinthScene = dynamic(
 );
 
 export default function CalculationLabyrinthSketch() {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [priced, setPriced] = useState(true);
 
+  if (prefersReducedMotion) {
+    return <ReducedMotionPoster />;
+  }
+
   return (
-    <div style={{ display: "grid", gap: "1.25rem" }}>
-      <p style={introStyle}>
-        <em>
-          Try to plan without prices — and watch the map disappear. Prices are not
-          incentives; they are the language of computation.
-        </em>
-      </p>
-      <LabyrinthScene
-        priced={priced}
-        fallback={<ReducedMotionPoster />}
-        overlay={
-          <div style={overlayStyle}>
-            <ModeToggle priced={priced} onChange={setPriced} />
-          </div>
-        }
-      />
-    </div>
+    <ModuleHeroChrome
+      moduleNumber="03"
+      edition="Fascicle I · 2026 Edition"
+      eyebrow="Praxeos · No.3"
+      bigTitle="Calculation Labyrinth"
+      quote="Where there is no free market, there is no pricing mechanism; without a pricing mechanism, there is no economic calculation."
+      attribution="Mises · 1920"
+      scene={<LabyrinthScene priced={priced} fallback={<ReducedMotionPoster />} />}
+      directionsSlot={<ModeToggle priced={priced} onChange={setPriced} />}
+      controlSlot={null}
+    />
   );
 }
-
-const introStyle: CSSProperties = {
-  margin: 0,
-  paddingInline: "var(--gutter-inline)",
-  maxWidth: "var(--measure-narrow)",
-  fontFamily: "var(--font-serif)",
-  fontSize: "var(--step-0)",
-  lineHeight: 1.5,
-  color: "var(--ink-secondary)",
-};
-
-const overlayStyle: CSSProperties = {
-  position: "absolute",
-  insetBlockStart: "1rem",
-  insetInlineStart: "1rem",
-  pointerEvents: "auto",
-};

@@ -1,7 +1,9 @@
 "use client";
 
+import { ModuleHeroChrome } from "@/components/sketch/ModuleHeroChrome";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import dynamic from "next/dynamic";
-import { type CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DistortionSlider } from "./components/DistortionSlider";
 import { ReducedMotionPoster } from "./components/ReducedMotionPoster";
 import { StatePanel } from "./components/StatePanel";
@@ -22,6 +24,7 @@ const GUIDED_PRESETS: readonly { value: number; hold: number }[] = [
 ];
 
 export default function CoordinationEngineSketch() {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [distortion, setDistortion] = useState(0);
   const [mode, setMode] = useState<"guided" | "explore">("guided");
 
@@ -39,61 +42,36 @@ export default function CoordinationEngineSketch() {
     return () => window.clearInterval(interval);
   }, [mode]);
 
+  if (prefersReducedMotion) {
+    return <ReducedMotionPoster />;
+  }
+
   return (
-    <div style={{ display: "grid", gap: "1.25rem" }}>
-      <p style={introStyle}>
-        <em>
-          Money is the shared signal layer of the economy. Move the slider and watch the
-          network breathe — or stop breathing — together.
-        </em>
-      </p>
-      <CoordinationEngineScene
-        distortion={distortion}
-        fallback={<ReducedMotionPoster />}
-        overlay={
-          <>
-            <div style={topOverlayStyle}>
-              <StatePanel distortion={distortion} mode={mode} onModeChange={setMode} />
-            </div>
-            <div style={bottomOverlayStyle}>
-              <DistortionSlider
-                value={distortion}
-                onChange={(v) => {
-                  if (mode === "guided") setMode("explore");
-                  setDistortion(v);
-                }}
-              />
-            </div>
-          </>
-        }
-      />
-    </div>
+    <ModuleHeroChrome
+      moduleNumber="04"
+      edition="Fascicle I · 2026 Edition"
+      eyebrow="Praxeos · No.4"
+      bigTitle="Coordination Engine"
+      quote="Each pulse arrives where it is meant to arrive. Coordination is invisible because it is working."
+      attribution="Lachmann · 1986"
+      scene={
+        <CoordinationEngineScene
+          distortion={distortion}
+          fallback={<ReducedMotionPoster />}
+        />
+      }
+      directionsSlot={
+        <StatePanel distortion={distortion} mode={mode} onModeChange={setMode} />
+      }
+      controlSlot={
+        <DistortionSlider
+          value={distortion}
+          onChange={(v) => {
+            if (mode === "guided") setMode("explore");
+            setDistortion(v);
+          }}
+        />
+      }
+    />
   );
 }
-
-const introStyle: CSSProperties = {
-  margin: 0,
-  paddingInline: "var(--gutter-inline)",
-  maxWidth: "var(--measure-narrow)",
-  fontFamily: "var(--font-serif)",
-  fontSize: "var(--step-0)",
-  lineHeight: 1.5,
-  color: "var(--ink-secondary)",
-};
-
-const topOverlayStyle: CSSProperties = {
-  position: "absolute",
-  insetBlockStart: "1rem",
-  insetInlineStart: "1rem",
-  pointerEvents: "auto",
-};
-
-const bottomOverlayStyle: CSSProperties = {
-  position: "absolute",
-  insetBlockEnd: "1rem",
-  insetInlineEnd: "1rem",
-  insetInlineStart: "1rem",
-  maxWidth: "min(56ch, calc(100% - 2rem))",
-  marginInlineStart: "auto",
-  pointerEvents: "auto",
-};
