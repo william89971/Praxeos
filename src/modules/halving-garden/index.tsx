@@ -1,5 +1,6 @@
 import { ModuleLayout } from "@/components/layout/ModuleLayout";
 import { essayMDXComponents } from "@/components/mdx/MDXComponents";
+import { BuiltNote } from "./components/BuiltNote";
 import Essay from "./essay.mdx";
 import { metadata } from "./metadata";
 import Sketch from "./sketch";
@@ -13,7 +14,8 @@ export default function HalvingGardenModule() {
       metadata={metadata}
       sources={sources}
       sketch={<Sketch />}
-      sketchCaption="The baked manuscript forms the base layer; newly arrived blocks ghost in live, then settle into the local tile field."
+      sketchCaption="A 3D manuscript hall of every Bitcoin block, divided by halving epoch. Each gate cuts new issuance in half."
+      postlude={<BuiltNote />}
     >
       <Essay components={essayMDXComponents} />
     </ModuleLayout>
