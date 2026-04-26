@@ -2,6 +2,7 @@ import { ModuleNavigator } from "@/components/interactive/ModuleNavigator";
 import { ReadingProgress } from "@/components/interactive/ReadingProgress";
 import { DisplayTitle } from "@/components/typography/DisplayTitle";
 import { Fleuron } from "@/components/typography/Fleuron";
+import { complexityToLabel, formatThinker } from "@/lib/formatters";
 import { adjacentModules } from "@/modules/registry";
 import type { ModuleMetadata, Source } from "@/types/module";
 import Link from "next/link";
@@ -458,19 +459,6 @@ function MetaPill({ children }: { children: ReactNode }) {
 }
 
 /* -------------------------------------------------------------------------- */
-
-function complexityToLabel(c: number): string {
-  if (c <= 2) return "Beginner";
-  if (c === 3) return "Intermediate";
-  return "Advanced";
-}
-
-function formatThinker(slug: string): string {
-  return slug
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-}
 
 function toRoman(n: number): string {
   const map: Array<[number, string]> = [

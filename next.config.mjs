@@ -17,12 +17,14 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   pageExtensions: ["ts", "tsx", "mdx"],
-  turbopack: {
-    root: __dirname,
-  },
   experimental: {
     viewTransition: true,
-    optimizePackageImports: ["motion", "d3"],
+    optimizePackageImports: [
+      "framer-motion",
+      "three",
+      "@react-three/fiber",
+      "@react-three/drei",
+    ],
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -38,6 +40,24 @@ const nextConfig = {
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: https://mempool.space https://*.public.blob.vercel-storage.com",
+              "font-src 'self'",
+              "connect-src 'self' https://mempool.space https://api.stlouisfed.org wss://mempool.space",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join("; "),
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Permissions-Policy",
@@ -47,6 +67,15 @@ const nextConfig = {
       },
       {
         source: "/fonts/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/_next/static/(.*)",
         headers: [
           {
             key: "Cache-Control",

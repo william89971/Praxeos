@@ -1,5 +1,6 @@
 "use client";
 
+import { useIsOnScreen } from "@/hooks/useIsOnScreen";
 import { mulberry32 } from "@/sketches/lib/rng";
 import { type CSSProperties, useEffect, useRef } from "react";
 
@@ -24,6 +25,8 @@ interface Props {
  * R3F scene per card, while still signalling that the destination is
  * an interactive piece. Each variant renders a stylised hint of that
  * module's visual vocabulary.
+ *
+ * Pauses RAF when scrolled off-screen to save battery.
  */
 export function ModulePreview({
   variant,
@@ -32,10 +35,18 @@ export function ModulePreview({
   active = false,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const onScreen = useIsOnScreen(canvasRef, { threshold: 0 });
+  const activeRef = useRef(active);
+  const startRef = useRef(0);
+
+  // Sync active prop to ref without re-triggering effect
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !onScreen) return;
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
@@ -56,29 +67,34 @@ export function ModulePreview({
       rule: v("--rule") || "#D8CFBE",
     };
 
+    startRef.current = performance.now();
     let raf = 0;
-    const start = performance.now();
 
     const draw = (now: number) => {
-      const speed = active ? 1.6 : 1.0;
-      const t = ((now - start) / 1000) * speed;
+      const speed = activeRef.current ? 1.6 : 1.0;
+      const t = ((now - startRef.current) / 1000) * speed;
       ctx.clearRect(0, 0, width, height);
       ctx.fillStyle = palette.paper;
       ctx.fillRect(0, 0, width, height);
 
       switch (variant) {
         case "monetary-garden":
-          drawMonetaryGarden(ctx, t, width, height, palette, active);
+          drawMonetaryGarden(ctx, t, width, height, palette, activeRef.current);
           break;
         case "signal-orchard":
-          drawSignalOrchard(ctx, t, width, height, palette, active);
+          drawSignalOrchard(ctx, t, width, height, palette, activeRef.current);
           break;
         case "calculation-labyrinth":
-          drawCalculationLabyrinth(ctx, t, width, height, palette, active);
+          drawCalculationLabyrinth(ctx, t, width, height, palette, activeRef.current);
           break;
         case "coordination-engine":
-          drawCoordinationEngine(ctx, t, width, height, palette, active);
+          drawCoordinationEngine(ctx, t, width, height, palette, activeRef.current);
           break;
+        default: {
+          const _exhaustive: never = variant;
+          void _exhaustive;
+          break;
+        }
       }
 
       if (!reduced) raf = window.requestAnimationFrame(draw);
@@ -93,9 +109,16 @@ export function ModulePreview({
     return () => {
       if (raf) window.cancelAnimationFrame(raf);
     };
-  }, [variant, width, height, active]);
+  }, [variant, width, height, onScreen]);
 
-  return <canvas ref={canvasRef} style={canvasStyle(width, height)} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      tabIndex={-1}
+      style={canvasStyle(width, height)}
+    />
+  );
 }
 
 function canvasStyle(w: number, h: number): CSSProperties {

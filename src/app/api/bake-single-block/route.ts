@@ -27,12 +27,33 @@ const canWriteLocalTiles =
   process.env.NODE_ENV !== "production" ||
   process.env.PRAXEOS_ENABLE_LOCAL_TILE_BAKE === "1";
 
+/** Simple in-memory rate limiter: max 10 requests per 60s per IP. */
+const rateLimit = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimit.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
+}
+
 export async function POST(request: Request): Promise<Response> {
   if (!canWriteLocalTiles) {
     return Response.json(
       { ok: false, error: "Local tile baking is disabled in this environment" },
       { status: 403 },
     );
+  }
+
+  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  if (isRateLimited(ip)) {
+    return new Response("Too Many Requests", { status: 429 });
   }
 
   let body: unknown;

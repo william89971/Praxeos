@@ -4,9 +4,41 @@ import { Lineage } from "@/components/home/Lineage";
 import { ScrollSection } from "@/components/home/ScrollSection";
 import { Vignette } from "@/components/home/Vignette";
 import { ModuleCard } from "@/components/interactive/ModuleCard";
+import type { ModulePreviewVariant } from "@/components/interactive/ModulePreview";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
+import { complexityToLabel, conceptToAccent } from "@/lib/formatters";
 import { MODULE_REGISTRY } from "@/modules/registry";
 import Link from "next/link";
+
+const FEATURED_SLUGS = [
+  "monetary-garden",
+  "signal-orchard",
+  "calculation-labyrinth",
+  "coordination-engine",
+] as const;
+
+const MARKETING_COPY: Record<string, { description: string; prompt: string | null }> = {
+  "monetary-garden": {
+    description:
+      "Watch an economy bloom or decay as the money signal changes. One slider drives an entire ecosystem from steady to broken.",
+    prompt: "Try the garden first.",
+  },
+  "signal-orchard": {
+    description:
+      "See how human choices become social coordination. Click any cypress to broadcast an action and watch the orchard reorganize.",
+    prompt: "Start here if you are new.",
+  },
+  "calculation-labyrinth": {
+    description:
+      "Try to plan without prices — and watch the map disappear. Mises's 1920 argument made literal as a 3D maze.",
+    prompt: null,
+  },
+  "coordination-engine": {
+    description:
+      "Follow the signal layer that lets millions act together. A network of agents whose synchrony breaks as money quality falls.",
+    prompt: "Follow the signal.",
+  },
+};
 
 export default function HomePage() {
   return (
@@ -164,48 +196,13 @@ async function ChoosePathSection() {
     }),
   );
 
-  const pathModules = [
-    {
-      title: "The Monetary Garden",
-      slug: "monetary-garden",
-      accent: "bitcoin" as const,
-      variant: "monetary-garden" as const,
-      difficulty: "Advanced" as const,
-      description:
-        "Watch an economy bloom or decay as the money signal changes. One slider drives an entire ecosystem from steady to broken.",
-      prompt: "Try the garden first.",
-    },
-    {
-      title: "The Signal Orchard",
-      slug: "signal-orchard",
-      accent: "capital" as const,
-      variant: "signal-orchard" as const,
-      difficulty: "Intermediate" as const,
-      description:
-        "See how human choices become social coordination. Click any cypress to broadcast an action and watch the orchard reorganize.",
-      prompt: "Start here if you are new.",
-    },
-    {
-      title: "The Calculation Labyrinth",
-      slug: "calculation-labyrinth",
-      accent: "action" as const,
-      variant: "calculation-labyrinth" as const,
-      difficulty: "Advanced" as const,
-      description:
-        "Try to plan without prices — and watch the map disappear. Mises's 1920 argument made literal as a 3D maze.",
-      prompt: null,
-    },
-    {
-      title: "The Coordination Engine",
-      slug: "coordination-engine",
-      accent: "bitcoin" as const,
-      variant: "coordination-engine" as const,
-      difficulty: "Advanced" as const,
-      description:
-        "Follow the signal layer that lets millions act together. A network of agents whose synchrony breaks as money quality falls.",
-      prompt: "Follow the signal.",
-    },
-  ];
+  const featured = FEATURED_SLUGS.map((slug) => {
+    const found = modules.find((m) => m.entry.slug === slug);
+    if (!found) {
+      throw new Error(`Featured module "${slug}" not found in MODULE_REGISTRY`);
+    }
+    return found;
+  });
 
   return (
     <ScrollSection
@@ -251,23 +248,23 @@ async function ChoosePathSection() {
             gap: "1.5rem",
           }}
         >
-          {pathModules.map((path) => {
-            const mod = modules.find((m) => m.entry.slug === path.slug);
-            const meta = mod ? `${mod.meta.readingTimeMin}-min read` : undefined;
+          {featured.map(({ entry, meta }) => {
+            const copy = MARKETING_COPY[entry.slug];
+            const metaStr = `${meta.readingTimeMin}-min read`;
             return (
-              <div key={path.slug} style={{ display: "grid", gap: "0.6rem" }}>
+              <div key={entry.slug} style={{ display: "grid", gap: "0.6rem" }}>
                 <ModuleCard
-                  href={`/modules/${path.slug}`}
-                  title={path.title}
-                  description={path.description}
-                  accent={path.accent}
-                  variant={path.variant}
-                  difficulty={path.difficulty}
-                  {...(meta ? { meta } : {})}
+                  href={`/modules/${entry.slug}`}
+                  title={meta.title}
+                  description={copy?.description ?? meta.subtitle}
+                  accent={conceptToAccent(meta.concept)}
+                  variant={entry.slug as ModulePreviewVariant}
+                  difficulty={complexityToLabel(meta.complexity)}
+                  meta={metaStr}
                 />
-                {path.prompt ? (
+                {copy?.prompt ? (
                   <GuidedPrompt style={{ paddingInlineStart: "0.4rem" }}>
-                    {path.prompt}
+                    {copy.prompt}
                   </GuidedPrompt>
                 ) : null}
               </div>

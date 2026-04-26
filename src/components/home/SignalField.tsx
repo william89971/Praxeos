@@ -1,5 +1,6 @@
 "use client";
 
+import { useIsOnScreen } from "@/hooks/useIsOnScreen";
 import { useEffect, useRef } from "react";
 
 interface Props {
@@ -11,13 +12,16 @@ interface Props {
  * Faint drifting signal particles for the hero background.
  * Represents the flow of economic signals through space —
  * barely perceptible, adding depth without distraction.
+ *
+ * Pauses animation when scrolled off-screen to save battery.
  */
 export function SignalField({ count = 40, opacity = 0.35 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const onScreen = useIsOnScreen(canvasRef, { threshold: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !onScreen) return;
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
@@ -113,7 +117,7 @@ export function SignalField({ count = 40, opacity = 0.35 }: Props) {
       window.removeEventListener("resize", resize);
       if (raf) window.cancelAnimationFrame(raf);
     };
-  }, [count, opacity]);
+  }, [count, opacity, onScreen]);
 
   return (
     <canvas

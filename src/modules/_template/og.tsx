@@ -1,3 +1,4 @@
+import { formatThinker, toRoman } from "@/lib/formatters";
 import { ImageResponse } from "next/og";
 import { metadata as moduleMetadata } from "./metadata";
 
@@ -88,30 +89,4 @@ export default function OGImage() {
     </div>,
     size,
   );
-}
-
-function formatThinker(slug: string): string {
-  return slug
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-}
-
-function toRoman(n: number): string {
-  const map: Array<[number, string]> = [
-    [10, "X"],
-    [9, "IX"],
-    [5, "V"],
-    [4, "IV"],
-    [1, "I"],
-  ];
-  let out = "";
-  let r = n;
-  for (const [v, g] of map) {
-    while (r >= v) {
-      out += g;
-      r -= v;
-    }
-  }
-  return out || "I";
 }

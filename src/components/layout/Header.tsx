@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS: Array<{ href: string; label: string }> = [
@@ -15,6 +15,26 @@ const LINKS: Array<{ href: string; label: string }> = [
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
+  const prevOpenRef = useRef(mobileOpen);
+
+  // Close on Escape; return focus to button when closing
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && mobileOpen) {
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (prevOpenRef.current && !mobileOpen) {
+      menuBtnRef.current?.focus();
+    }
+    prevOpenRef.current = mobileOpen;
+  }, [mobileOpen]);
 
   return (
     <header
@@ -94,6 +114,7 @@ export function Header() {
         >
           <ThemeToggle />
           <button
+            ref={menuBtnRef}
             type="button"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}

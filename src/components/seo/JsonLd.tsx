@@ -3,6 +3,33 @@ import type { ModuleMetadata, Source } from "@/types/module";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.org";
 
 /**
+ * Escape HTML-sensitive characters inside JSON-LD strings so that a
+ * `</script>` or HTML entity in metadata cannot break out of the
+ * script tag.
+ */
+function escapeJsonLdString(str: string): string {
+  return str.replace(/&/g, "\\u0026").replace(/</g, "\\u003c").replace(/>/g, "\\u003e");
+}
+
+/** Recursively escape all string values in a JSON-LD object. */
+function escapeJsonLdValue<T>(value: T): T {
+  if (typeof value === "string") {
+    return escapeJsonLdString(value) as T;
+  }
+  if (Array.isArray(value)) {
+    return value.map(escapeJsonLdValue) as T;
+  }
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value)) {
+      out[k] = escapeJsonLdValue(v);
+    }
+    return out as T;
+  }
+  return value;
+}
+
+/**
  * Article-schema JSON-LD for a module page. Rendered server-side as a
  * <script type="application/ld+json"> so crawlers can parse without JS.
  */
@@ -16,7 +43,7 @@ export function ModuleJsonLd({
   const url = `${SITE_URL}/modules/${metadata.slug}`;
   const ogImage = `${url}/opengraph-image`;
 
-  const schema = {
+  const schema = escapeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "Article",
     headline: metadata.title,
@@ -56,12 +83,12 @@ export function ModuleJsonLd({
     })),
     isAccessibleForFree: true,
     license: "https://creativecommons.org/licenses/by/4.0/",
-  };
+  });
 
   return (
     <script
       type="application/ld+json"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD body is produced from a typed object; safe by construction.
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD body is produced from a typed object and HTML-escaped.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );
@@ -72,7 +99,7 @@ export function ModuleJsonLd({
  */
 export function ManifestoJsonLd() {
   const url = `${SITE_URL}/manifesto`;
-  const schema = {
+  const schema = escapeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "Article",
     headline: "Ends and Means — The Praxeos Manifesto",
@@ -93,12 +120,12 @@ export function ManifestoJsonLd() {
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     license: "https://creativecommons.org/licenses/by/4.0/",
     isAccessibleForFree: true,
-  };
+  });
 
   return (
     <script
       type="application/ld+json"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: typed source object.
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: typed source object, HTML-escaped.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );
@@ -109,7 +136,7 @@ export function ManifestoJsonLd() {
  * offer in-result search once /glossary is wired.
  */
 export function WebsiteJsonLd() {
-  const schema = {
+  const schema = escapeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Praxeos",
@@ -121,11 +148,11 @@ export function WebsiteJsonLd() {
     },
     inLanguage: "en",
     license: "https://creativecommons.org/licenses/by/4.0/",
-  };
+  });
   return (
     <script
       type="application/ld+json"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: typed source object.
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: typed source object, HTML-escaped.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

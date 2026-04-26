@@ -4,7 +4,7 @@ import { THINKERS } from "@/lib/thinkers";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
-const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"] as const;
 
 export function Lineage() {
   const reduced = useReducedMotion();

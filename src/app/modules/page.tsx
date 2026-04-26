@@ -1,5 +1,6 @@
 import { PathCard } from "@/components/interactive/PathCard";
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { complexityToLabel, conceptToAccent } from "@/lib/formatters";
 import { MODULE_REGISTRY } from "@/modules/registry";
 import type { Metadata } from "next";
 
@@ -7,12 +8,6 @@ export const metadata: Metadata = {
   title: "Modules",
   description:
     "Every Praxeos module — explorable explanations of Austrian economics and praxeology.",
-};
-
-const ACCENT_MAP: Record<string, "bitcoin" | "action" | "capital"> = {
-  "halving-garden": "bitcoin",
-  "time-preference-forest": "capital",
-  "calculation-problem": "action",
 };
 
 export default async function ModulesIndexPage() {
@@ -76,7 +71,7 @@ export default async function ModulesIndexPage() {
                 href={`/modules/${entry.slug}`}
                 title={meta.title}
                 description={meta.subtitle}
-                accent={ACCENT_MAP[entry.slug] ?? "action"}
+                accent={conceptToAccent(meta.concept)}
                 meta={`${meta.readingTimeMin}-min read · ${complexityToLabel(meta.complexity)} · ${"◆".repeat(meta.complexity)}`}
               />
             ))}
@@ -85,10 +80,4 @@ export default async function ModulesIndexPage() {
       </div>
     </SiteChrome>
   );
-}
-
-function complexityToLabel(c: number): string {
-  if (c <= 2) return "Beginner";
-  if (c === 3) return "Intermediate";
-  return "Advanced";
 }
