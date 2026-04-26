@@ -1,210 +1,35 @@
+import { CinematicHero } from "@/components/home/CinematicHero";
+import { GuidedPrompt } from "@/components/home/GuidedPrompt";
+import { Lineage } from "@/components/home/Lineage";
+import { ScrollSection } from "@/components/home/ScrollSection";
+import { Vignette } from "@/components/home/Vignette";
 import { ModuleCard } from "@/components/interactive/ModuleCard";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { MODULE_REGISTRY } from "@/modules/registry";
-import { Teleology } from "@/sketches/teleology/Teleology";
-import { THINKER_SLUGS } from "@/types/module";
 import Link from "next/link";
 
 export default function HomePage() {
   return (
     <>
       <WebsiteJsonLd />
-      <HeroSection />
+      <Vignette intensity={0.05} />
+      <CinematicHero />
       <WhatIsSection />
       <StartHereSection />
       <ChoosePathSection />
-      <ThinkersPreview />
+      <Lineage />
       <FooterNote />
     </>
   );
 }
 
 /* ------------------------------------------------------------------------- */
-
-function HeroSection() {
-  return (
-    <section
-      style={{
-        position: "relative",
-        minHeight: "100dvh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "var(--gutter-block)",
-        overflow: "hidden",
-      }}
-    >
-      {/* Ambient sketch — behind everything */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.55,
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      >
-        <Teleology fill agentCount={92} attractorCount={7} />
-      </div>
-
-      {/* Top meta-line */}
-      <header
-        style={{
-          position: "relative",
-          zIndex: 1,
-          display: "flex",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-        }}
-      >
-        <span className="label-mono">Praxeos · Fascicle I</span>
-        <span className="label-mono" style={{ fontStyle: "italic" }}>
-          Homo agit.
-        </span>
-      </header>
-
-      {/* Title block */}
-      <div style={{ position: "relative", zIndex: 1, maxWidth: "100%" }}>
-        <h1
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "var(--step-8)",
-            fontVariationSettings: '"opsz" 144',
-            fontWeight: 420,
-            lineHeight: 0.92,
-            letterSpacing: "-0.035em",
-            marginBlock: 0,
-            marginBlockEnd: "0.32em",
-            color: "var(--ink-primary)",
-            textWrap: "balance",
-          }}
-        >
-          PRAXEOS
-        </h1>
-        <p
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontStyle: "italic",
-            fontSize: "var(--step-3)",
-            fontVariationSettings: '"opsz" 72',
-            color: "var(--ink-secondary)",
-            maxWidth: "52ch",
-            marginBlockEnd: "1.5em",
-            lineHeight: 1.25,
-          }}
-        >
-          Explorable explanations for Austrian economics.
-        </p>
-        <p
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "var(--step-1)",
-            maxWidth: "56ch",
-            lineHeight: 1.55,
-            color: "var(--ink-primary)",
-            marginBlock: 0,
-            marginBlockEnd: "2rem",
-          }}
-        >
-          Interactive investigations of human action, sound money, and economic
-          calculation — built as an open-source cultural artifact.
-        </p>
-        <Link
-          href="#paths"
-          className="hover-cta"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            padding: "0.7rem 1.4rem",
-            borderRadius: "var(--radius-md)",
-            background: "var(--ink-primary)",
-            color: "var(--paper)",
-            fontFamily: "var(--font-sans)",
-            fontSize: "var(--step-0)",
-            fontWeight: 500,
-            letterSpacing: "-0.01em",
-            textDecoration: "none",
-          }}
-        >
-          Start exploring
-          <span aria-hidden="true">→</span>
-        </Link>
-      </div>
-
-      {/* Scroll cue */}
-      <footer
-        style={{
-          position: "relative",
-          zIndex: 1,
-          display: "flex",
-          alignItems: "end",
-          justifyContent: "space-between",
-          gap: "2rem",
-          flexWrap: "wrap",
-        }}
-      >
-        <p
-          className="label-mono"
-          style={{ maxWidth: "48ch", color: "var(--ink-tertiary)" }}
-        >
-          Scroll for the library. Read below.
-        </p>
-        <ScrollMark />
-      </footer>
-    </section>
-  );
-}
-
-/** Hand-drawn descending mark. */
-function ScrollMark() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="20"
-      height="56"
-      viewBox="0 0 20 56"
-      fill="none"
-      style={{
-        color: "var(--ink-tertiary)",
-        alignSelf: "end",
-        animation: "scrollMarkPulse 2800ms var(--ease-organic) infinite",
-      }}
-    >
-      <path
-        d="M10 2 L10 42"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-      <path
-        d="M4 38 L10 50 L16 38"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-      <style>{`
-        @keyframes scrollMarkPulse {
-          0%, 100% { transform: translateY(0); opacity: 0.8; }
-          50% { transform: translateY(4px); opacity: 1; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          svg[aria-hidden="true"] { animation: none !important; }
-        }
-      `}</style>
-    </svg>
-  );
-}
-
+/*  § I — What this is                                                       */
 /* ------------------------------------------------------------------------- */
 
 function WhatIsSection() {
   return (
-    <section
+    <ScrollSection
       style={{
         borderBlockStart: "1px solid var(--rule)",
         paddingInline: "var(--gutter-inline)",
@@ -255,15 +80,17 @@ function WhatIsSection() {
           </p>
         </div>
       </div>
-    </section>
+    </ScrollSection>
   );
 }
 
 /* ------------------------------------------------------------------------- */
+/*  § II — Start here                                                        */
+/* ------------------------------------------------------------------------- */
 
 function StartHereSection() {
   return (
-    <section
+    <ScrollSection
       style={{
         borderBlockStart: "1px solid var(--rule)",
         paddingInline: "var(--gutter-inline)",
@@ -312,15 +139,21 @@ function StartHereSection() {
             If you already know the action axiom and want to see the strongest argument
             first, go to{" "}
             <Link href="/modules/calculation-labyrinth">The Calculation Labyrinth</Link>
-            . It is Mises's 1920 proof that socialist planning cannot compute — rendered
-            as a maze you can switch between with-prices and without.
+            . It is Mises&apos;s 1920 proof that socialist planning cannot compute —
+            rendered as a maze you can switch between with-prices and without.
           </p>
+
+          <div style={{ marginTop: "1.2rem" }}>
+            <GuidedPrompt>Start here if you are new.</GuidedPrompt>
+          </div>
         </div>
       </div>
-    </section>
+    </ScrollSection>
   );
 }
 
+/* ------------------------------------------------------------------------- */
+/*  § III — Choose your path                                                 */
 /* ------------------------------------------------------------------------- */
 
 async function ChoosePathSection() {
@@ -340,6 +173,7 @@ async function ChoosePathSection() {
       difficulty: "Advanced" as const,
       description:
         "Watch an economy bloom or decay as the money signal changes. One slider drives an entire ecosystem from steady to broken.",
+      prompt: "Try the garden first.",
     },
     {
       title: "The Signal Orchard",
@@ -349,6 +183,7 @@ async function ChoosePathSection() {
       difficulty: "Intermediate" as const,
       description:
         "See how human choices become social coordination. Click any cypress to broadcast an action and watch the orchard reorganize.",
+      prompt: "Start here if you are new.",
     },
     {
       title: "The Calculation Labyrinth",
@@ -358,6 +193,7 @@ async function ChoosePathSection() {
       difficulty: "Advanced" as const,
       description:
         "Try to plan without prices — and watch the map disappear. Mises's 1920 argument made literal as a 3D maze.",
+      prompt: null,
     },
     {
       title: "The Coordination Engine",
@@ -367,11 +203,12 @@ async function ChoosePathSection() {
       difficulty: "Advanced" as const,
       description:
         "Follow the signal layer that lets millions act together. A network of agents whose synchrony breaks as money quality falls.",
+      prompt: "Follow the signal.",
     },
   ];
 
   return (
-    <section
+    <ScrollSection
       id="paths"
       style={{
         borderBlockStart: "1px solid var(--rule)",
@@ -418,21 +255,27 @@ async function ChoosePathSection() {
             const mod = modules.find((m) => m.entry.slug === path.slug);
             const meta = mod ? `${mod.meta.readingTimeMin}-min read` : undefined;
             return (
-              <ModuleCard
-                key={path.slug}
-                href={`/modules/${path.slug}`}
-                title={path.title}
-                description={path.description}
-                accent={path.accent}
-                variant={path.variant}
-                difficulty={path.difficulty}
-                {...(meta ? { meta } : {})}
-              />
+              <div key={path.slug} style={{ display: "grid", gap: "0.6rem" }}>
+                <ModuleCard
+                  href={`/modules/${path.slug}`}
+                  title={path.title}
+                  description={path.description}
+                  accent={path.accent}
+                  variant={path.variant}
+                  difficulty={path.difficulty}
+                  {...(meta ? { meta } : {})}
+                />
+                {path.prompt ? (
+                  <GuidedPrompt style={{ paddingInlineStart: "0.4rem" }}>
+                    {path.prompt}
+                  </GuidedPrompt>
+                ) : null}
+              </div>
             );
           })}
         </div>
 
-        <div style={{ marginTop: "2rem", textAlign: "center" }}>
+        <div style={{ marginTop: "2.5rem", textAlign: "center" }}>
           <Link
             href="/modules"
             className="label-mono hover-border"
@@ -449,95 +292,12 @@ async function ChoosePathSection() {
           </Link>
         </div>
       </div>
-    </section>
+    </ScrollSection>
   );
 }
 
 /* ------------------------------------------------------------------------- */
-
-function ThinkersPreview() {
-  return (
-    <section
-      style={{
-        borderBlockStart: "1px solid var(--rule)",
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "calc(var(--gutter-block) * 1.2)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            marginBlockEnd: "2rem",
-          }}
-        >
-          <p className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
-            § IV — The thinkers
-          </p>
-          <Link
-            href="/thinkers"
-            className="label-mono"
-            style={{ textDecoration: "none" }}
-          >
-            Index →
-          </Link>
-        </div>
-
-        <p
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "var(--step-2)",
-            lineHeight: 1.4,
-            maxWidth: "var(--measure-prose)",
-            marginBlockStart: 0,
-            marginBlockEnd: "2.5rem",
-          }}
-        >
-          The ideas rendered here belong to them.
-        </p>
-
-        <ul
-          style={{
-            listStyle: "none",
-            padding: 0,
-            margin: 0,
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(16ch, 1fr))",
-            gap: "1rem 2rem",
-            fontFamily: "var(--font-serif)",
-            fontSize: "var(--step-1)",
-          }}
-        >
-          {THINKER_SLUGS.map((slug) => (
-            <li key={slug}>
-              <Link
-                href={`/thinkers/${slug}`}
-                className="hover-ink"
-                style={{
-                  textDecoration: "none",
-                  color: "var(--ink-primary)",
-                  display: "block",
-                  paddingBlock: "0.5rem",
-                  borderBlockStart: "1px solid var(--rule)",
-                }}
-              >
-                {formatThinker(slug)}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
+/*  Footer                                                                   */
 /* ------------------------------------------------------------------------- */
 
 function FooterNote() {
@@ -561,12 +321,27 @@ function FooterNote() {
           justifyContent: "space-between",
         }}
       >
-        <p
-          className="label-mono"
-          style={{ color: "var(--ink-tertiary)", maxWidth: "60ch" }}
-        >
-          Written and built by William Menjivar. Code MIT. Content CC BY 4.0.
-        </p>
+        <div>
+          <p
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontStyle: "italic",
+              fontSize: "var(--step-1)",
+              color: "var(--ink-primary)",
+              marginBlock: 0,
+              marginBlockEnd: "0.5rem",
+            }}
+          >
+            Homo agit.
+          </p>
+          <p
+            className="label-mono"
+            style={{ color: "var(--ink-tertiary)", maxWidth: "60ch" }}
+          >
+            Written and built by William Menjivar. Code MIT. Content CC BY 4.0.
+          </p>
+        </div>
+
         <nav
           aria-label="Footer"
           style={{
@@ -598,22 +373,4 @@ function FooterNote() {
       </div>
     </section>
   );
-}
-
-/* ------------------------------------------------------------------------- */
-
-function formatThinker(slug: string): string {
-  const map: Record<string, string> = {
-    menger: "Carl Menger",
-    "bohm-bawerk": "Eugen von Böhm-Bawerk",
-    mises: "Ludwig von Mises",
-    hayek: "F. A. Hayek",
-    rothbard: "Murray Rothbard",
-    kirzner: "Israel Kirzner",
-    lachmann: "Ludwig Lachmann",
-    hoppe: "Hans-Hermann Hoppe",
-    salerno: "Joseph Salerno",
-    ammous: "Saifedean Ammous",
-  };
-  return map[slug] ?? slug;
 }

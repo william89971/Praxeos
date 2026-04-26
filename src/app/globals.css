@@ -142,3 +142,21 @@ button {
 .skip-link:focus-visible {
   transform: translateY(0);
 }
+
+/* ==========================================================================
+   Homepage hero — keyframe utilities
+   ========================================================================== */
+
+@keyframes praxeosScrollLine {
+  0%,
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 0.85;
+  }
+  50% {
+    transform: scaleY(0.55);
+    transform-origin: top;
+    opacity: 0.45;
+  }
+}

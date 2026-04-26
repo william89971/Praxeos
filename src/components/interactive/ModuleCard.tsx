@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { ModulePreview, type ModulePreviewVariant } from "./ModulePreview";
 
 interface Props {
@@ -15,9 +15,12 @@ interface Props {
 }
 
 /**
- * Premium module card with a small Canvas 2D animated preview, accent
+ * Immersive portal card with an animated Canvas 2D preview, accent
  * rule, title, description, and a metadata row. Used on the homepage's
  * "Four doors" section.
+ *
+ * On hover the card lifts, the preview intensifies, and a subtle
+ * ambient glow emerges — the feeling of peering into a system.
  */
 export function ModuleCard({
   href,
@@ -28,55 +31,69 @@ export function ModuleCard({
   meta,
   difficulty,
 }: Props) {
+  const [hovered, setHovered] = useState(false);
   const accentVar = `var(--accent-${accent})`;
 
   return (
     <Link
       href={href}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
       style={{
         display: "grid",
         gridTemplateRows: "auto 1fr auto",
-        padding: "1.4rem 1.4rem 1.5rem",
-        gap: "1.1rem",
+        padding: "1.6rem 1.6rem 1.7rem",
+        gap: "1.2rem",
         borderRadius: "var(--radius-md)",
         border: "1px solid var(--rule)",
         background: "var(--paper)",
         textDecoration: "none",
         transition:
           "box-shadow var(--dur-micro) var(--ease-organic), transform var(--dur-micro) var(--ease-organic), border-color var(--dur-micro) var(--ease-organic)",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = "var(--rule-strong)";
-        e.currentTarget.style.boxShadow = "var(--shadow-lift)";
-        e.currentTarget.style.transform = "translateY(-2px)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = "var(--rule)";
-        e.currentTarget.style.boxShadow = "none";
-        e.currentTarget.style.transform = "translateY(0)";
+        transform: hovered ? "translateY(-3px) scale(1.01)" : "translateY(0) scale(1)",
+        boxShadow: hovered
+          ? `0 1px 0 var(--rule), 0 12px 32px -10px rgb(28 24 20 / 0.12), 0 0 0 1px ${accentVar}20`
+          : "0 1px 0 var(--rule)",
+        borderColor: hovered ? "var(--rule-strong)" : "var(--rule)",
       }}
     >
-      <div style={{ display: "grid", gap: "0.85rem" }}>
+      <div style={{ display: "grid", gap: "1rem" }}>
         <div
           style={{
             position: "relative",
             background: "var(--paper-elevated)",
             borderRadius: "var(--radius-sm)",
             border: "1px solid var(--rule)",
-            padding: "0.5rem",
+            padding: "0.6rem",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            overflow: "hidden",
           }}
         >
-          <ModulePreview variant={variant} />
+          <ModulePreview variant={variant} active={hovered} />
+          {/* Subtle accent wash on hover */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: hovered ? `${accentVar}10` : "transparent",
+              transition: "background var(--dur-micro) var(--ease-organic)",
+              pointerEvents: "none",
+              borderRadius: "inherit",
+            }}
+          />
         </div>
         <div
           style={{
-            width: "2.5rem",
             height: "3px",
             background: accentVar,
             borderRadius: "2px",
+            transition: "width var(--dur-micro) var(--ease-organic)",
+            width: hovered ? "3.5rem" : "2.5rem",
           }}
         />
         <h3
@@ -87,6 +104,7 @@ export function ModuleCard({
             color: "var(--ink-primary)",
             margin: 0,
             lineHeight: 1.15,
+            transition: "color var(--dur-micro) var(--ease-organic)",
           }}
         >
           {title}
@@ -131,6 +149,8 @@ export function ModuleCard({
             display: "inline-flex",
             alignItems: "center",
             gap: "0.35rem",
+            transition: "transform var(--dur-micro) var(--ease-organic)",
+            transform: hovered ? "translateX(2px)" : "translateX(0)",
           }}
         >
           Explore
