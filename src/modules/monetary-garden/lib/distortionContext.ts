@@ -6,12 +6,13 @@
 "use client";
 
 import { type MutableRefObject, createContext, useContext } from "react";
+import type { GardenState } from "./distortion";
 
 export interface DistortionRefs {
-  /** Slider target, set by React state. */
-  readonly target: MutableRefObject<number>;
-  /** Per-frame eased value, updated inside the R3F frame loop. */
-  readonly eased: MutableRefObject<number>;
+  /** Control target, set by React state. */
+  readonly target: MutableRefObject<GardenState>;
+  /** Per-frame eased state, updated inside the R3F frame loop. */
+  readonly eased: MutableRefObject<GardenState>;
 }
 
 export const DistortionContext = createContext<DistortionRefs | null>(null);

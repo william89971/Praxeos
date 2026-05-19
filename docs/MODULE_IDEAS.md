@@ -44,9 +44,9 @@ Entries include: concept summary, thinkers, suggested mechanic, rough reading ti
 
 **Thinkers.** Hayek (*Use of Knowledge in Society*, 1945), Polanyi on tacit knowledge, Sowell (*Knowledge and Decisions*, 1980).
 
-**Mechanic.** Two-panel agent-based model. Left: agents have local knowledge (price + immediate neighbors); right: central planner has aggregate statistics. A supply shock hits. The price system adjusts within seconds as local agents respond. The planner, relying on stale aggregates, reacts 48 ticks later and wrong. Shares engine with `calculation-problem`.
+**Mechanic.** Two-panel agent-based model. Left: agents have local knowledge (price + immediate neighbors); right: central planner has aggregate statistics. A supply shock hits. The price system adjusts within seconds as local agents respond. The planner, relying on stale aggregates, reacts 48 ticks later and wrong. Shares pure state patterns with `calculation-labyrinth`.
 
-**~10 min.** Needs: reuse engine from Calculation Problem with different observation model.
+**~10 min.** Needs: reuse the Calculation Labyrinth state style with a different observation model.
 
 ### 5. Spontaneous Order
 
@@ -76,7 +76,7 @@ Entries include: concept summary, thinkers, suggested mechanic, rough reading ti
 
 **Mechanic.** Market simulation where every N ticks a policy changes (tax rate, import quota, price control). Agents who have committed to long production must sink costs at the old regime; costs become waste when the regime flips. Reader can tune regime volatility and watch coordination collapse.
 
-**~10 min.** Needs: stateful-policy extension of Calculation Problem engine.
+**~10 min.** Needs: stateful-policy extension of the Calculation Labyrinth movement/cost model.
 
 ### 8. Entrepreneurship as Alertness
 

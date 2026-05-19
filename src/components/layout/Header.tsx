@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS: Array<{ href: string; label: string }> = [
+  { href: "/#beginner-path", label: "Beginner Path" },
   { href: "/modules", label: "Modules" },
   { href: "/thinkers", label: "Thinkers" },
   { href: "/glossary", label: "Glossary" },

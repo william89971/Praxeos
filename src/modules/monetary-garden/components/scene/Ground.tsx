@@ -4,7 +4,7 @@ import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color, type Mesh, type MeshStandardMaterial } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 import { PLOT_HALF } from "../../lib/gardenLayout";
 
@@ -33,7 +33,7 @@ export function Ground() {
   useFrame(() => {
     const mat = matRef.current;
     if (!mat) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     tmpColor.lerpColors(
       baseColor,
       decayColor,

@@ -27,7 +27,7 @@ const ENTRIES = [
   {
     token: "Breakage",
     meaning:
-      "Edges that fail intermittently as money quality falls. Plans built across them miss.",
+      "Edges that fail intermittently as reliability falls or latency rises. Plans built across them miss.",
     accent: "action",
   },
 ] as const;

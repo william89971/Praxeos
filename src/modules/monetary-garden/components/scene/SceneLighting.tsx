@@ -1,11 +1,10 @@
 "use client";
 
 import { useSceneColors } from "@/sketches/lib/tokenColors";
-import { Environment } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type { PointLight } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 
 interface Props {
@@ -14,13 +13,9 @@ interface Props {
 
 /**
  * Cinematic lighting setup:
- *   • drei <Environment preset="dawn"> — HDR cubemap for indirect light + reflections
  *   • Hemisphere fill matched to paper/ink tokens
  *   • A directional key with soft shadows (desktop only)
  *   • A coloured fixture above the plot, modulated by signal-corruption
- *
- * The Environment preset is fetched from drei's CDN at runtime; failure
- * is harmless because the directional + hemisphere lights stand alone.
  */
 export function SceneLighting({ deviceClass }: Props) {
   const colors = useSceneColors();
@@ -30,7 +25,7 @@ export function SceneLighting({ deviceClass }: Props) {
   useFrame(() => {
     const light = beamRef.current;
     if (!light) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     light.intensity = 12 * params.signalStrength + 1.5;
     light.color.lerpColors(
       colors["--accent-bitcoin"],
@@ -41,10 +36,8 @@ export function SceneLighting({ deviceClass }: Props) {
 
   return (
     <>
-      <Environment preset="dawn" environmentIntensity={0.45} />
-
       <hemisphereLight
-        intensity={0.55}
+        intensity={0.7}
         color={colors["--paper"]}
         groundColor={colors["--paper-sunk"]}
       />

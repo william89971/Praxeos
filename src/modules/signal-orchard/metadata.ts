@@ -17,7 +17,7 @@ export const metadata: ModuleMetadata = {
   hasAudio: false,
   posterSrc: "/posters/signal-orchard.svg",
   sketchDescription:
-    "A circular orchard of slim cypresses arranged in three concentric rings. Each cypress represents an individual actor; faint lines connect each tree to its three nearest neighbours. Click any tree to make that actor 'act'; a pulse of warm amber light radiates outward through the network, lighting nearest neighbours, then theirs, with a brief delay at each hop. In Guided mode, actions auto-fire in a slow rotation, so the orchard reorganizes continuously. The lesson is visible in the residue: coordinated motion that no-one designed.",
+    "A circular orchard of slim cypresses arranged in three concentric rings. Each cypress represents an individual actor; faint lines connect each tree to its three nearest neighbours. Choose buy, sell, wait, or discover, then click a tree to make that actor act. A distinct pulse radiates outward through the network, neighbors update, and an action log records the private choice becoming public order. In Guided mode, actions auto-fire in a slow rotation so the orchard reorganizes continuously.",
   discussionPrompt:
     "If no-one is in charge of the orchard, what makes the pulses meaningful? What makes them mean the same thing to everyone receiving them?",
   learningOutcomes: [

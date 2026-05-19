@@ -15,7 +15,7 @@ export default function MonetaryGardenModule() {
       metadata={metadata}
       sources={sources}
       sketch={<Sketch />}
-      sketchCaption="A single distortion control drives every element of the garden — water, grass, trees, production nodes, paths, and the dead zones that spread when signals fail."
+      sketchCaption="Credit expansion, savings backing, and correction now drive the garden separately — water, grass, trees, production nodes, paths, and malinvestment patches no longer pretend the boom and its reckoning are the same event."
       postlude={
         <>
           <Legend />

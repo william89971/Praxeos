@@ -3,6 +3,7 @@ import { ModuleJsonLd } from "@/components/seo/JsonLd";
 import { MODULE_REGISTRY, findModule } from "@/modules/registry";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 type RouteParams = { slug: string };
 
@@ -50,7 +51,9 @@ export default async function ModuleRoute({
   return (
     <SiteChrome>
       <ModuleJsonLd metadata={moduleMetadata} sources={sources} />
-      <ModuleComponent />
+      <Suspense fallback={null}>
+        <ModuleComponent />
+      </Suspense>
     </SiteChrome>
   );
 }

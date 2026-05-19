@@ -2,31 +2,25 @@
 
 import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Color, MathUtils, type Mesh, type MeshStandardMaterial, Vector3 } from "three";
+import { type CellCoord, cellToWorld } from "../../lib/labyrinthLayout";
 import type { MazeData } from "../../lib/labyrinthLayout";
 
 interface Props {
   readonly maze: MazeData;
   readonly priced: boolean;
+  readonly current: CellCoord;
 }
 
-const STEP_TIME = 0.6;
-
 /**
- * The "planner" pawn. With prices, it follows the canonical shortest
- * path smoothly. Without prices, it wanders, retreats, and gets stuck
- * — a visible argument that planning needs prices to compute paths.
+ * The "planner" pawn. It follows the user's chosen cell, with an
+ * intentionally less stable presentation when prices are absent.
  */
-export function Pawn({ maze, priced }: Props) {
+export function Pawn({ maze, priced, current }: Props) {
   const colors = useSceneColors();
   const meshRef = useRef<Mesh>(null);
   const matRef = useRef<MeshStandardMaterial>(null);
-
-  const stepRef = useRef(0);
-  const elapsedRef = useRef(0);
-  const wanderTargetRef = useRef<Vector3 | null>(null);
-
   const calmColor = useMemo(
     () =>
       new Color().lerpColors(
@@ -42,63 +36,27 @@ export function Pawn({ maze, priced }: Props) {
     [colors],
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: re-running on `priced` flip is the point — start positions reset.
-  useEffect(() => {
-    stepRef.current = 0;
-    elapsedRef.current = 0;
-    wanderTargetRef.current = null;
-    const mesh = meshRef.current;
-    if (mesh) {
-      mesh.position.set(maze.start.x, 0.4, maze.start.z);
-    }
-  }, [maze, priced]);
-
-  useFrame((_state, delta) => {
+  useFrame((state, delta) => {
     const mesh = meshRef.current;
     const mat = matRef.current;
     if (!mesh || !mat) return;
+    const world = cellToWorld(current.x, current.y);
 
     if (priced) {
       mat.color.copy(calmColor);
       mat.emissive.copy(calmColor);
       mat.emissiveIntensity = 0.5;
 
-      elapsedRef.current += delta;
-      const stepIndex = Math.min(stepRef.current, maze.path.length - 2);
-      const from = maze.path[stepIndex];
-      const to = maze.path[stepIndex + 1] ?? from;
-      if (!from || !to) return;
-      const t = Math.min(1, elapsedRef.current / STEP_TIME);
-      mesh.position.x = from.x + (to.x - from.x) * easeInOut(t);
-      mesh.position.z = from.z + (to.z - from.z) * easeInOut(t);
-      mesh.position.y = 0.4 + Math.sin(t * Math.PI) * 0.06;
-
-      if (t >= 1) {
-        elapsedRef.current = 0;
-        stepRef.current += 1;
-        if (stepRef.current >= maze.path.length - 1) {
-          // Loop: small pause then restart.
-          stepRef.current = 0;
-        }
-      }
+      mesh.position.x = MathUtils.damp(mesh.position.x, world.x, 8, delta);
+      mesh.position.z = MathUtils.damp(mesh.position.z, world.z, 8, delta);
+      mesh.position.y = 0.4 + Math.sin(state.clock.getElapsedTime() * 5) * 0.025;
     } else {
       mat.color.copy(lostColor);
       mat.emissive.copy(lostColor);
       mat.emissiveIntensity = 0.15 + Math.sin(performance.now() / 280) * 0.1;
 
-      // Wander randomly within a small radius around start.
-      if (
-        !wanderTargetRef.current ||
-        mesh.position.distanceTo(wanderTargetRef.current) < 0.1
-      ) {
-        const r = 1.4;
-        wanderTargetRef.current = new Vector3(
-          maze.start.x + (Math.random() - 0.5) * r,
-          0.4,
-          maze.start.z + (Math.random() - 0.5) * r,
-        );
-      }
-      const target = wanderTargetRef.current;
+      const jitter = deterministicJitter(current, state.clock.getElapsedTime());
+      const target = new Vector3(world.x + jitter.x, 0.4, world.z + jitter.z);
       mesh.position.x = MathUtils.damp(mesh.position.x, target.x, 1.4, delta);
       mesh.position.z = MathUtils.damp(mesh.position.z, target.z, 1.4, delta);
       mesh.position.y = 0.4;
@@ -120,6 +78,8 @@ export function Pawn({ maze, priced }: Props) {
   );
 }
 
-function easeInOut(t: number): number {
-  return t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+function deterministicJitter(cell: CellCoord, t: number): { x: number; z: number } {
+  const x = Math.sin(t * 1.7 + cell.x * 12.9898 + cell.y * 78.233) * 0.22;
+  const z = Math.cos(t * 1.3 + cell.x * 4.1414 + cell.y * 31.415) * 0.22;
+  return { x, z };
 }

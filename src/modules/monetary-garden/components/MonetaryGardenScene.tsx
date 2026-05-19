@@ -1,11 +1,23 @@
 "use client";
 
 import { useIsOnScreen } from "@/hooks/useIsOnScreen";
+import {
+  dprRangeForQuality,
+  usePageVisibility,
+  useSceneQuality,
+  webglPowerPreference,
+} from "@/hooks/useSceneQuality";
+import { trackInteraction } from "@/lib/telemetry";
 import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { type ReactNode, Suspense, useEffect, useRef, useState } from "react";
 import { ACESFilmicToneMapping } from "three";
-import { paramsFor } from "../lib/distortion";
+import {
+  DEFAULT_GARDEN_STATE,
+  type GardenState,
+  easeGardenState,
+  paramsForState,
+} from "../lib/distortion";
 import { DistortionContext, useDistortionRefs } from "../lib/distortionContext";
 import { AmbientParticles } from "./scene/AmbientParticles";
 import { CameraRig } from "./scene/CameraRig";
@@ -20,62 +32,91 @@ import { Trees } from "./scene/Trees";
 import { Water } from "./scene/Water";
 
 interface Props {
-  /** 0..1 distortion (slider value). The eased value lives in a ref. */
-  readonly distortion: number;
+  /** Control state. Eased copy lives in a ref for frame updates. */
+  readonly state: GardenState;
+  /** Poster shown before the canvas is mounted. */
+  readonly fallback: ReactNode;
 }
 
 const MOBILE = 720;
 
-export function MonetaryGardenScene({ distortion }: Props) {
+export function MonetaryGardenScene({ state, fallback }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const onScreen = useIsOnScreen(containerRef, { threshold: 0.05 });
+  const quality = useSceneQuality();
+  const pageVisible = usePageVisibility();
   const deviceClass = useDeviceClass();
+  const sceneClass =
+    quality === "high" && deviceClass === "desktop" ? "desktop" : "mobile";
+  const trackedMountRef = useRef(false);
+  const trackedFallbackRef = useRef(false);
 
-  const targetRef = useRef(distortion);
-  const easedRef = useRef(distortion);
+  const targetRef = useRef<GardenState>(state);
+  const easedRef = useRef<GardenState>(DEFAULT_GARDEN_STATE);
 
   useEffect(() => {
-    targetRef.current = distortion;
-  }, [distortion]);
+    targetRef.current = state;
+  }, [state]);
+
+  useEffect(() => {
+    if (quality !== "poster" || trackedFallbackRef.current) return;
+    trackedFallbackRef.current = true;
+    trackInteraction("canvas_fallback", {
+      moduleSlug: "monetary-garden",
+      payload: { quality },
+    });
+  }, [quality]);
+
+  useEffect(() => {
+    if (!onScreen || quality === "poster" || trackedMountRef.current) return;
+    trackedMountRef.current = true;
+    trackInteraction("webgl_mounted", {
+      moduleSlug: "monetary-garden",
+      payload: { quality },
+    });
+  }, [onScreen, quality]);
 
   return (
     <div ref={containerRef} style={{ position: "absolute", inset: 0 }}>
-      {onScreen ? (
+      {onScreen && quality !== "poster" ? (
         <DistortionContext.Provider value={{ target: targetRef, eased: easedRef }}>
           <Canvas
-            shadows={deviceClass === "desktop" ? "soft" : false}
-            dpr={[1, 2]}
+            shadows={sceneClass === "desktop" ? "soft" : false}
+            dpr={dprRangeForQuality(quality)}
             gl={{
-              antialias: true,
+              antialias: quality !== "low",
               alpha: true,
-              powerPreference: "high-performance",
+              powerPreference: webglPowerPreference(quality),
               toneMapping: ACESFilmicToneMapping,
               toneMappingExposure: 1.05,
             }}
             camera={{ position: [0, 9, 14], fov: 38, near: 0.1, far: 80 }}
+            frameloop={pageVisible ? "always" : "never"}
             style={{ width: "100%", height: "100%" }}
           >
             <Suspense fallback={null}>
               <SceneBackground />
               <SceneFog />
-              <SceneLighting deviceClass={deviceClass} />
+              <SceneLighting deviceClass={sceneClass} />
               <Easer />
 
               <Ground />
               <Water />
-              <Grass deviceClass={deviceClass} />
-              <Trees deviceClass={deviceClass} />
+              <Grass deviceClass={sceneClass} />
+              <Trees deviceClass={sceneClass} />
               <ProductionNodes />
               <Paths />
               <DeadZones />
               <SignalBeam />
-              {deviceClass === "desktop" ? <AmbientParticles /> : null}
+              {sceneClass === "desktop" ? <AmbientParticles /> : null}
 
               <CameraRig />
             </Suspense>
           </Canvas>
         </DistortionContext.Provider>
-      ) : null}
+      ) : (
+        <div style={{ position: "absolute", inset: 0 }}>{fallback}</div>
+      )}
     </div>
   );
 }
@@ -83,8 +124,7 @@ export function MonetaryGardenScene({ distortion }: Props) {
 function Easer() {
   const refs = useDistortionRefs();
   useFrame(() => {
-    const next = refs.eased.current + (refs.target.current - refs.eased.current) * 0.12;
-    refs.eased.current = next;
+    refs.eased.current = easeGardenState(refs.eased.current, refs.target.current, 0.12);
   });
   return null;
 }
@@ -111,7 +151,7 @@ function SceneFog() {
   useFrame(() => {
     const fog = ref.current;
     if (!fog) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     fog.near = 14 - params.signalCorruption * 4;
     fog.far = 56 - params.signalCorruption * 18;
     fog.color.set(colors["--paper-sunk"]);

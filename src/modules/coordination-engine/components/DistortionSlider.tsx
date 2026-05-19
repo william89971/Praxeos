@@ -1,19 +1,65 @@
 "use client";
 
 import type { CSSProperties, ChangeEvent, KeyboardEvent } from "react";
+import type { CoordState } from "../lib/distortion";
 
 interface Props {
-  readonly value: number;
-  readonly onChange: (value: number) => void;
+  readonly value: CoordState;
+  readonly onChange: (value: CoordState) => void;
+  readonly onInjectShock: () => void;
 }
 
-const TICKS = [
-  { value: 0.0, label: "Sound" },
-  { value: 0.5, label: "Drift" },
-  { value: 1.0, label: "Broken" },
+const RELIABILITY_TICKS = [
+  { value: 0.25, label: "Fragile" },
+  { value: 0.65, label: "Mixed" },
+  { value: 0.95, label: "Reliable" },
 ] as const;
 
-export function DistortionSlider({ value, onChange }: Props) {
+const LATENCY_TICKS = [
+  { value: 0.05, label: "Fast" },
+  { value: 0.45, label: "Lagged" },
+  { value: 0.85, label: "Delayed" },
+] as const;
+
+export function CoordinationControls({ value, onChange, onInjectShock }: Props) {
+  return (
+    <div style={containerStyle}>
+      <Slider
+        label="Signal reliability"
+        value={value.reliability}
+        ticks={RELIABILITY_TICKS}
+        onChange={(next) => onChange({ ...value, reliability: next })}
+      />
+      <Slider
+        label="Latency"
+        value={value.latency}
+        ticks={LATENCY_TICKS}
+        onChange={(next) => onChange({ ...value, latency: next })}
+      />
+      <button
+        type="button"
+        data-interactive
+        className="label-mono"
+        onClick={onInjectShock}
+        style={shockButtonStyle}
+      >
+        Inject shock
+      </button>
+    </div>
+  );
+}
+
+function Slider({
+  label,
+  value,
+  ticks,
+  onChange,
+}: {
+  readonly label: string;
+  readonly value: number;
+  readonly ticks: readonly { value: number; label: string }[];
+  readonly onChange: (value: number) => void;
+}) {
   const handle = (event: ChangeEvent<HTMLInputElement>) => {
     const next = Number.parseFloat(event.target.value);
     if (Number.isFinite(next)) onChange(clamp01(next));
@@ -38,10 +84,10 @@ export function DistortionSlider({ value, onChange }: Props) {
   const percent = Math.round(value * 100);
 
   return (
-    <div style={containerStyle}>
+    <div style={sliderBlockStyle}>
       <div style={topRowStyle}>
         <div className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
-          Money quality · signal coherence
+          {label}
         </div>
         <div
           className="label-mono"
@@ -69,14 +115,14 @@ export function DistortionSlider({ value, onChange }: Props) {
           value={value}
           onChange={handle}
           onKeyDown={handleKey}
-          aria-label="Money quality (signal coherence)"
+          aria-label={label}
           aria-valuemin={0}
           aria-valuemax={1}
           aria-valuenow={value}
           aria-valuetext={`${percent} percent`}
           style={inputStyle}
         />
-        {TICKS.map((tick) => (
+        {ticks.map((tick) => (
           <button
             key={tick.label}
             type="button"
@@ -99,13 +145,18 @@ function clamp01(n: number): number {
 
 const containerStyle: CSSProperties = {
   display: "grid",
-  gap: "0.55rem",
+  gap: "0.75rem",
   padding: "0.95rem 1.1rem",
   background: "color-mix(in oklab, var(--paper-elevated) 85%, transparent)",
   border: "1px solid var(--rule)",
   borderRadius: "var(--radius-sm)",
   backdropFilter: "blur(10px)",
   WebkitBackdropFilter: "blur(10px)",
+};
+
+const sliderBlockStyle: CSSProperties = {
+  display: "grid",
+  gap: "0.4rem",
 };
 
 const topRowStyle: CSSProperties = {
@@ -117,7 +168,7 @@ const topRowStyle: CSSProperties = {
 
 const trackContainerStyle: CSSProperties = {
   position: "relative",
-  paddingBlock: "1.6rem 1.7rem",
+  paddingBlock: "1.45rem 1.55rem",
 };
 
 const trackBaseStyle: CSSProperties = {
@@ -137,7 +188,7 @@ const trackFillStyle: CSSProperties = {
   height: "2px",
   width: "var(--ce-fill, 0%)",
   background:
-    "linear-gradient(90deg, var(--accent-bitcoin) 0%, var(--accent-bitcoin) 55%, var(--accent-action) 100%)",
+    "linear-gradient(90deg, var(--accent-action) 0%, var(--accent-bitcoin) 100%)",
   transform: "translateY(-1px)",
   transition: "width var(--dur-micro) var(--ease-organic)",
 };
@@ -152,6 +203,15 @@ const inputStyle: CSSProperties = {
   WebkitAppearance: "none",
   cursor: "ew-resize",
   outline: "none",
+};
+
+const shockButtonStyle: CSSProperties = {
+  padding: "0.72rem 0.9rem",
+  border: "1px solid var(--ink-secondary)",
+  borderRadius: "var(--radius-sm)",
+  background: "var(--paper)",
+  color: "var(--ink-primary)",
+  cursor: "pointer",
 };
 
 function tickStyle(tickValue: number, current: number): CSSProperties {

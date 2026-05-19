@@ -3,7 +3,7 @@
 import { Teleology } from "@/sketches/teleology/Teleology";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import type { CSSProperties } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 import { GrainOverlay } from "./GrainOverlay";
 import { SignalField } from "./SignalField";
 
@@ -17,6 +17,7 @@ import { SignalField } from "./SignalField";
  */
 export function CinematicHero() {
   const reduced = useReducedMotion();
+  const isMobile = useHomeHeroIsMobile();
 
   return (
     <section style={frameStyle} aria-label="Praxeos">
@@ -59,50 +60,73 @@ export function CinematicHero() {
           : { initial: { opacity: 0, y: 28 }, animate: { opacity: 1, y: 0 } })}
         transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         // biome-ignore lint/suspicious/noExplicitAny: framer-motion MotionStyle vs CSSProperties incompatibility
-        style={foregroundStyle as any}
+        style={(isMobile ? foregroundMobileStyle : foregroundStyle) as any}
       >
         <p style={eyebrowStyle} className="label-mono">
-          A library of explorable explanations
+          Four simulations · one mental model
         </p>
         <h1 style={titleStyle}>
           <span style={{ display: "block" }}>PRAXEOS</span>
         </h1>
         <p style={hookStyle}>
-          Watch how an economy changes when the signal is distorted.
+          Learn Austrian economics by manipulating living systems.
         </p>
         <p style={leadStyle}>
-          Interactive investigations of human action, sound money, and economic
-          calculation — built as an open-source cultural artifact.
+          Complete four guided simulations in about thirty-five minutes. No prior
+          knowledge required: click, observe, read, and leave with a clearer model of
+          human action.
+        </p>
+        <p className="label-mono" style={teaserStyle}>
+          4 simulations · 35 minutes · no prior knowledge
         </p>
         <div style={ctaRowStyle}>
-          <Link href="#paths" style={primaryCtaStyle}>
-            <span>Start exploring</span>
+          <Link href="/modules/signal-orchard?path=beginner" style={primaryCtaStyle}>
+            <span>Begin Beginner Path</span>
             <span aria-hidden="true" style={primaryCtaArrowStyle}>
               →
             </span>
           </Link>
-          <Link href="/manifesto" style={ghostCtaStyle}>
+          <Link href="#paths" style={ghostCtaStyle}>
+            Explore the four modules
+          </Link>
+          <Link href="/manifesto" style={textCtaStyle}>
             Read the manifesto
           </Link>
         </div>
       </motion.div>
 
       {/* Bottom-corner scroll cue */}
-      <motion.div
-        {...(reduced ? {} : { initial: { opacity: 0 }, animate: { opacity: 1 } })}
-        transition={{ duration: 1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        // biome-ignore lint/suspicious/noExplicitAny: framer-motion MotionStyle vs CSSProperties incompatibility
-        style={scrollCueStyle as any}
-      >
-        <span className="label-mono" style={scrollCueLabelStyle}>
-          Scroll
-        </span>
-        <span aria-hidden="true" style={scrollCueLineStyle} />
-      </motion.div>
+      {isMobile ? null : (
+        <motion.div
+          {...(reduced ? {} : { initial: { opacity: 0 }, animate: { opacity: 1 } })}
+          transition={{ duration: 1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          // biome-ignore lint/suspicious/noExplicitAny: framer-motion MotionStyle vs CSSProperties incompatibility
+          style={scrollCueStyle as any}
+        >
+          <span className="label-mono" style={scrollCueLabelStyle}>
+            Scroll
+          </span>
+          <span aria-hidden="true" style={scrollCueLineStyle} />
+        </motion.div>
+      )}
 
       <GrainOverlay opacity={0.14} />
     </section>
   );
+}
+
+function useHomeHeroIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 720px)");
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  return isMobile;
 }
 
 /* ───── styles ─────────────────────────────────────────────────────── */
@@ -133,7 +157,7 @@ const bleedTextStyle: CSSProperties = {
   fontSize: "clamp(120px, 22vw, 400px)",
   fontVariationSettings: '"opsz" 144',
   lineHeight: 0.86,
-  letterSpacing: "-0.045em",
+  letterSpacing: 0,
   color: "var(--ink-primary)",
   opacity: 0.055,
 };
@@ -152,12 +176,12 @@ const topLabelsStyle: CSSProperties = {
 
 const cornerLabelStyle: CSSProperties = {
   color: "var(--ink-tertiary)",
-  letterSpacing: "0.14em",
+  letterSpacing: 0,
 };
 
 const cornerLabelMutedStyle: CSSProperties = {
   color: "var(--ink-tertiary)",
-  letterSpacing: "0.14em",
+  letterSpacing: 0,
   fontStyle: "italic",
 };
 
@@ -170,11 +194,21 @@ const foregroundStyle: CSSProperties = {
   pointerEvents: "auto",
 };
 
+const foregroundMobileStyle: CSSProperties = {
+  position: "absolute",
+  insetBlockStart: "clamp(5.25rem, 18dvh, 7rem)",
+  insetInlineStart: "var(--gutter-inline)",
+  insetInlineEnd: "var(--gutter-inline)",
+  zIndex: 6,
+  maxWidth: "44rem",
+  pointerEvents: "auto",
+};
+
 const eyebrowStyle: CSSProperties = {
   margin: 0,
   marginBlockEnd: "0.9rem",
   color: "var(--accent-bitcoin)",
-  letterSpacing: "0.18em",
+  letterSpacing: 0,
   fontSize: "var(--step--1)",
 };
 
@@ -185,7 +219,7 @@ const titleStyle: CSSProperties = {
   fontSize: "clamp(3.5rem, 10vw, 8rem)",
   fontVariationSettings: '"opsz" 144',
   lineHeight: 0.92,
-  letterSpacing: "-0.035em",
+  letterSpacing: 0,
   color: "var(--ink-primary)",
   textWrap: "balance",
 };
@@ -210,6 +244,11 @@ const leadStyle: CSSProperties = {
   maxWidth: "46ch",
 };
 
+const teaserStyle: CSSProperties = {
+  margin: "1rem 0 0",
+  color: "var(--ink-tertiary)",
+};
+
 const ctaRowStyle: CSSProperties = {
   marginBlockStart: "2rem",
   display: "flex",
@@ -229,7 +268,7 @@ const primaryCtaStyle: CSSProperties = {
   fontFamily: "var(--font-sans)",
   fontWeight: 500,
   fontSize: "var(--step-0)",
-  letterSpacing: "-0.005em",
+  letterSpacing: 0,
   textDecoration: "none",
   transition:
     "opacity var(--dur-micro) var(--ease-organic), transform var(--dur-micro) var(--ease-organic)",
@@ -255,6 +294,12 @@ const ghostCtaStyle: CSSProperties = {
     "border-color var(--dur-micro) var(--ease-organic), background var(--dur-micro) var(--ease-organic)",
 };
 
+const textCtaStyle: CSSProperties = {
+  color: "var(--ink-secondary)",
+  textDecoration: "underline",
+  textUnderlineOffset: "0.2em",
+};
+
 const scrollCueStyle: CSSProperties = {
   position: "absolute",
   insetBlockEnd: "1.4rem",
@@ -268,7 +313,7 @@ const scrollCueStyle: CSSProperties = {
 
 const scrollCueLabelStyle: CSSProperties = {
   color: "var(--ink-tertiary)",
-  letterSpacing: "0.18em",
+  letterSpacing: 0,
 };
 
 const scrollCueLineStyle: CSSProperties = {

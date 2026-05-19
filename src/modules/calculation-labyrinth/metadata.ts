@@ -17,7 +17,7 @@ export const metadata: ModuleMetadata = {
   hasAudio: false,
   posterSrc: "/posters/calculation-labyrinth.svg",
   sketchDescription:
-    "A top-down 3D maze. A small octahedral pawn — the planner — starts at one corner; a glowing torus-knot goal sits at the opposite corner. A chain of price markers shimmers in amber along the canonical shortest path. Toggle 'Without market prices' and the markers vanish, the walls flicker oxblood, and the pawn wanders aimlessly within a small radius of the start, unable to compute its route. Toggle back and the path lights up and the pawn glides across it. The point of the contrast is Mises's 1920 thesis: prices are not incentives but the only available method of comparing alternative production plans.",
+    "A top-down 3D maze exercise. A small octahedral pawn — the planner — starts at one corner; a glowing goal sits at the opposite corner. Use arrow keys or on-screen buttons to move. With prices, legal exits show comparable cost markers; without prices, markers disappear and the same moves become blind guesses. Wrong turns, wall bumps, and backtracking add to a visible waste counter. The point is Mises's 1920 thesis: prices are not incentives but the only available method of comparing alternative production plans.",
   discussionPrompt:
     "Mises's claim is that even an honest, omniscient planner cannot compute. What about a planner with arbitrary computing power but no prices?",
   learningOutcomes: [

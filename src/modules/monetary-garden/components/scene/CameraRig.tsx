@@ -3,6 +3,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { Vector3 } from "three";
+import { stressFor } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 
 /**
@@ -36,7 +37,8 @@ export function CameraRig() {
 
   useFrame((_state, delta) => {
     const t = performance.now() / 1000;
-    const closeness = eased.current * 0.5;
+    const stress = stressFor(eased.current);
+    const closeness = stress * 0.5;
 
     // Elliptical dolly.
     const sway = Math.sin(t * 0.16) * 0.5 + Math.cos(t * 0.11) * 0.3;
@@ -56,7 +58,7 @@ export function CameraRig() {
     camera.position.z += (desiredZ - camera.position.z) * Math.min(1, delta * 2.4);
 
     // Look at a point near the centre that drops slightly with distortion.
-    target.current.set(0 + px * 0.2, -0.2 - eased.current * 0.4, 0);
+    target.current.set(0 + px * 0.2, -0.2 - stress * 0.4, 0);
     camera.lookAt(target.current);
   });
 

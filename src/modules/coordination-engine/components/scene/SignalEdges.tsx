@@ -13,15 +13,21 @@ import {
   Vector3,
 } from "three";
 import { useCoordinationRefs } from "../../lib/coordinationContext";
-import { paramsFor } from "../../lib/distortion";
+import { type CoordPulse, paramsForState } from "../../lib/distortion";
 import { agentNodes, edges } from "../../lib/networkLayout";
 
-export function SignalEdges() {
+interface Props {
+  readonly pulse: CoordPulse | undefined;
+}
+
+export function SignalEdges({ pulse }: Props) {
   const nodes = useMemo(() => agentNodes(), []);
   const links = useMemo(() => edges(nodes), [nodes]);
   const colors = useSceneColors();
   const groupRef = useRef<Group>(null);
   const { eased } = useCoordinationRefs();
+  const pulseElapsedRef = useRef(99);
+  const pulseNonceRef = useRef<number | undefined>(undefined);
 
   const calmColor = useMemo(
     () =>
@@ -31,6 +37,14 @@ export function SignalEdges() {
   const corruptedColor = useMemo(
     () =>
       new Color().lerpColors(colors["--accent-action"], colors["--ink-tertiary"], 0.35),
+    [colors],
+  );
+  const demandColor = useMemo(
+    () => new Color().lerpColors(colors["--accent-action"], colors["--paper"], 0.12),
+    [colors],
+  );
+  const supplyColor = useMemo(
+    () => new Color().lerpColors(colors["--accent-bitcoin"], colors["--paper"], 0.08),
     [colors],
   );
 
@@ -50,11 +64,18 @@ export function SignalEdges() {
 
   const tmp = useMemo(() => new Color(), []);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const g = groupRef.current;
     if (!g) return;
+    if (pulseNonceRef.current !== pulse?.nonce) {
+      pulseNonceRef.current = pulse?.nonce;
+      pulseElapsedRef.current = 0;
+    }
+    pulseElapsedRef.current += delta;
     const t = state.clock.getElapsedTime();
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
+    const pulseForce = Math.max(0, 1 - pulseElapsedRef.current / 1.55);
+    const pulseColor = pulse?.kind === "supply" ? supplyColor : demandColor;
 
     for (let i = 0; i < links.length; i++) {
       const link = links[i];
@@ -63,19 +84,26 @@ export function SignalEdges() {
       const mat = child.material as MeshStandardMaterial;
 
       tmp.lerpColors(calmColor, corruptedColor, params.corruption);
+      const linkedToPulse =
+        pulse !== undefined && (link.from === pulse.nodeId || link.to === pulse.nodeId);
+      tmp.lerp(pulseColor, linkedToPulse ? pulseForce * 0.9 : 0);
       mat.color.copy(tmp);
       mat.emissive.copy(tmp);
 
       // Pulse traveling along edge with phase modulated by distortion.
       const phase = t * 1.6 + link.seed * Math.PI * 2;
-      const pulse = 0.5 + Math.sin(phase) * 0.5;
+      const edgePulse = 0.5 + Math.sin(phase) * 0.5;
 
       // Stochastic breakage: at high distortion, randomly drop edges out.
       const breakWindow = Math.sin(t * 0.7 + link.seed * 9.13) * 0.5 + 0.5;
       const broken = breakWindow < params.breakage;
 
-      mat.emissiveIntensity = broken ? 0.04 : 0.18 + pulse * 0.9 * params.intensity;
-      mat.opacity = broken ? 0.12 : 0.45 + 0.5 * params.throughput;
+      mat.emissiveIntensity = broken
+        ? 0.04
+        : 0.18 + edgePulse * 0.9 * params.intensity + (linkedToPulse ? pulseForce : 0);
+      mat.opacity = broken
+        ? 0.12
+        : 0.45 + 0.5 * params.throughput + (linkedToPulse ? pulseForce * 0.22 : 0);
     }
   });
 

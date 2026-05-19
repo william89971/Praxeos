@@ -1,10 +1,11 @@
 "use client";
 
 import { type MutableRefObject, createContext, useContext } from "react";
+import type { CoordState } from "./distortion";
 
 export interface CoordinationRefs {
-  readonly target: MutableRefObject<number>;
-  readonly eased: MutableRefObject<number>;
+  readonly target: MutableRefObject<CoordState>;
+  readonly eased: MutableRefObject<CoordState>;
 }
 
 export const CoordinationContext = createContext<CoordinationRefs | null>(null);

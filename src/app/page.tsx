@@ -1,3 +1,4 @@
+import { BeginnerPathRail } from "@/components/experience/BeginnerPathRail";
 import { CinematicHero } from "@/components/home/CinematicHero";
 import { GuidedPrompt } from "@/components/home/GuidedPrompt";
 import { Lineage } from "@/components/home/Lineage";
@@ -5,7 +6,9 @@ import { ScrollSection } from "@/components/home/ScrollSection";
 import { Vignette } from "@/components/home/Vignette";
 import { ModuleCard } from "@/components/interactive/ModuleCard";
 import type { ModulePreviewVariant } from "@/components/interactive/ModulePreview";
+import { ThinkerFooterSection } from "@/components/layout/ThinkerFooterSection";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
+import { pathStepFor } from "@/lib/beginner-path";
 import { complexityToLabel, conceptToAccent } from "@/lib/formatters";
 import { MODULE_REGISTRY } from "@/modules/registry";
 import Link from "next/link";
@@ -20,7 +23,7 @@ const FEATURED_SLUGS = [
 const MARKETING_COPY: Record<string, { description: string; prompt: string | null }> = {
   "monetary-garden": {
     description:
-      "Watch an economy bloom or decay as the money signal changes. One slider drives an entire ecosystem from steady to broken.",
+      "Watch credit expansion, savings backing, and correction reshape an economy from bloom to revealed malinvestment.",
     prompt: "Try the garden first.",
   },
   "signal-orchard": {
@@ -35,7 +38,7 @@ const MARKETING_COPY: Record<string, { description: string; prompt: string | nul
   },
   "coordination-engine": {
     description:
-      "Follow the signal layer that lets millions act together. A network of agents whose synchrony breaks as money quality falls.",
+      "Follow the signal layer that lets millions act together. Reliability, latency, shocks, and node pulses show synchrony becoming coordination or missed plans.",
     prompt: "Follow the signal.",
   },
 };
@@ -47,11 +50,52 @@ export default function HomePage() {
       <Vignette intensity={0.05} />
       <CinematicHero />
       <WhatIsSection />
+      <BeginnerPathRail />
+      <SourceCredibilityStrip />
       <StartHereSection />
       <ChoosePathSection />
       <Lineage />
+      <ThinkerFooterSection />
       <FooterNote />
     </>
+  );
+}
+
+function SourceCredibilityStrip() {
+  return (
+    <section
+      aria-label="Source credibility"
+      style={{
+        borderBlockStart: "1px solid var(--rule)",
+        paddingInline: "var(--gutter-inline)",
+        paddingBlock: "1.1rem",
+        background: "var(--paper-elevated)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "var(--measure-wide)",
+          marginInline: "auto",
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "1rem",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
+      >
+        <p className="label-mono" style={{ margin: 0, color: "var(--ink-tertiary)" }}>
+          Built from Mises, Hayek, Rothbard, Kirzner, and Lachmann.
+        </p>
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+          <Link href="/thinkers" className="label-mono">
+            Meet the thinkers
+          </Link>
+          <Link href="/glossary" className="label-mono">
+            Beginner glossary
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -153,11 +197,11 @@ function StartHereSection() {
               marginBlockStart: 0,
             }}
           >
-            If you are new to Austrian economics, begin with{" "}
-            <Link href="/modules/signal-orchard">The Signal Orchard</Link>. It is the
-            most accessible module — no prior knowledge assumed — and its argument (that
-            coordination is the residue of human action) is intuitive before it is
-            technical.
+            If you are new to Austrian economics, follow the{" "}
+            <Link href="#beginner-path">Beginner Path</Link>. It starts with{" "}
+            <Link href="/modules/signal-orchard?path=beginner">The Signal Orchard</Link>
+            , where the basic lesson is immediate: private actions can become public
+            coordination without a central mind.
           </p>
           <p
             style={{
@@ -168,15 +212,15 @@ function StartHereSection() {
               marginBlockEnd: 0,
             }}
           >
-            If you already know the action axiom and want to see the strongest argument
-            first, go to{" "}
+            If you already know the action axiom and want to jump to the strongest
+            argument first, go to{" "}
             <Link href="/modules/calculation-labyrinth">The Calculation Labyrinth</Link>
             . It is Mises&apos;s 1920 proof that socialist planning cannot compute —
             rendered as a maze you can switch between with-prices and without.
           </p>
 
           <div style={{ marginTop: "1.2rem" }}>
-            <GuidedPrompt>Start here if you are new.</GuidedPrompt>
+            <GuidedPrompt>Beginner Path is the recommended route.</GuidedPrompt>
           </div>
         </div>
       </div>
@@ -250,6 +294,7 @@ async function ChoosePathSection() {
         >
           {featured.map(({ entry, meta }) => {
             const copy = MARKETING_COPY[entry.slug];
+            const pathStep = pathStepFor(entry.slug);
             const metaStr = `${meta.readingTimeMin}-min read`;
             return (
               <div key={entry.slug} style={{ display: "grid", gap: "0.6rem" }}>
@@ -261,6 +306,9 @@ async function ChoosePathSection() {
                   variant={entry.slug as ModulePreviewVariant}
                   difficulty={complexityToLabel(meta.complexity)}
                   meta={metaStr}
+                  badge={pathStep?.badge}
+                  actionLabel={pathStep?.actionLabel}
+                  sourceLabel={pathStep?.sourceThinker}
                 />
                 {copy?.prompt ? (
                   <GuidedPrompt style={{ paddingInlineStart: "0.4rem" }}>

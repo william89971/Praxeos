@@ -6,7 +6,7 @@ import { Instance, Instances } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color, MathUtils, type Object3D } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 import { PLOT_HALF } from "../../lib/gardenLayout";
 
@@ -81,7 +81,7 @@ function BladeInstance({ blade, count, healthy, decayed }: BladeProps) {
   useFrame((_state, delta) => {
     const inst = ref.current;
     if (!inst) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
 
     const shown = Math.round(count * Math.min(1.6, params.grassDensity));
     const visible = blade.rank < shown;

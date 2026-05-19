@@ -1,3 +1,7 @@
+import { EssayProgressMarker } from "@/components/experience/EssayProgressMarker";
+import { GlossaryHintStrip } from "@/components/experience/GlossaryHintStrip";
+import { NextStepPrompt } from "@/components/experience/NextStepPrompt";
+import { SourceDrawer } from "@/components/experience/SourceDrawer";
 import { ModuleNavigator } from "@/components/interactive/ModuleNavigator";
 import { ReadingProgress } from "@/components/interactive/ReadingProgress";
 import { DisplayTitle } from "@/components/typography/DisplayTitle";
@@ -54,6 +58,7 @@ export function ModuleLayout({
 
         {/* Module intro bar */}
         <ModuleIntroBar metadata={metadata} difficultyLabel={difficultyLabel} />
+        <SourceDrawer sources={sources} thinkers={metadata.thinkers} />
 
         {metadata.bestOn === "desktop" ? (
           <p
@@ -97,6 +102,8 @@ export function ModuleLayout({
       >
         {sketchCaption}
       </p>
+
+      <GlossaryHintStrip slug={metadata.slug} />
 
       {/* 4 · What you'll learn */}
       {metadata.learningOutcomes && metadata.learningOutcomes.length > 0 ? (
@@ -175,6 +182,7 @@ export function ModuleLayout({
           scrollMarginBlockStart: "2rem",
         }}
       >
+        <EssayProgressMarker slug={metadata.slug} />
         {children}
       </section>
 
@@ -314,6 +322,8 @@ export function ModuleLayout({
           {metadata.discussionPrompt}
         </p>
       </section>
+
+      <NextStepPrompt slug={metadata.slug} />
 
       <Fleuron variant="rule" />
 
