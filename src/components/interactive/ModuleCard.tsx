@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type ReactNode, useState } from "react";
+import { type CSSProperties, type ReactNode, useState } from "react";
 import { ModulePreview, type ModulePreviewVariant } from "./ModulePreview";
 
 interface Props {
@@ -12,6 +12,9 @@ interface Props {
   readonly variant: ModulePreviewVariant;
   readonly meta?: string;
   readonly difficulty: "Beginner" | "Intermediate" | "Advanced";
+  readonly badge?: string | undefined;
+  readonly actionLabel?: string | undefined;
+  readonly sourceLabel?: string | undefined;
 }
 
 /**
@@ -30,6 +33,9 @@ export function ModuleCard({
   variant,
   meta,
   difficulty,
+  badge,
+  actionLabel = "Explore",
+  sourceLabel,
 }: Props) {
   const [hovered, setHovered] = useState(false);
   const accentVar = `var(--accent-${accent})`;
@@ -96,6 +102,11 @@ export function ModuleCard({
             width: hovered ? "3.5rem" : "2.5rem",
           }}
         />
+        {badge ? (
+          <span className="label-mono" style={{ color: accentVar }}>
+            {badge}
+          </span>
+        ) : null}
         <h3
           style={{
             fontFamily: "var(--font-serif)",
@@ -121,6 +132,11 @@ export function ModuleCard({
       >
         {description}
       </p>
+      {sourceLabel ? (
+        <p className="label-mono" style={sourceStyle}>
+          Core source: {sourceLabel}
+        </p>
+      ) : null}
       <div
         style={{
           display: "flex",
@@ -153,7 +169,7 @@ export function ModuleCard({
             transform: hovered ? "translateX(2px)" : "translateX(0)",
           }}
         >
-          Explore
+          {actionLabel}
           <span aria-hidden="true" style={{ fontSize: "1.1em", lineHeight: 1 }}>
             →
           </span>
@@ -162,3 +178,9 @@ export function ModuleCard({
     </Link>
   );
 }
+
+const sourceStyle: CSSProperties = {
+  margin: "-0.35rem 0 0",
+  color: "var(--ink-tertiary)",
+  fontSize: "var(--step--2)",
+};

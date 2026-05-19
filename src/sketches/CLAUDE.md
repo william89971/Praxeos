@@ -56,7 +56,7 @@ This lets us unit-test the sketch's geometry, generate the same OG image twice, 
 | Need | Tool | Notes |
 |---|---|---|
 | 2D line art, low-to-medium complexity | **p5 (WEBGL mode)** | Fast to prototype, good default styling. Default choice. |
-| 2D high-throughput instanced geometry | **regl** | Halving Garden live layer. Bypasses the scene graph overhead. |
+| 2D high-throughput instanced geometry | **regl** | Reserved for future dense live layers that bypass scene graph overhead. |
 | Real 3D with camera / lights / meshes | **three + @react-three/fiber + drei** | Only if the effect genuinely requires 3D. Costs ~200KB gzip. |
 | Pure fragment shader / visual effect | **raw WebGL2** or **glsl-canvas** | For paper-grain, ink diffusion, procedural texture. |
 | Simple DOM animation | **Motion** | Not a sketch. Use Motion + CSS. |

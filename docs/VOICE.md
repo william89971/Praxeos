@@ -2,7 +2,7 @@
 
 Praxeos is explicitly, unapologetically **Austro-libertarian**. Not neutral pedagogy. Not three-handed economics. The site is the argument that the Austrian tradition is intellectually alive, factually correct in its core theorems, and aesthetically equal to any rival.
 
-That said: the *interactives* are pedagogically austere. The polemic lives in the essays. A reader who only plays with the Halving Garden and never reads a word should not feel preached at. A reader who opens `essay.mdx` should feel they have walked into a room where the authors of *Human Action* and *Prices and Production* are taken seriously on their own terms.
+That said: the *interactives* are pedagogically austere. The polemic lives in the essays. A reader who only plays with the Monetary Garden, Signal Orchard, Calculation Labyrinth, or Coordination Engine and never reads a word should not feel preached at. A reader who opens `essay.mdx` should feel they have walked into a room where the authors of *Human Action* and *Prices and Production* are taken seriously on their own terms.
 
 ## Register
 

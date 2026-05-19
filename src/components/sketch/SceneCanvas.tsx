@@ -1,7 +1,13 @@
 "use client";
 
 import { useIsOnScreen } from "@/hooks/useIsOnScreen";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import {
+  dprRangeForQuality,
+  usePageVisibility,
+  useSceneQuality,
+  webglPowerPreference,
+} from "@/hooks/useSceneQuality";
+import { trackInteraction } from "@/lib/telemetry";
 import { Canvas, type CanvasProps } from "@react-three/fiber";
 import { type ReactNode, Suspense, useEffect, useRef, useState } from "react";
 
@@ -14,7 +20,7 @@ interface SceneCanvasProps {
   readonly overlay?: ReactNode;
   /** Camera initial config. */
   readonly camera?: CanvasProps["camera"];
-  /** Frameloop mode. Defaults to "always" for breathing scenes. */
+  /** Frameloop mode. Defaults to demand; animated scenes can opt into "always". */
   readonly frameloop?: CanvasProps["frameloop"];
   /** Background CSS color. Defaults to var(--paper-sunk). */
   readonly background?: string;
@@ -22,6 +28,8 @@ interface SceneCanvasProps {
   readonly height?: string;
   /** A11y label for the canvas region. */
   readonly ariaLabel: string;
+  /** Optional module slug for local telemetry. */
+  readonly moduleSlug?: string;
 }
 
 /**
@@ -47,21 +55,45 @@ export function SceneCanvas({
   fallback,
   overlay,
   camera,
-  frameloop = "always",
+  frameloop = "demand",
   background = "var(--paper-sunk)",
   height = "min(92vh, 900px)",
   ariaLabel,
+  moduleSlug,
 }: SceneCanvasProps) {
-  const reducedMotion = usePrefersReducedMotion();
+  const quality = useSceneQuality();
+  const pageVisible = usePageVisibility();
   const containerRef = useRef<HTMLDivElement>(null);
   const onScreen = useIsOnScreen(containerRef, { threshold: 0.05 });
   const [mounted, setMounted] = useState(false);
+  const trackedMountRef = useRef(false);
+  const trackedFallbackRef = useRef(false);
 
   useEffect(() => {
     if (onScreen) setMounted(true);
   }, [onScreen]);
 
-  if (reducedMotion) {
+  useEffect(() => {
+    if (!moduleSlug || quality !== "poster" || trackedFallbackRef.current) return;
+    trackedFallbackRef.current = true;
+    trackInteraction("canvas_fallback", {
+      moduleSlug,
+      payload: { quality },
+    });
+  }, [moduleSlug, quality]);
+
+  useEffect(() => {
+    if (!moduleSlug || !mounted || quality === "poster" || trackedMountRef.current) {
+      return;
+    }
+    trackedMountRef.current = true;
+    trackInteraction("webgl_mounted", {
+      moduleSlug,
+      payload: { quality },
+    });
+  }, [moduleSlug, mounted, quality]);
+
+  if (quality === "poster") {
     return (
       <div style={{ position: "relative", height, background, overflow: "hidden" }}>
         {fallback}
@@ -85,11 +117,15 @@ export function SceneCanvas({
     >
       {mounted ? (
         <Canvas
-          shadows={false}
-          dpr={[1, 2]}
-          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+          shadows={quality === "high" ? "soft" : false}
+          dpr={dprRangeForQuality(quality)}
+          gl={{
+            antialias: quality !== "low",
+            alpha: true,
+            powerPreference: webglPowerPreference(quality),
+          }}
           camera={camera ?? { position: [0, 6, 12], fov: 38, near: 0.1, far: 100 }}
-          frameloop={frameloop}
+          frameloop={pageVisible ? frameloop : "never"}
           style={{ width: "100%", height: "100%" }}
         >
           <Suspense fallback={null}>{children}</Suspense>

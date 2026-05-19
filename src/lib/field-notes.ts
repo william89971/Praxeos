@@ -1,7 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import type { ComponentType } from "react";
 
-/** Published construction logs — one per module built during Fascicle I. */
+/** Published construction logs for the live canon. Dormant notes stay on disk only. */
 export interface FieldNoteMeta {
   slug: string;
   title: string;
@@ -10,32 +10,7 @@ export interface FieldNoteMeta {
   subtitle: string;
 }
 
-export const FIELD_NOTES: readonly FieldNoteMeta[] = [
-  {
-    slug: "halving-garden-tile-bake",
-    title: "Tile pyramids, Hilbert curves, and 880,000 blocks",
-    moduleSlug: "halving-garden",
-    publishedAt: "2026-04-23",
-    subtitle:
-      "Why the Halving Garden bakes SVG tiles offline instead of rendering live, and what the Hilbert layout decision cost.",
-  },
-  {
-    slug: "calculation-problem-engine",
-    title: "A deliberately stupid planner",
-    moduleSlug: "calculation-problem",
-    publishedAt: "2026-04-23",
-    subtitle:
-      "Why the socialist panel picks recipes by hash(tick, id) and not by optimisation — and what that commits the model to.",
-  },
-  {
-    slug: "time-preference-forest-lsystems",
-    title: "L-systems, eight seconds of collapse",
-    moduleSlug: "time-preference-forest",
-    publishedAt: "2026-04-23",
-    subtitle:
-      "Branching grammars, a correction cascade that had to feel earned, and the tension between aesthetic and algebra.",
-  },
-];
+export const FIELD_NOTES: readonly FieldNoteMeta[] = [];
 
 type NoteComponent = ComponentType<{ components?: MDXComponents }>;
 

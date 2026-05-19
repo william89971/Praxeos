@@ -17,7 +17,7 @@ export const metadata: ModuleMetadata = {
   hasAudio: false,
   posterSrc: "/posters/coordination-engine.svg",
   sketchDescription:
-    "Forty-two agents arranged on three concentric rings in 3D, connected by curved signal edges. A money-quality slider drives every visual property: at sound money, every agent's pulse locks to a shared phase and the network breathes in unison; as distortion rises, phases drift, edges flicker out, and the apparent coordination disintegrates. A guided mode auto-cycles through four representative states; explore mode lets the reader sweep the slider freely.",
+    "Forty-two agents arranged on three concentric rings in 3D, connected by curved signal edges. Signal reliability, latency, and shocks drive the network: high reliability locks pulses into a shared phase, while latency and shocks scatter timing, darken links, and reduce throughput. Tapping a node emits a demand or supply pulse through neighboring edges. Guided mode demonstrates synchrony breaking; Explore mode lets the reader tune reliability and latency directly.",
   discussionPrompt:
     "If money is the medium of coordination, what is left of an economy whose money has been engineered to convey something other than the truth?",
   learningOutcomes: [

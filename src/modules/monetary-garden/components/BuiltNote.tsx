@@ -22,32 +22,29 @@ export function BuiltNote() {
       </header>
 
       <Sub label="I" title="Architecture">
-        Three.js via React Three Fiber, with a small set of <code>drei</code> helpers —
-        <code>Environment</code> for HDR cubemap lighting, <code>Float</code> for the
-        breathing motion of production nodes and the signal beam, <code>Instances</code>{" "}
-        for the grass field, and a custom <code>GltfAsset</code> wrapper that fetches a
-        Blender export when one exists and falls back to procedural geometry when it
-        does not. The whole scene is composed under a single{" "}
-        <code>DistortionContext</code> ref so per-frame animation never re-renders
-        React.
+        Three.js via React Three Fiber, with a small set of <code>drei</code> helpers:
+        <code>Float</code> for the breathing motion of production nodes and the signal
+        beam, <code>Instances</code> for the grass field, and procedural geometry for
+        the garden itself. The whole scene is composed under a shared monetary-state ref
+        so per-frame animation never re-renders React.
       </Sub>
 
       <Sub label="II" title="Rendering choices">
-        ACES Filmic tone mapping, soft percentage-closer shadows from a single key
-        directional, an indirect HDR fill from <code>preset="dawn"</code>, and a scene
-        fog that thickens with distortion so dead zones at the periphery dissolve rather
-        than terminate. Water uses <code>MeshPhysicalMaterial</code> with transmission
-        and a clearcoat; production nodes are PBR with elevated metalness; trees are
-        matte. No post-processing — the bloom is honest emissive plus tone-mapped
-        exposure.
+        ACES Filmic tone mapping, soft percentage-closer shadows from local lights, and
+        a scene fog that thickens as signals degrade so dead zones at the periphery
+        dissolve rather than terminate. Water uses <code>MeshPhysicalMaterial</code>{" "}
+        with transmission and a clearcoat; production nodes are PBR with elevated
+        metalness; trees are matte. No post-processing — the bloom is honest emissive
+        plus tone-mapped exposure.
       </Sub>
 
       <Sub label="III" title="State mapping">
-        A single distortion value drives the world. <code>paramsFor(d)</code> in{" "}
-        <code>lib/distortion.ts</code> is a pure function returning ten derived params:
-        water level, grass density, tree health, node chaos, path clarity, dead-zone
-        area, signal corruption, and so on. The slider sets a target; a per-frame easing
-        pass smooths the displayed value so the scene breathes rather than jumps.
+        Credit expansion, savings backing, and correction phase drive the world.{" "}
+        <code>paramsForState(state)</code> in <code>lib/distortion.ts</code> is a pure
+        function returning derived params: water level, grass density, tree health, node
+        chaos, path clarity, dead-zone area, signal corruption, and so on. Control
+        changes set a target; a per-frame easing pass smooths the displayed value so the
+        scene breathes rather than jumps.
       </Sub>
 
       <Sub label="IV" title="Performance">
@@ -60,12 +57,12 @@ export function BuiltNote() {
       </Sub>
 
       <Sub label="V" title="Interaction design">
-        One control. The slider exposes <code>aria-valuemin</code>/ <code>max</code>/
-        <code>now</code>/<code>text</code> and accepts arrow keys for fine adjustment,
-        Home/End for the ends. The explanation panel crossfades editorial copy between
-        four bands; the live region announces only band changes, not every tick. The
-        cinematic camera responds gently to pointer position on desktop — it is
-        parallax, not control.
+        Two sliders and one correction action expose the lesson directly: credit can
+        outrun saving, but correction reveals the unsupported structure. Inputs expose
+        <code>aria-valuemin</code>/<code>max</code>/<code>now</code>/<code>text</code>{" "}
+        and accept arrow keys for fine adjustment, Home/End for the ends. The cinematic
+        camera responds gently to pointer position on desktop — it is parallax, not
+        control.
       </Sub>
     </section>
   );

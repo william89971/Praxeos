@@ -5,7 +5,7 @@ import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color, type Group, MathUtils } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 import { type TreePos, treePositions } from "../../lib/gardenLayout";
 
@@ -44,7 +44,7 @@ export function Trees({ deviceClass }: Props) {
   useFrame((_state, delta) => {
     const group = groupRef.current;
     if (!group) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     for (let i = 0; i < trees.length; i++) {
       const child = group.children[i];
       const tree = trees[i];
@@ -105,7 +105,7 @@ function Tree({
   useFrame(() => {
     const mat = canopyMatRef.current;
     if (!mat) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     tmp.lerpColors(healthyCanopy, wiltedCanopy, 1 - params.treeHealth);
     mat.color.copy(tmp);
   });

@@ -1,20 +1,23 @@
 "use client";
 
 import { type CSSProperties, useEffect, useState } from "react";
+import type { GardenState } from "../lib/distortion";
+import { metricsFor, stressFor } from "../lib/distortion";
 import { type Band, bandFor } from "../lib/explanations";
 
 interface Props {
-  readonly distortion: number;
+  readonly state: GardenState;
 }
 
 /**
  * Live editorial copy keyed to the distortion band. Crossfades between
  * bands; aria-live announces only the headline change (debounced by band).
  */
-export function ExplanationPanel({ distortion }: Props) {
-  const targetBand = bandFor(distortion);
+export function ExplanationPanel({ state }: Props) {
+  const targetBand = bandFor(stressFor(state));
   const [activeBand, setActiveBand] = useState<Band>(targetBand);
   const [opacity, setOpacity] = useState(1);
+  const metrics = metricsFor(state);
 
   useEffect(() => {
     if (targetBand.index === activeBand.index) return;
@@ -29,7 +32,7 @@ export function ExplanationPanel({ distortion }: Props) {
   return (
     <aside style={panelStyle} aria-live="polite">
       <div className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
-        State · {activeBand.label}
+        State · {state.phase === "correction" ? "Correction" : activeBand.label}
       </div>
       <p
         style={{
@@ -47,7 +50,14 @@ export function ExplanationPanel({ distortion }: Props) {
           transition: "opacity 220ms var(--ease-organic)",
         }}
       >
-        {activeBand.subline}
+        {state.phase === "correction"
+          ? "The correction does not create the loss; it reveals commitments the artificial signal made look sustainable."
+          : activeBand.subline}
+      </p>
+      <p className="label-mono" style={metricLineStyle}>
+        Savings {Math.round(metrics.savings * 100)} · Signal{" "}
+        {Math.round(metrics.signalClarity * 100)} · Waste{" "}
+        {Math.round(metrics.malinvestment * 100)}
       </p>
     </aside>
   );
@@ -80,4 +90,10 @@ const sublineStyle: CSSProperties = {
   fontSize: "var(--step--1)",
   lineHeight: 1.55,
   color: "var(--ink-secondary)",
+};
+
+const metricLineStyle: CSSProperties = {
+  margin: 0,
+  color: "var(--ink-tertiary)",
+  fontVariantNumeric: "tabular-nums",
 };

@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type { PointLight } from "three";
 import { useCoordinationRefs } from "../../lib/coordinationContext";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 
 export function SceneLighting() {
   const colors = useSceneColors();
@@ -15,7 +15,7 @@ export function SceneLighting() {
   useFrame(() => {
     const light = beamRef.current;
     if (!light) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     light.intensity = 8 * params.intensity;
     light.color.lerpColors(
       colors["--accent-bitcoin"],

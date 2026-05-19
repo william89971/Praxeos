@@ -12,7 +12,7 @@ import {
   TubeGeometry,
   Vector3,
 } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 import { nodePositions, pathSegments } from "../../lib/gardenLayout";
 
@@ -62,7 +62,7 @@ export function Paths() {
   useFrame((state) => {
     const group = groupRef.current;
     if (!group) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     const t = state.clock.getElapsedTime();
 
     for (let i = 0; i < tubes.length; i++) {

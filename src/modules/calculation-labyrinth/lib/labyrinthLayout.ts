@@ -26,10 +26,18 @@ export interface MarkerPos {
   readonly price: number;
 }
 
+export type Direction = "N" | "E" | "S" | "W";
+
+export interface CellCoord {
+  readonly x: number;
+  readonly y: number;
+}
+
 export interface MazeData {
   readonly grid: readonly (readonly Cell[])[];
   readonly markers: readonly MarkerPos[];
   readonly path: readonly { x: number; z: number }[];
+  readonly pathCells: readonly CellCoord[];
   readonly start: { x: number; z: number };
   readonly goal: { x: number; z: number };
 }
@@ -112,11 +120,13 @@ export function buildMaze(seed = 0xc4_0a_71_3f): MazeData {
   }
 
   const path: { x: number; z: number }[] = [];
+  const pathCells: CellCoord[] = [];
   let cursor: [number, number] | null = goal;
   while (cursor !== null) {
     const cx: number = cursor[0];
     const cy: number = cursor[1];
     path.unshift(cellToWorld(cx, cy));
+    pathCells.unshift({ x: cx, y: cy });
     cursor = came.get(`${cx},${cy}`) ?? null;
   }
 
@@ -131,6 +141,7 @@ export function buildMaze(seed = 0xc4_0a_71_3f): MazeData {
     grid,
     markers,
     path,
+    pathCells,
     start: cellToWorld(start[0], start[1]),
     goal: cellToWorld(goal[0], goal[1]),
   };
@@ -140,4 +151,57 @@ export function cellToWorld(cx: number, cy: number): { x: number; z: number } {
   const x = (cx + 0.5) * CELL - PLOT_HALF;
   const z = (cy + 0.5) * CELL - PLOT_HALF;
   return { x, z };
+}
+
+export function cellKey(cell: CellCoord): string {
+  return `${cell.x},${cell.y}`;
+}
+
+export function legalMoves(maze: MazeData, cell: CellCoord): readonly Direction[] {
+  const current = maze.grid[cell.y]?.[cell.x];
+  if (!current) return [];
+  return (["N", "E", "S", "W"] as const).filter((dir) => !current.walls[dir]);
+}
+
+export function moveCell(cell: CellCoord, direction: Direction): CellCoord {
+  switch (direction) {
+    case "N":
+      return { x: cell.x, y: cell.y + 1 };
+    case "E":
+      return { x: cell.x + 1, y: cell.y };
+    case "S":
+      return { x: cell.x, y: cell.y - 1 };
+    case "W":
+      return { x: cell.x - 1, y: cell.y };
+  }
+}
+
+export function directionToNextPathCell(
+  maze: MazeData,
+  cell: CellCoord,
+): Direction | null {
+  const index = maze.pathCells.findIndex((p) => p.x === cell.x && p.y === cell.y);
+  const next = maze.pathCells[index + 1];
+  if (!next) return null;
+  if (next.x === cell.x && next.y === cell.y + 1) return "N";
+  if (next.x === cell.x + 1 && next.y === cell.y) return "E";
+  if (next.x === cell.x && next.y === cell.y - 1) return "S";
+  if (next.x === cell.x - 1 && next.y === cell.y) return "W";
+  return null;
+}
+
+export function costForMove(
+  maze: MazeData,
+  from: CellCoord,
+  direction: Direction,
+): number {
+  const to = moveCell(from, direction);
+  const goal = maze.pathCells[maze.pathCells.length - 1] ?? {
+    x: GRID - 1,
+    y: GRID - 1,
+  };
+  const manhattan = Math.abs(goal.x - to.x) + Math.abs(goal.y - to.y);
+  const onPathIndex = maze.pathCells.findIndex((p) => p.x === to.x && p.y === to.y);
+  const pathDiscount = onPathIndex >= 0 ? 0.45 : 0;
+  return Math.max(0.05, (manhattan + 1) / (GRID * 2) - pathDiscount);
 }

@@ -4,7 +4,7 @@ import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color, type Mesh, type MeshPhysicalMaterial } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 import { PLOT_HALF } from "../../lib/gardenLayout";
 
@@ -35,7 +35,7 @@ export function Water() {
     const mesh = meshRef.current;
     const mat = matRef.current;
     if (!mesh || !mat) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
 
     const t = state.clock.getElapsedTime();
     mat.emissiveIntensity = (0.16 + Math.sin(t * 0.8) * 0.04) * params.waterLevel;

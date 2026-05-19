@@ -10,15 +10,17 @@ The site is its own argument. The fact that it exists, looks exceptional, and te
 
 ---
 
-## Fascicle I — Action, Time, and Calculation
+## Fascicle I — Action, Signals, and Calculation
 
-Three modules ship together as the first volume.
+Four modules ship together as the first volume.
 
-**The Halving Garden** — A living, generative manuscript of Bitcoin's history. Every block from genesis to tip rendered as a Haeckel-style botanical organism on a Hilbert curve, arranged in four illuminated halving-epoch pages. New blocks ghost in live via `mempool.space`. A quiet argument about fixed supply, sound money, and emergent monetary order. *(Menger, Mises, Hayek, Ammous)*
+**The Monetary Garden** — A living model of credit expansion, savings backing, malinvestment, and correction. Growth is separated from real funding so the boom and its correction can be seen instead of asserted. *(Mises, Hayek, Rothbard, Lachmann)*
 
-**The Time Preference Forest** — Austrian capital theory made visceral. A generative woodcut forest whose morphology reads time preference and central-bank intervention; a "market correction" reveals actual capital depth. Built from L-systems and the one orange accent that appears only under intervention. *(Böhm-Bawerk, Rothbard, Mises, Hayek)*
+**The Signal Orchard** — Human choices made visible as pulses through an orchard of actors. Buy, sell, wait, and discover actions show how private decisions become coordinated order. *(Menger, Hayek, Kirzner)*
 
-**The Calculation Problem** — Mises's 1920 argument rendered as a two-panel typographic particle system. Prices emerge in the market panel as visible supply chains; in the planned panel, shortages pile up and surpluses rot. A love letter to type as information. *(Mises, Hayek, Salerno)*
+**The Calculation Labyrinth** — Mises's calculation argument as a maze exercise. With prices, legal exits carry comparable cost markers; without prices, wrong turns and backtracking accumulate visible waste. *(Mises, Hayek, Salerno)*
+
+**The Coordination Engine** — A signal network focused on synchrony. Reliability, latency, shocks, and node pulses change coherence, throughput, failed links, and missed plans. *(Hayek, Lachmann, Mises)*
 
 ---
 

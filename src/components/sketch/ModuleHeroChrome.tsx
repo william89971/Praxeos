@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 
 interface Props {
@@ -17,8 +18,14 @@ interface Props {
   readonly attribution: string;
   /** "DIRECTIONS:" card content — usually a state panel or instructions list. */
   readonly directionsSlot: ReactNode;
+  /** Optional challenge/task card for the guided learning path. */
+  readonly taskSlot?: ReactNode;
   /** Bottom control area — usually a slider. */
   readonly controlSlot: ReactNode;
+  /** Optional first-click helper rendered over the scene. */
+  readonly onboardingSlot?: ReactNode;
+  /** Optional mobile-only quick action bar. */
+  readonly mobileActionBar?: ReactNode;
   /** The 3D scene itself (a Canvas root). */
   readonly scene: ReactNode;
   /** Anchor for the "Scroll to continue" CTA. Defaults to the next sibling. */
@@ -46,66 +53,145 @@ export function ModuleHeroChrome({
   quote,
   attribution,
   directionsSlot,
+  taskSlot,
   controlSlot,
+  onboardingSlot,
+  mobileActionBar,
   scene,
   scrollAnchor = "#module-essay",
 }: Props) {
+  const isMobile = useHeroIsMobile();
+
+  if (isMobile) {
+    return (
+      <>
+        <section style={mobileFrameStyle} aria-label="Module interactive">
+          <div style={mobileTopRowStyle}>
+            <span className="label-mono" style={cornerLabelStyle}>
+              Module {moduleNumber}
+            </span>
+            <span className="label-mono" style={cornerLabelStyle}>
+              {edition}
+            </span>
+          </div>
+
+          <div id="module-scene" style={mobileSceneStyle}>
+            {scene}
+          </div>
+
+          <div style={mobilePanelStackStyle}>
+            {onboardingSlot ? <div>{onboardingSlot}</div> : null}
+            {taskSlot ? (
+              <aside id="module-task" style={mobileTaskStyle}>
+                {taskSlot}
+              </aside>
+            ) : null}
+            <aside id="module-directions" style={mobileDirectionsStyle}>
+              {directionsSlot}
+            </aside>
+            {controlSlot ? (
+              <div id="module-controls" style={mobileControlStyle}>
+                {controlSlot}
+              </div>
+            ) : null}
+            <a href={scrollAnchor} style={mobileScrollCtaStyle}>
+              <span className="label-mono">Continue reading</span>
+              <span aria-hidden="true" style={ctaArrowStyle}>
+                ↓
+              </span>
+            </a>
+          </div>
+        </section>
+        {mobileActionBar}
+      </>
+    );
+  }
+
   return (
-    <section style={frameStyle} aria-label="Module hero">
-      {/* Big bleed title */}
-      <div style={bleedWrapperStyle} aria-hidden="true">
-        <span className="label-mono" style={bleedEyebrowStyle}>
-          {eyebrow}
-        </span>
-        <span style={bleedTitleStyle}>{bigTitle}</span>
-      </div>
-
-      {/* The scene */}
-      <div style={sceneWrapperStyle}>{scene}</div>
-
-      {/* Corner — top-left: module number */}
-      <div style={topLeftLabelStyle}>
-        <span className="label-mono" style={cornerLabelStyle}>
-          Module {moduleNumber}
-        </span>
-      </div>
-
-      {/* Corner — top-right: edition + scroll cue */}
-      <div style={topRightLabelStyle}>
-        <span className="label-mono" style={cornerLabelStyle}>
-          {edition}
-        </span>
-        <span className="label-mono" style={scrollCueStyle}>
-          Keep scrolling ↓
-        </span>
-      </div>
-
-      {/* Right side: DIRECTIONS card */}
-      <aside style={directionsCardStyle}>{directionsSlot}</aside>
-
-      {/* Bottom-left: editorial quote */}
-      <blockquote style={quoteStyle}>
-        <p style={quoteTextStyle}>{quote}</p>
-        <footer className="label-mono" style={attributionStyle}>
-          {attribution}
-        </footer>
-      </blockquote>
-
-      {/* Bottom-center: control + scroll CTA */}
-      <div style={controlSlot ? bottomBarStyle : bottomBarCenterStyle}>
-        {controlSlot ? <div style={controlBoxStyle}>{controlSlot}</div> : null}
-        <a href={scrollAnchor} style={scrollCtaStyle} aria-label="Scroll to continue">
-          <span className="label-mono">Scroll to continue</span>
-          <span aria-hidden="true" style={ctaArrowStyle}>
-            ↓
+    <>
+      <section style={frameStyle} aria-label="Module hero">
+        {/* Big bleed title */}
+        <div style={bleedWrapperStyle} aria-hidden="true">
+          <span className="label-mono" style={bleedEyebrowStyle}>
+            {eyebrow}
           </span>
-        </a>
-      </div>
+          <span style={bleedTitleStyle}>{bigTitle}</span>
+        </div>
 
-      {/* Subtle vignette to focus attention on the scene */}
-      <div style={vignetteStyle} aria-hidden="true" />
-    </section>
+        {/* The scene */}
+        <div id="module-scene" style={sceneWrapperStyle}>
+          {scene}
+        </div>
+
+        {onboardingSlot ? <div style={onboardingStyle}>{onboardingSlot}</div> : null}
+
+        {/* Corner — top-left: module number */}
+        <div style={topLeftLabelStyle}>
+          <span className="label-mono" style={cornerLabelStyle}>
+            Module {moduleNumber}
+          </span>
+        </div>
+
+        {/* Corner — top-right: edition + scroll cue */}
+        <div style={topRightLabelStyle}>
+          <span className="label-mono" style={cornerLabelStyle}>
+            {edition}
+          </span>
+        </div>
+
+        {/* Right side: task + directions stack */}
+        <aside style={directionsCardStyle}>
+          {taskSlot ? (
+            <div id="module-task" style={taskSlotStyle}>
+              {taskSlot}
+            </div>
+          ) : null}
+          <div id="module-directions">{directionsSlot}</div>
+        </aside>
+
+        {/* Bottom-left: editorial quote */}
+        <blockquote style={quoteStyle}>
+          <p style={quoteTextStyle}>{quote}</p>
+          <footer className="label-mono" style={attributionStyle}>
+            {attribution}
+          </footer>
+        </blockquote>
+
+        {/* Bottom-center: control + scroll CTA */}
+        <div style={controlSlot ? bottomBarStyle : bottomBarCenterStyle}>
+          {controlSlot ? (
+            <div id="module-controls" style={controlBoxStyle}>
+              {controlSlot}
+            </div>
+          ) : null}
+          <a href={scrollAnchor} style={scrollCtaStyle} aria-label="Scroll to continue">
+            <span className="label-mono">Continue reading</span>
+            <span aria-hidden="true" style={ctaArrowStyle}>
+              ↓
+            </span>
+          </a>
+        </div>
+
+        {/* Subtle vignette to focus attention on the scene */}
+        <div style={vignetteStyle} aria-hidden="true" />
+      </section>
+      {mobileActionBar}
+    </>
   );
+}
+
+function useHeroIsMobile(): boolean {
+  const [mobile, setMobile] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    const update = () => setMobile(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+
+  return mobile;
 }
 
 /* ───── styles ─────────────────────────────────────────────────────── */
@@ -119,6 +205,65 @@ const frameStyle: CSSProperties = {
   borderBlock: "1px solid var(--rule)",
   overflow: "hidden",
   isolation: "isolate",
+};
+
+const mobileFrameStyle: CSSProperties = {
+  width: "100%",
+  background: "var(--paper-sunk)",
+  borderBlock: "1px solid var(--rule)",
+  overflow: "hidden",
+};
+
+const mobileTopRowStyle: CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "1rem",
+  padding: "0.9rem var(--gutter-inline)",
+  borderBlockEnd: "1px solid var(--rule)",
+  background: "color-mix(in oklab, var(--paper-elevated) 78%, transparent)",
+};
+
+const mobileSceneStyle: CSSProperties = {
+  position: "relative",
+  height: "min(58vh, 520px)",
+  minHeight: "360px",
+  overflow: "hidden",
+};
+
+const mobilePanelStackStyle: CSSProperties = {
+  display: "grid",
+  gap: "0.85rem",
+  padding: "1rem var(--gutter-inline) 1.25rem",
+  background: "var(--paper)",
+  borderBlockStart: "1px solid var(--rule)",
+};
+
+const mobileDirectionsStyle: CSSProperties = {
+  scrollMarginBlockStart: "5rem",
+};
+
+const mobileTaskStyle: CSSProperties = {
+  scrollMarginBlockStart: "5rem",
+};
+
+const mobileControlStyle: CSSProperties = {
+  border: "1px solid var(--rule)",
+  borderRadius: "var(--radius-sm)",
+  background: "var(--paper-elevated)",
+};
+
+const mobileScrollCtaStyle: CSSProperties = {
+  display: "inline-flex",
+  justifySelf: "center",
+  alignItems: "center",
+  gap: "0.55rem",
+  padding: "0.6rem 1rem",
+  border: "1px solid var(--rule)",
+  borderRadius: "999px",
+  background: "var(--paper-elevated)",
+  color: "var(--ink-primary)",
+  textDecoration: "none",
+  whiteSpace: "nowrap",
 };
 
 const sceneWrapperStyle: CSSProperties = {
@@ -143,7 +288,7 @@ const bleedWrapperStyle: CSSProperties = {
 const bleedEyebrowStyle: CSSProperties = {
   paddingInlineStart: "clamp(1rem, 2.5vw, 2rem)",
   color: "color-mix(in oklab, var(--ink-secondary) 75%, transparent)",
-  letterSpacing: "0.18em",
+  letterSpacing: 0,
 };
 
 const bleedTitleStyle: CSSProperties = {
@@ -153,14 +298,14 @@ const bleedTitleStyle: CSSProperties = {
   fontSize: "clamp(72px, 16vw, 280px)",
   fontVariationSettings: '"opsz" 144',
   lineHeight: 0.86,
-  letterSpacing: "-0.045em",
+  letterSpacing: 0,
   color: "color-mix(in oklab, var(--ink-primary) 78%, transparent)",
   textTransform: "uppercase",
 };
 
 const cornerLabelStyle: CSSProperties = {
   color: "var(--ink-secondary)",
-  letterSpacing: "0.16em",
+  letterSpacing: 0,
 };
 
 const topLeftLabelStyle: CSSProperties = {
@@ -183,24 +328,30 @@ const topRightLabelStyle: CSSProperties = {
   pointerEvents: "none",
 };
 
-const scrollCueStyle: CSSProperties = {
-  color: "var(--ink-tertiary)",
-  letterSpacing: "0.18em",
-};
-
 const directionsCardStyle: CSSProperties = {
   position: "absolute",
   insetBlockStart: "clamp(4rem, 8vh, 7rem)",
   insetInlineEnd: "clamp(1.2rem, 2.5vw, 2.4rem)",
   zIndex: 3,
-  maxWidth: "min(36ch, calc(100% - 2rem))",
+  display: "grid",
+  gap: "0.75rem",
+  maxWidth: "min(42ch, calc(100% - 2rem))",
+  maxHeight: "calc(100% - 11rem)",
+  overflowY: "auto",
   pointerEvents: "auto",
-  border: "1px solid color-mix(in oklab, var(--accent-action) 60%, var(--rule))",
-  borderRadius: "var(--radius-sm)",
-  background: "color-mix(in oklab, var(--paper-elevated) 88%, transparent)",
-  backdropFilter: "blur(12px)",
-  WebkitBackdropFilter: "blur(12px)",
-  padding: "1rem 1.1rem",
+  scrollbarWidth: "thin",
+};
+
+const taskSlotStyle: CSSProperties = {
+  scrollMarginBlockStart: "5rem",
+};
+
+const onboardingStyle: CSSProperties = {
+  position: "absolute",
+  insetBlockStart: "clamp(5rem, 13vh, 8rem)",
+  insetInlineStart: "clamp(1.2rem, 2.5vw, 2.4rem)",
+  zIndex: 3,
+  pointerEvents: "auto",
 };
 
 const quoteStyle: CSSProperties = {
@@ -226,7 +377,7 @@ const attributionStyle: CSSProperties = {
   display: "block",
   marginBlockStart: "0.6rem",
   color: "var(--ink-tertiary)",
-  letterSpacing: "0.18em",
+  letterSpacing: 0,
 };
 
 const bottomBarStyle: CSSProperties = {

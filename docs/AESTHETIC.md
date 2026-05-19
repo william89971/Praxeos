@@ -22,8 +22,8 @@ Dark mode is not "flip the colors." It is a **parallel edition** — the same ti
 
 ### Three accents, three jobs
 
-- **Bitcoin orange** (`#E87722`) appears in the Halving Garden module and nowhere else arbitrarily. It is the color of sound-money emergence. When it appears, it means *money*.
-- **Oxblood** (`#8B3A3A`) marks *action* moments — the cursor on interactive elements, the correction cascade in the Time Preference Forest, rising-price glow in the Calculation Problem.
+- **Bitcoin orange** (`#E87722`) appears where money or price signals carry the argument. It is the color of sound-money emergence and appraisable calculation.
+- **Oxblood** (`#8B3A3A`) marks *action* and failure moments — the cursor on interactive elements, correction in the Monetary Garden, wrong turns in the Calculation Labyrinth, and missed-plan shocks in the Coordination Engine.
 - **Forest green** (`#3A5A4A`) marks *capital* — time preference, patient production, deep roots.
 
 A reader who studies the site for ten minutes will learn this color grammar without being told. This is intentional.

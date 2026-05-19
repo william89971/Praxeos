@@ -30,6 +30,15 @@ export function SignalNetwork() {
     [colors],
   );
   const liveColor = useMemo(() => colors["--accent-bitcoin"], [colors]);
+  const actionColors = useMemo(
+    () => ({
+      buy: colors["--accent-bitcoin"],
+      sell: colors["--accent-action"],
+      wait: colors["--ink-secondary"],
+      discover: colors["--accent-capital"],
+    }),
+    [colors],
+  );
 
   const tubes = useMemo(() => {
     return links.map((link) => {
@@ -58,8 +67,10 @@ export function SignalNetwork() {
       const a = pulses.get(link.from)?.intensity ?? 0;
       const b = pulses.get(link.to)?.intensity ?? 0;
       const intensity = Math.max(a, b);
+      const kind =
+        (a >= b ? pulses.get(link.from)?.kind : pulses.get(link.to)?.kind) ?? "buy";
       const mat = child.material as MeshStandardMaterial;
-      tmp.lerpColors(baseColor, liveColor, intensity);
+      tmp.lerpColors(baseColor, actionColors[kind] ?? liveColor, intensity);
       mat.color.copy(tmp);
       mat.emissive.copy(tmp);
       mat.emissiveIntensity = 0.06 + intensity * 1.2;

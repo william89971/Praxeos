@@ -10,13 +10,13 @@ export const metadata: ModuleMetadata = {
   readingTimeMin: 11,
   publishedAt: "2026-04-25",
   fascicle: 1,
-  moduleNumber: 4,
+  moduleNumber: 1,
   bestOn: "desktop",
   hasMath: false,
   hasAudio: false,
   posterSrc: "/posters/monetary-garden.svg",
   sketchDescription:
-    "A top-down view of a calm garden plot. Trees, grass, water, production nodes, and the slim paths that connect them respond to a single control labelled money supply / signal distortion. At low distortion the scene is steady: water full, trees upright, paths smooth. As the slider rises, grass overgrows then dies in patches, water drains, trees deform and some collapse, paths warp, and dead zones — malinvestment — spread across the ground. A vertical signal beam above the plot shifts from clean amber to oxblood as the unit of account is debased.",
+    "A top-down view of a garden economy. Trees, grass, water, production nodes, and slim paths respond to credit expansion, savings backing, and a correction reveal. Easy credit can produce visible boom growth while draining the reservoir and spreading malinvestment patches. Higher savings keeps the signal clearer and the capital structure steadier. When correction is revealed, unsupported growth collapses, dead zones widen, and output adjusts toward what real saving can sustain.",
   discussionPrompt:
     "If the signal that prices carry is what allows strangers to coordinate, what is left of an economy when the signal can be edited at will?",
   learningOutcomes: [

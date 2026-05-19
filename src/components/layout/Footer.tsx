@@ -1,20 +1,22 @@
 import Link from "next/link";
+import { ThinkerFooterSection } from "./ThinkerFooterSection";
 
 export function Footer() {
   return (
     <footer
       style={{
         borderBlockStart: "1px solid var(--rule)",
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "var(--gutter-block)",
         background: "var(--paper-elevated)",
         marginBlockStart: "auto",
       }}
     >
+      <ThinkerFooterSection />
       <div
         style={{
           maxWidth: "var(--measure-wide)",
           marginInline: "auto",
+          paddingInline: "var(--gutter-inline)",
+          paddingBlock: "var(--gutter-block)",
           display: "grid",
           gridTemplateColumns: "minmax(0, 1fr) auto",
           gap: "2rem",

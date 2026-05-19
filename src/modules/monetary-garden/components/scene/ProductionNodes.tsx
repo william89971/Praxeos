@@ -6,7 +6,7 @@ import { Float } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color, type Mesh, type MeshStandardMaterial } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 import { type NodePos, nodePositions } from "../../lib/gardenLayout";
 
@@ -63,7 +63,7 @@ function NodeMesh({
     const mesh = meshRef.current;
     const mat = matRef.current;
     if (!mesh || !mat) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     const t = state.clock.getElapsedTime();
 
     const calmPulse = 0.6 + Math.sin(t * 1.2 + node.phase * Math.PI * 2) * 0.4;

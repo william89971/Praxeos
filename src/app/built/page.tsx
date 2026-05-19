@@ -73,28 +73,27 @@ export default function BuiltPage() {
             needed: sketches, the theme toggle, and the custom cursor.
           </p>
 
-          <h4>Pure-function simulation engine</h4>
+          <h4>Pure interaction state</h4>
           <p>
-            The Calculation Problem module runs a real-time economic simulation. The
-            engine is a single pure function: <code>step(state, params) → state</code>.
-            Zero rendering coupling. This means:
+            The active modules keep their teaching logic in pure helpers before it ever
+            reaches WebGL: monetary metrics, signal propagation, labyrinth movement
+            costs, and coordination coherence. Zero rendering coupling. This means:
           </p>
           <ul>
             <li>
-              The same engine drives the canvas, the unit tests, and the "Be the
-              Planner" mode.
+              The same state model drives the scene, the controls, query hydration, and
+              unit tests.
             </li>
             <li>Every invariant is testable in Vitest without a browser.</li>
-            <li>The simulation is deterministic: same seed, identical trajectory.</li>
+            <li>Seeded modules stay deterministic: same seed, identical layout.</li>
           </ul>
 
-          <h4>Canvas 2D, not WebGL</h4>
+          <h4>3D stages with poster fallbacks</h4>
           <p>
-            The sketches use Canvas 2D with a thin React wrapper (<code>Sketch</code>
-            component) that handles resize, DPR capping, IntersectionObserver pausing,
-            and <code>prefers-reduced-motion</code> fallbacks. No Three.js, no D3, no p5
-            runtime overhead. The Halving Garden uses regl for tile rendering because it
-            needs WebGL performance; everything else stays on 2D for simplicity.
+            The four live modules use React Three Fiber where the interactive thesis
+            benefits from spatial structure. A shared scene shell handles DPR capping,
+            IntersectionObserver mounting, and <code>prefers-reduced-motion</code>{" "}
+            fallbacks. Reduced-motion users get the poster frame and no canvas mount.
           </p>
         </Section>
 
@@ -111,29 +110,32 @@ export default function BuiltPage() {
             </em>
           </p>
 
-          <h4>The Complexity Slider</h4>
+          <h4>Monetary Garden controls</h4>
           <p>
-            In the Calculation Problem module, a single slider controls the number of
-            goods in the economy. As the reader drags it, both panels re-initialise with
-            the same seed — identical agents, identical technology — but diverge because
-            one has prices and one does not. The visual divergence is the Misesian
-            argument in real time.
+            Credit expansion and savings backing are separate controls. The correction
+            action reveals the difference between growth funded by real saving and
+            growth funded by an edited money signal.
           </p>
 
-          <h4>The "Be the Planner" Arc</h4>
+          <h4>Actor-first signaling</h4>
           <p>
-            A three-act guided experience walks the reader through planner mode. Act 1
-            (8 goods): the reader can still coordinate manually. Act 2 (48 goods): the
-            decision queue lengthens. Act 3 (160 goods): coordination collapses. The arc
-            is state-driven, not video — every run is a live simulation.
+            The Signal Orchard starts with action: buy, sell, wait, or discover.
+            Clicking an actor emits a local pulse, updates neighbors, and records the
+            action in a concise log.
           </p>
 
-          <h4>Dynamic Explanation</h4>
+          <h4>Calculation as exercise</h4>
           <p>
-            As the simulation runs, a text panel updates based on the current state:
-            market satisfaction, planned waste, price convergence, and the gap between
-            the two modes. The explanation is not static; it responds to what the reader
-            is seeing.
+            The Calculation Labyrinth makes the reader move the planner. With prices,
+            legal exits carry comparable costs; without prices, the markers disappear
+            and the waste counter records wrong turns and backtracking.
+          </p>
+
+          <h4>Coordination as synchrony</h4>
+          <p>
+            The Coordination Engine focuses on reliability, latency, and shocks. Node
+            pulses show how demand and supply signals become coherent throughput or
+            missed plans.
           </p>
         </Section>
 
@@ -160,12 +162,11 @@ export default function BuiltPage() {
             JS bundle for a module route stays under 200 KB gzipped.
           </p>
 
-          <h4>Tile pyramid</h4>
+          <h4>Shareable state</h4>
           <p>
-            The Halving Garden renders ~10–14 GB of pre-baked WebP tiles on Vercel Blob,
-            not on the client. The client only fetches visible tiles and ghosts in live
-            blocks via a mempool.space WebSocket. This is the same architecture as
-            Google Maps, applied to Bitcoin block history.
+            Each active module hydrates from query params. A reader can share a garden
+            with a specific credit/savings mix, an orchard action mode, a labyrinth
+            challenge, or a coordination reliability/latency state.
           </p>
         </Section>
 
@@ -174,23 +175,23 @@ export default function BuiltPage() {
           label="§ V — Testing"
           title="Correctness is not optional."
         >
-          <p>The simulation engine has four invariant tests in Vitest:</p>
+          <p>The interaction layer has four focused invariant groups in Vitest:</p>
           <ol>
             <li>
-              <strong>Market prices converge</strong> under fixed shocks — the
-              tatonnement process reaches equilibrium.
+              <strong>Monetary metrics</strong> respond correctly to credit, savings,
+              and correction.
             </li>
             <li>
-              <strong>Socialist waste grows superlinearly</strong> with the number of
-              goods — the Misesian prediction is encoded as a testable invariant.
+              <strong>Signal propagation</strong> preserves action kind, origin, and
+              neighbor updates.
             </li>
             <li>
-              <strong>Both modes conserve total resources</strong> — no goods are
-              created or destroyed; waste is accounted for explicitly.
+              <strong>Labyrinth movement</strong> distinguishes legal moves, wrong
+              turns, and waste.
             </li>
             <li>
-              <strong>Same seed produces identical trajectory</strong> — determinism is
-              a feature, not a bug.
+              <strong>Coordination parameters</strong> connect reliability and latency
+              to coherence, throughput, failed links, and missed plans.
             </li>
           </ol>
           <p>
@@ -250,8 +251,8 @@ export default function BuiltPage() {
             </li>
             <li>
               <strong>Materials:</strong> Principled BSDF only — node groups do not
-              survive the export. Use baseline colour, roughness, metalness; the scene
-              already provides HDR-driven IBL via drei's <code>Environment</code>.
+              survive the export. Use baseline colour, roughness, and metalness; the
+              scene provides local procedural lighting.
             </li>
             <li>
               <strong>Scale:</strong> 1 Blender unit = 1 metre. Most Praxeos elements
@@ -391,25 +392,25 @@ function ArchitectureDiagram() {
 │  Reader (Browser)                                           │
 │  ─────────────────                                          │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │ Static HTML │  │ Canvas 2D   │  │ WebSocket (live)    │  │
-│  │ (App Router)│  │ simulation  │  │ blocks / metrics    │  │
+│  │ Static HTML │  │ R3F canvas  │  │ Query state         │  │
+│  │ App Router  │  │ if allowed  │  │ share + hydrate     │  │
 │  └─────────────┘  └─────────────┘  └─────────────────────┘  │
 └────────────────────┬────────────────────┬───────────────────┘
                      │                    │
         ┌────────────┘                    └────────────┐
         │                                              │
         ▼                                              ▼
-┌──────────────┐                            ┌──────────────────┐
-│ Vercel Edge  │                            │ Vercel Blob      │
-│ /api/blocks  │                            │ WebP tile pyramid│
-│ /api/m2      │                            │ (immutable CDN)  │
-│ /api/tile/*  │                            └──────────────────┘
-└──────┬───────┘
-       │
-   ┌───┴───┐
-   ▼       ▼
-mempool  FRED
-.space    API`}
+┌──────────────────┐                       ┌──────────────────┐
+│ Pure state logic │                       │ Reduced motion   │
+│ metrics / costs  │                       │ poster fallback  │
+│ pulses / params  │                       │ no canvas mount  │
+└──────────────────┘                       └──────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│ Monetary Garden · Signal Orchard · Calculation Labyrinth    │
+│ Coordination Engine                                         │
+└─────────────────────────────────────────────────────────────┘`}
       </pre>
     </div>
   );

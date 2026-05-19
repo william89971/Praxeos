@@ -8,6 +8,7 @@ import { THINKER_SLUGS } from "@/types/module";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { CSSProperties } from "react";
 
 type RouteParams = { slug: string };
 
@@ -75,6 +76,62 @@ export default async function ThinkerRoute({
         <Fleuron />
 
         <section
+          aria-label="Thinker significance"
+          style={{
+            maxWidth: "var(--measure-wide)",
+            marginInline: "auto",
+            paddingInline: "var(--gutter-inline)",
+            paddingBlock: "0 calc(var(--gutter-block) * 0.75)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(18rem, 1fr))",
+            gap: "1rem",
+          }}
+        >
+          <InfoPanel title="Short History">{thinker.shortHistory}</InfoPanel>
+          <InfoPanel title="Praxeology">{thinker.praxeologySignificance}</InfoPanel>
+          <InfoPanel title="Why this matters to Praxeos">
+            {thinker.praxeosRelevance}
+          </InfoPanel>
+        </section>
+
+        <section
+          style={{
+            maxWidth: "var(--measure-wide)",
+            marginInline: "auto",
+            paddingInline: "var(--gutter-inline)",
+            paddingBlock: "0 calc(var(--gutter-block) * 0.75)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(18rem, 1fr))",
+            gap: "1rem",
+          }}
+        >
+          <div style={listPanelStyle}>
+            <p className="label-mono" style={panelLabelStyle}>
+              Key works
+            </p>
+            <ul style={plainListStyle}>
+              {thinker.keyWorks.map((work) => (
+                <li key={work}>{work}</li>
+              ))}
+            </ul>
+          </div>
+          <div style={listPanelStyle}>
+            <p className="label-mono" style={panelLabelStyle}>
+              Primary links
+            </p>
+            <ul style={plainListStyle}>
+              {thinker.primaryLinks.map((source) => (
+                <li key={source.url}>
+                  <a href={source.url} rel="noopener">
+                    {source.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section
           className="module-essay drop-cap"
           style={{
             maxWidth: "var(--measure-prose)",
@@ -123,3 +180,52 @@ export default async function ThinkerRoute({
     </SiteChrome>
   );
 }
+
+function InfoPanel({
+  title,
+  children,
+}: {
+  readonly title: string;
+  readonly children: string;
+}) {
+  return (
+    <div style={listPanelStyle}>
+      <p className="label-mono" style={panelLabelStyle}>
+        {title}
+      </p>
+      <p
+        style={{
+          margin: 0,
+          fontFamily: "var(--font-serif)",
+          fontSize: "var(--step-0)",
+          lineHeight: 1.5,
+          color: "var(--ink-secondary)",
+        }}
+      >
+        {children}
+      </p>
+    </div>
+  );
+}
+
+const listPanelStyle: CSSProperties = {
+  display: "grid",
+  alignContent: "start",
+  gap: "0.7rem",
+  padding: "1rem",
+  border: "1px solid var(--rule)",
+  borderRadius: "var(--radius-sm)",
+  background: "var(--paper-elevated)",
+};
+
+const panelLabelStyle: CSSProperties = {
+  margin: 0,
+  color: "var(--ink-tertiary)",
+};
+
+const plainListStyle: CSSProperties = {
+  margin: 0,
+  paddingInlineStart: "1.1rem",
+  color: "var(--ink-secondary)",
+  lineHeight: 1.65,
+};

@@ -5,7 +5,7 @@ import { useSceneColors } from "@/sketches/lib/tokenColors";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import type { BufferAttribute, BufferGeometry, Points, PointsMaterial } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 import { PLOT_HALF } from "../../lib/gardenLayout";
 
@@ -36,7 +36,7 @@ export function AmbientParticles() {
     const attr = geom.getAttribute("position") as BufferAttribute | undefined;
     if (!attr) return;
     const arr = attr.array as Float32Array;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
 
     const drift = delta * (0.12 + params.signalCorruption * 0.45);
 

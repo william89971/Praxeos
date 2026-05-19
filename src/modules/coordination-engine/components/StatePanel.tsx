@@ -1,11 +1,19 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import {
+  type CoordMode,
+  type CoordPulse,
+  type CoordState,
+  metricsForState,
+  paramsForState,
+} from "../lib/distortion";
 
 interface Props {
-  readonly distortion: number;
-  readonly mode: "guided" | "explore";
-  readonly onModeChange: (m: "guided" | "explore") => void;
+  readonly state: CoordState;
+  readonly mode: CoordMode;
+  readonly pulse: CoordPulse | undefined;
+  readonly onModeChange: (m: CoordMode) => void;
 }
 
 interface Band {
@@ -48,8 +56,15 @@ function bandFor(d: number): Band {
   return BANDS[0];
 }
 
-export function StatePanel({ distortion, mode, onModeChange }: Props) {
-  const band = bandFor(distortion);
+export function StatePanel({ state, mode, pulse, onModeChange }: Props) {
+  const params = paramsForState(state);
+  const metrics = metricsForState(state);
+  const band = bandFor(params.corruption);
+  const pulseLabel =
+    pulse === undefined
+      ? "Tap a node to emit a demand or supply pulse."
+      : `${pulse.kind === "demand" ? "Demand" : "Supply"} pulse from node ${pulse.nodeId}`;
+
   return (
     <aside style={panelStyle} aria-live="polite">
       <div style={topRowStyle}>
@@ -67,6 +82,15 @@ export function StatePanel({ distortion, mode, onModeChange }: Props) {
       </div>
       <p style={headlineStyle}>{band.headline}</p>
       <p style={sublineStyle}>{band.subline}</p>
+      <div style={metricGridStyle}>
+        <Metric label="Coherence" value={`${metrics.coherence}%`} />
+        <Metric label="Throughput" value={`${metrics.throughput}%`} />
+        <Metric label="Failed links" value={`${metrics.failedLinks}%`} />
+        <Metric label="Missed plans" value={`${metrics.missedPlans}%`} />
+      </div>
+      <p className="label-mono" style={pulseLineStyle}>
+        {pulseLabel}
+      </p>
     </aside>
   );
 }
@@ -100,6 +124,19 @@ function ModeBtn({
   );
 }
 
+function Metric({ label, value }: { readonly label: string; readonly value: string }) {
+  return (
+    <div style={metricStyle}>
+      <span className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
+        {label}
+      </span>
+      <strong className="label-mono" style={{ color: "var(--ink-primary)" }}>
+        {value}
+      </strong>
+    </div>
+  );
+}
+
 const panelStyle: CSSProperties = {
   display: "grid",
   gap: "0.55rem",
@@ -120,6 +157,21 @@ const topRowStyle: CSSProperties = {
   flexWrap: "wrap",
 };
 
+const metricGridStyle: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+  gap: "0.45rem",
+};
+
+const metricStyle: CSSProperties = {
+  display: "grid",
+  gap: "0.15rem",
+  padding: "0.55rem 0.65rem",
+  background: "color-mix(in oklab, var(--paper) 72%, transparent)",
+  border: "1px solid var(--rule)",
+  borderRadius: "var(--radius-sm)",
+};
+
 const headlineStyle: CSSProperties = {
   margin: "0.2rem 0 0",
   fontFamily: "var(--font-serif)",
@@ -134,5 +186,10 @@ const sublineStyle: CSSProperties = {
   fontFamily: "var(--font-serif)",
   fontSize: "var(--step--1)",
   lineHeight: 1.55,
+  color: "var(--ink-secondary)",
+};
+
+const pulseLineStyle: CSSProperties = {
+  margin: 0,
   color: "var(--ink-secondary)",
 };

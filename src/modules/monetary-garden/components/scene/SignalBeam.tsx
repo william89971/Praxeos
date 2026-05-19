@@ -5,7 +5,7 @@ import { Float } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color, type Mesh, type MeshBasicMaterial } from "three";
-import { paramsFor } from "../../lib/distortion";
+import { paramsForState } from "../../lib/distortion";
 import { useDistortionRefs } from "../../lib/distortionContext";
 
 /**
@@ -30,7 +30,7 @@ export function SignalBeam() {
     const mat = matRef.current;
     const mesh = meshRef.current;
     if (!mat || !mesh) return;
-    const params = paramsFor(eased.current);
+    const params = paramsForState(eased.current);
     const t = state.clock.getElapsedTime();
 
     mat.color.lerpColors(sound, debased, params.signalCorruption);

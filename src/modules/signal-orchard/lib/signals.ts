@@ -14,9 +14,12 @@ export const ACTION_HOPS = 3;
 export const ACTION_DELAY_PER_HOP_S = 0.32;
 export const ATTENUATION = 0.66;
 
+export type ActionKind = "buy" | "sell" | "wait" | "discover";
+
 export interface ActiveAction {
   readonly originId: number;
   readonly startedAt: number;
+  readonly kind: ActionKind;
 }
 
 export interface ActorPulse {
@@ -24,7 +27,16 @@ export interface ActorPulse {
   readonly intensity: number;
   /** True if this actor was the origin of the active action. */
   readonly origin: boolean;
+  /** Dominant action kind currently reaching this actor. */
+  readonly kind: ActionKind;
 }
+
+export const ACTION_LABELS: Record<ActionKind, string> = {
+  buy: "Buy",
+  sell: "Sell",
+  wait: "Wait",
+  discover: "Discover",
+};
 
 export function pulsesAt(
   now: number,
@@ -33,7 +45,8 @@ export function pulsesAt(
   nodeIds: readonly number[],
 ): ReadonlyMap<number, ActorPulse> {
   const result = new Map<number, ActorPulse>();
-  for (const id of nodeIds) result.set(id, { intensity: 0, origin: false });
+  for (const id of nodeIds)
+    result.set(id, { intensity: 0, origin: false, kind: "buy" });
 
   for (const action of actions) {
     const elapsed = now - action.startedAt;
@@ -67,10 +80,15 @@ export function pulsesAt(
       const intensity = envelope * ATTENUATION ** hop;
       const prev = result.get(id);
       if (!prev) continue;
-      result.set(id, {
-        intensity: Math.max(prev.intensity, intensity),
-        origin: prev.origin || hop === 0,
-      });
+      if (intensity >= prev.intensity) {
+        result.set(id, {
+          intensity,
+          origin: prev.origin || hop === 0,
+          kind: action.kind,
+        });
+      } else if (hop === 0) {
+        result.set(id, { ...prev, origin: true });
+      }
     }
   }
 

@@ -61,16 +61,17 @@ same files need to exist behind a CDN.
 
 ---
 
-## 4 · FRED API key (M2 meter)
+## 4 · Active-module state checks
 
-The Halving Garden's corner widget compares USD M2 expansion to BTC
-issuance. Without a key `/api/m2` returns `m2Usd: null` and the widget
-renders a greyed-out placeholder.
+The live Fascicle I canon is Monetary Garden, Signal Orchard, Calculation
+Labyrinth, and Coordination Engine. Before launch, verify that each route
+hydrates query params, responds to controls, and renders the reduced-motion
+poster without mounting a canvas.
 
-- [ ] Create an account at <https://fred.stlouisfed.org/docs/api/api_key.html>.
-- [ ] Generate a key (free, no card).
-- [ ] Set `FRED_API_KEY` in Vercel env vars.
-- [ ] Trigger a redeploy; `/api/m2` should now return real numbers.
+- [ ] `/modules/monetary-garden?credit=0.8&savings=0.2&phase=correction`
+- [ ] `/modules/signal-orchard?mode=explore&action=discover`
+- [ ] `/modules/calculation-labyrinth?priced=0&challenge=3`
+- [ ] `/modules/coordination-engine?mode=explore&reliability=0.4&latency=0.7`
 
 ---
 
