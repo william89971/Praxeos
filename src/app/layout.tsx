@@ -58,11 +58,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.org";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Praxeos — Explorable explanations for Austrian economics",
-    template: "%s — Praxeos",
+    default: "Praxeos - Learn praxeology by practicing it",
+    template: "%s - Praxeos",
   },
   description:
-    "A library of interactive, generative, philosophically rigorous explorable explanations of Austrian economics and praxeology. An open-source cultural artifact.",
+    "A practical training ground for praxeology: learn to see human action through actors, ends, means, tradeoffs, opportunity cost, and incentives.",
   keywords: [
     "Austrian economics",
     "praxeology",
@@ -71,7 +71,8 @@ export const metadata: Metadata = {
     "Murray Rothbard",
     "Bitcoin",
     "sound money",
-    "explorable explanations",
+    "human action",
+    "opportunity cost",
     "economic calculation",
     "time preference",
   ],
@@ -84,15 +85,15 @@ export const metadata: Metadata = {
     siteName: "Praxeos",
     locale: "en_US",
     url: siteUrl,
-    title: "Praxeos — Explorable explanations for Austrian economics",
+    title: "Praxeos - Learn praxeology by practicing it",
     description:
-      "A library of interactive, generative, philosophically rigorous explorable explanations of Austrian economics and praxeology.",
+      "A practical training ground for understanding purposeful human action.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Praxeos — Explorable explanations for Austrian economics",
+    title: "Praxeos - Learn praxeology by practicing it",
     description:
-      "A library of interactive, generative, philosophically rigorous explorable explanations of Austrian economics and praxeology.",
+      "Practice actors, ends, means, tradeoffs, opportunity cost, and incentives.",
   },
   alternates: {
     canonical: siteUrl,

@@ -2,6 +2,7 @@ import { SiteChrome } from "@/components/layout/SiteChrome";
 import { DisplayTitle } from "@/components/typography/DisplayTitle";
 import { Fleuron } from "@/components/typography/Fleuron";
 import { GLOSSARY } from "@/content/glossary";
+import { PRACTICAL_CONCEPTS } from "@/lib/praxeology";
 import { THINKERS } from "@/lib/thinkers";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -9,7 +10,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Glossary",
   description:
-    "A–Z of praxeological and Austrian-economic concepts, with primary-source links and cross-references to modules.",
+    "A practical A-Z of praxeological concepts, with examples, exercises, thinker links, and cross-references.",
 };
 
 export default function GlossaryPage() {
@@ -28,8 +29,8 @@ export default function GlossaryPage() {
         <p className="label-mono" style={{ marginBottom: "1rem" }}>
           Praxeos · Glossary
         </p>
-        <DisplayTitle subtitle="Sixteen concepts, arranged A to Z. Each is short, cited where possible, and linked out to the essays that render it.">
-          The terms.
+        <DisplayTitle subtitle="Each concept is written for use: plain definition, real-life example, short exercise, and only then the thinker trail.">
+          Concept library.
         </DisplayTitle>
       </header>
 
@@ -98,6 +99,8 @@ export default function GlossaryPage() {
               >
                 <p style={{ marginBlockStart: 0 }}>{entry.definition}</p>
 
+                <PracticalBlock slug={entry.slug} />
+
                 {thinkers.length > 0 ? (
                   <p
                     className="label-mono"
@@ -159,7 +162,7 @@ export default function GlossaryPage() {
                       fontStyle: "italic",
                     }}
                   >
-                    No module yet — see /docs/MODULE_IDEAS.md on GitHub.
+                    No legacy module yet. Use the course and cases for practice.
                   </p>
                 )}
               </div>
@@ -168,5 +171,36 @@ export default function GlossaryPage() {
         })}
       </section>
     </SiteChrome>
+  );
+}
+
+function PracticalBlock({ slug }: { readonly slug: keyof typeof PRACTICAL_CONCEPTS }) {
+  const practical = PRACTICAL_CONCEPTS[slug];
+
+  return (
+    <div
+      style={{
+        display: "grid",
+        gap: "0.55rem",
+        marginBlock: "1rem",
+        padding: "0.85rem 1rem",
+        border: "1px solid var(--rule)",
+        borderRadius: "var(--radius-sm)",
+        background: "var(--paper-elevated)",
+      }}
+    >
+      <p className="label-mono" style={{ margin: 0, color: "var(--accent-action)" }}>
+        In practice
+      </p>
+      <p style={{ margin: 0 }}>
+        <strong>Plain:</strong> {practical.plain}
+      </p>
+      <p style={{ margin: 0 }}>
+        <strong>Example:</strong> {practical.example}
+      </p>
+      <p style={{ margin: 0 }}>
+        <strong>Try:</strong> {practical.exercise}
+      </p>
+    </div>
   );
 }

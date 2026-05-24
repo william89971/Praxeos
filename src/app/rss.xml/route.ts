@@ -43,7 +43,7 @@ export async function GET(): Promise<Response> {
     <title>Praxeos</title>
     <link>${SITE_URL}</link>
     <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
-    <description>Explorable explanations for Austrian economics and praxeology.</description>
+    <description>Practical praxeology lessons, daily cases, and action analysis.</description>
     <language>en-us</language>
     <copyright>CC BY 4.0 — William Menjivar</copyright>
     <managingEditor>squilliam89971@gmail.com (William Menjivar)</managingEditor>

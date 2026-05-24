@@ -3,11 +3,10 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt =
-  "Praxeos — Explorable explanations for Austrian economics and praxeology.";
+export const alt = "Praxeos - Learn praxeology by practicing it.";
 
 /**
- * Homepage OG — the wordmark over a quiet field of typographic ornaments.
+ * Homepage OG - the wordmark over a quiet field of typographic ornaments.
  */
 export default function HomeOG() {
   // A small grid of ornaments as a visual motif.
@@ -71,7 +70,7 @@ export default function HomeOG() {
           color: "#8B8275",
         }}
       >
-        <span>Praxeos · Fascicle I</span>
+        <span>Praxeology Gym</span>
         <span style={{ fontStyle: "italic", textTransform: "none" }}>Homo agit.</span>
       </div>
 
@@ -98,7 +97,7 @@ export default function HomeOG() {
             maxWidth: "72ch",
           }}
         >
-          Explorable explanations for Austrian economics.
+          Learn to see human action clearly.
         </p>
       </div>
 

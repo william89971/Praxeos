@@ -1,421 +1,315 @@
-import { BeginnerPathRail } from "@/components/experience/BeginnerPathRail";
-import { CinematicHero } from "@/components/home/CinematicHero";
-import { GuidedPrompt } from "@/components/home/GuidedPrompt";
-import { Lineage } from "@/components/home/Lineage";
-import { ScrollSection } from "@/components/home/ScrollSection";
-import { Vignette } from "@/components/home/Vignette";
-import { ModuleCard } from "@/components/interactive/ModuleCard";
-import type { ModulePreviewVariant } from "@/components/interactive/ModulePreview";
-import { ThinkerFooterSection } from "@/components/layout/ThinkerFooterSection";
+import { SiteChrome } from "@/components/layout/SiteChrome";
+import { ActionAnalyzer } from "@/components/learning/ActionAnalyzer";
+import { ActionJournalPanel } from "@/components/learning/ActionJournalPanel";
+import { LearningPathProgress } from "@/components/learning/LearningPathProgress";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
-import { pathStepFor } from "@/lib/beginner-path";
-import { complexityToLabel, conceptToAccent } from "@/lib/formatters";
-import { MODULE_REGISTRY } from "@/modules/registry";
+import { DAILY_CASES, PRAXEOLOGY_101 } from "@/lib/praxeology";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
-const FEATURED_SLUGS = [
-  "monetary-garden",
-  "signal-orchard",
-  "calculation-labyrinth",
-  "coordination-engine",
-] as const;
-
-const MARKETING_COPY: Record<string, { description: string; prompt: string | null }> = {
-  "monetary-garden": {
-    description:
-      "Watch credit expansion, savings backing, and correction reshape an economy from bloom to revealed malinvestment.",
-    prompt: "Try the garden first.",
-  },
-  "signal-orchard": {
-    description:
-      "See how human choices become social coordination. Click any cypress to broadcast an action and watch the orchard reorganize.",
-    prompt: "Start here if you are new.",
-  },
-  "calculation-labyrinth": {
-    description:
-      "Try to plan without prices — and watch the map disappear. Mises's 1920 argument made literal as a 3D maze.",
-    prompt: null,
-  },
-  "coordination-engine": {
-    description:
-      "Follow the signal layer that lets millions act together. Reliability, latency, shocks, and node pulses show synchrony becoming coordination or missed plans.",
-    prompt: "Follow the signal.",
-  },
-};
+const firstLesson = PRAXEOLOGY_101[0];
+const todayCase = DAILY_CASES[0];
 
 export default function HomePage() {
   return (
-    <>
+    <SiteChrome>
       <WebsiteJsonLd />
-      <Vignette intensity={0.05} />
-      <CinematicHero />
-      <WhatIsSection />
-      <BeginnerPathRail />
-      <SourceCredibilityStrip />
-      <StartHereSection />
-      <ChoosePathSection />
-      <Lineage />
-      <ThinkerFooterSection />
-      <FooterNote />
-    </>
+      <HeroSection />
+      <DashboardSection />
+      <MethodSection />
+    </SiteChrome>
   );
 }
 
-function SourceCredibilityStrip() {
+function HeroSection() {
+  if (!firstLesson) return null;
+
   return (
-    <section
-      aria-label="Source credibility"
-      style={{
-        borderBlockStart: "1px solid var(--rule)",
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "1.1rem",
-        background: "var(--paper-elevated)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-          display: "flex",
-          justifyContent: "space-between",
-          gap: "1rem",
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        <p className="label-mono" style={{ margin: 0, color: "var(--ink-tertiary)" }}>
-          Built from Mises, Hayek, Rothbard, Kirzner, and Lachmann.
-        </p>
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <Link href="/thinkers" className="label-mono">
-            Meet the thinkers
-          </Link>
-          <Link href="/glossary" className="label-mono">
-            Beginner glossary
-          </Link>
+    <section style={heroStyle}>
+      <div style={heroInnerStyle}>
+        <div style={heroCopyStyle}>
+          <p className="label-mono" style={eyebrowStyle}>
+            Praxeology Gym
+          </p>
+          <h1 style={heroHeadingStyle}>Learn to see human action clearly.</h1>
+          <p style={heroTextStyle}>
+            Praxeos is becoming a practical training ground for praxeology: the
+            discipline of understanding purposeful action through actors, ends, means,
+            tradeoffs, and incentives.
+          </p>
+          <div style={heroCtaStyle}>
+            <Link href="/learn/praxeology-101" style={primaryCtaStyle}>
+              Start Praxeology 101
+            </Link>
+            <Link href="/cases" style={secondaryCtaStyle}>
+              Practice daily cases
+            </Link>
+          </div>
         </div>
+
+        <ActionAnalyzer
+          id="homepage-action-microscope"
+          title="The action microscope"
+          scenario={firstLesson.scenario}
+          seed={firstLesson.analyzerSeed}
+          insight={firstLesson.insight}
+          sourceNote="This is the basic move: describe action before judging it."
+        />
       </div>
     </section>
   );
 }
 
-/* ------------------------------------------------------------------------- */
-/*  § I — What this is                                                       */
-/* ------------------------------------------------------------------------- */
-
-function WhatIsSection() {
+function DashboardSection() {
   return (
-    <ScrollSection
-      style={{
-        borderBlockStart: "1px solid var(--rule)",
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "calc(var(--gutter-block) * 1.5)",
-        background: "var(--paper)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) minmax(0, 2fr)",
-          gap: "clamp(2rem, 6vw, 6rem)",
-        }}
-      >
-        <div>
-          <p className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
-            § I — What this is
-          </p>
-        </div>
-        <div
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "var(--step-2)",
-            lineHeight: 1.45,
-            maxWidth: "var(--measure-prose)",
-          }}
-        >
-          <p style={{ marginBlockStart: 0 }}>
-            Austrian economics contains some of the most beautiful ideas in the social
-            sciences — ideas that ordinarily arrive in the form of dry prose,
-            ideological posturing, and ugly PDFs.
-          </p>
-          <p>
-            Praxeos is a small protest against that. Each module pairs a generative or
-            interactive piece with a primary-source-backed essay, at a craft level we
-            would not be embarrassed to print on acid-free paper.
-          </p>
-          <p
-            style={{
-              marginBlockEnd: 0,
-              fontSize: "var(--step-1)",
-              color: "var(--ink-secondary)",
-            }}
-          >
-            <Link href="/manifesto">Read the manifesto →</Link>
-          </p>
-        </div>
-      </div>
-    </ScrollSection>
-  );
-}
-
-/* ------------------------------------------------------------------------- */
-/*  § II — Start here                                                        */
-/* ------------------------------------------------------------------------- */
-
-function StartHereSection() {
-  return (
-    <ScrollSection
-      style={{
-        borderBlockStart: "1px solid var(--rule)",
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "calc(var(--gutter-block) * 1.2)",
-        background: "var(--paper-elevated)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) minmax(0, 2fr)",
-          gap: "clamp(2rem, 6vw, 6rem)",
-        }}
-      >
-        <div>
-          <p className="label-mono" style={{ color: "var(--ink-tertiary)" }}>
-            § II — Start here
-          </p>
-        </div>
-        <div style={{ maxWidth: "var(--measure-prose)" }}>
-          <p
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: "var(--step-2)",
-              lineHeight: 1.45,
-              marginBlockStart: 0,
-            }}
-          >
-            If you are new to Austrian economics, follow the{" "}
-            <Link href="#beginner-path">Beginner Path</Link>. It starts with{" "}
-            <Link href="/modules/signal-orchard?path=beginner">The Signal Orchard</Link>
-            , where the basic lesson is immediate: private actions can become public
-            coordination without a central mind.
-          </p>
-          <p
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: "var(--step-1)",
-              lineHeight: 1.5,
-              color: "var(--ink-secondary)",
-              marginBlockEnd: 0,
-            }}
-          >
-            If you already know the action axiom and want to jump to the strongest
-            argument first, go to{" "}
-            <Link href="/modules/calculation-labyrinth">The Calculation Labyrinth</Link>
-            . It is Mises&apos;s 1920 proof that socialist planning cannot compute —
-            rendered as a maze you can switch between with-prices and without.
-          </p>
-
-          <div style={{ marginTop: "1.2rem" }}>
-            <GuidedPrompt>Beginner Path is the recommended route.</GuidedPrompt>
+    <section style={dashboardStyle}>
+      <div style={wideInnerStyle}>
+        <div style={dashboardGridStyle}>
+          <LearningPathProgress />
+          <div style={sideColumnStyle}>
+            {todayCase ? (
+              <section style={todayStyle}>
+                <p className="label-mono" style={todayEyebrowStyle}>
+                  Today's case
+                </p>
+                <h2 style={todayHeadingStyle}>{todayCase.title}</h2>
+                <p style={todayCopyStyle}>{todayCase.scenario}</p>
+                <Link href={`/cases#${todayCase.slug}`} style={caseLinkStyle}>
+                  Solve the case
+                </Link>
+              </section>
+            ) : null}
+            <ActionJournalPanel />
           </div>
         </div>
       </div>
-    </ScrollSection>
+    </section>
   );
 }
 
-/* ------------------------------------------------------------------------- */
-/*  § III — Choose your path                                                 */
-/* ------------------------------------------------------------------------- */
-
-async function ChoosePathSection() {
-  const modules = await Promise.all(
-    MODULE_REGISTRY.map(async (entry) => {
-      const mod = await entry.load();
-      return { entry, meta: mod.metadata };
-    }),
-  );
-
-  const featured = FEATURED_SLUGS.map((slug) => {
-    const found = modules.find((m) => m.entry.slug === slug);
-    if (!found) {
-      throw new Error(`Featured module "${slug}" not found in MODULE_REGISTRY`);
-    }
-    return found;
-  });
+function MethodSection() {
+  const steps = [
+    {
+      title: "Actor",
+      copy: "Who is choosing? Praxeology starts with the acting person, not an abstract aggregate.",
+    },
+    {
+      title: "End",
+      copy: "What improvement is being sought? Action means the actor wants reality to be otherwise.",
+    },
+    {
+      title: "Means",
+      copy: "What is being used? Money, time, attention, rules, tools, and relationships can all be means.",
+    },
+    {
+      title: "Cost",
+      copy: "What is given up? The real cost is the best alternative displaced by the action.",
+    },
+  ] as const;
 
   return (
-    <ScrollSection
-      id="paths"
-      style={{
-        borderBlockStart: "1px solid var(--rule)",
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "calc(var(--gutter-block) * 1.2)",
-        background: "var(--paper)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-        }}
-      >
-        <p
-          className="label-mono"
-          style={{ color: "var(--ink-tertiary)", marginBottom: "1rem" }}
-        >
-          § III — Choose your path
-        </p>
-        <h2 style={{ marginBlockStart: 0, marginBlockEnd: "1rem" }}>Four doors.</h2>
-        <p
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "var(--step-1)",
-            lineHeight: 1.5,
-            color: "var(--ink-secondary)",
-            maxWidth: "52ch",
-            marginBlockEnd: "2.5rem",
-          }}
-        >
-          Each path leads to a single idea, rendered as an interactive piece you can
-          touch, explore, and share. No prior knowledge assumed.
-        </p>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(18rem, 1fr))",
-            gap: "1.5rem",
-          }}
-        >
-          {featured.map(({ entry, meta }) => {
-            const copy = MARKETING_COPY[entry.slug];
-            const pathStep = pathStepFor(entry.slug);
-            const metaStr = `${meta.readingTimeMin}-min read`;
-            return (
-              <div key={entry.slug} style={{ display: "grid", gap: "0.6rem" }}>
-                <ModuleCard
-                  href={`/modules/${entry.slug}`}
-                  title={meta.title}
-                  description={copy?.description ?? meta.subtitle}
-                  accent={conceptToAccent(meta.concept)}
-                  variant={entry.slug as ModulePreviewVariant}
-                  difficulty={complexityToLabel(meta.complexity)}
-                  meta={metaStr}
-                  badge={pathStep?.badge}
-                  actionLabel={pathStep?.actionLabel}
-                  sourceLabel={pathStep?.sourceThinker}
-                />
-                {copy?.prompt ? (
-                  <GuidedPrompt style={{ paddingInlineStart: "0.4rem" }}>
-                    {copy.prompt}
-                  </GuidedPrompt>
-                ) : null}
-              </div>
-            );
-          })}
-        </div>
-
-        <div style={{ marginTop: "2.5rem", textAlign: "center" }}>
-          <Link
-            href="/modules"
-            className="label-mono hover-border"
-            style={{
-              textDecoration: "none",
-              color: "var(--ink-tertiary)",
-              display: "inline-block",
-              padding: "0.5rem 1rem",
-              borderRadius: "var(--radius-md)",
-              border: "1px solid transparent",
-            }}
-          >
-            View all modules →
-          </Link>
-        </div>
-      </div>
-    </ScrollSection>
-  );
-}
-
-/* ------------------------------------------------------------------------- */
-/*  Footer                                                                   */
-/* ------------------------------------------------------------------------- */
-
-function FooterNote() {
-  return (
-    <section
-      style={{
-        borderBlockStart: "1px solid var(--rule)",
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "var(--gutter-block)",
-        background: "var(--paper-elevated)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "2rem",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
-          <p
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontStyle: "italic",
-              fontSize: "var(--step-1)",
-              color: "var(--ink-primary)",
-              marginBlock: 0,
-              marginBlockEnd: "0.5rem",
-            }}
-          >
-            Homo agit.
+    <section style={methodStyle}>
+      <div style={wideInnerStyle}>
+        <div style={methodHeaderStyle}>
+          <p className="label-mono" style={eyebrowStyle}>
+            The method
           </p>
-          <p
-            className="label-mono"
-            style={{ color: "var(--ink-tertiary)", maxWidth: "60ch" }}
-          >
-            Written and built by William Menjivar. Code MIT. Content CC BY 4.0.
+          <h2 style={methodHeadingStyle}>Praxeology is not history first.</h2>
+          <p style={methodCopyStyle}>
+            History asks what happened. Psychology asks what mental process produced it.
+            Statistics asks what patterns appear in data. Praxeology asks what must be
+            true when a person acts purposefully.
           </p>
         </div>
 
-        <nav
-          aria-label="Footer"
-          style={{
-            display: "flex",
-            gap: "1.5rem",
-            flexWrap: "wrap",
-          }}
-        >
-          <Link href="/manifesto" className="label-mono">
-            Manifesto
-          </Link>
-          <Link href="/built" className="label-mono">
-            Built
-          </Link>
-          <Link href="/colophon" className="label-mono">
-            Colophon
-          </Link>
-          <Link href="/rss.xml" className="label-mono">
-            RSS
-          </Link>
-          <a
-            href="https://github.com/william89971/praxeos"
-            className="label-mono"
-            rel="noopener"
-          >
-            GitHub
-          </a>
-        </nav>
+        <div style={methodGridStyle}>
+          {steps.map((step) => (
+            <article key={step.title} style={methodCardStyle}>
+              <h3 style={methodCardHeadingStyle}>{step.title}</h3>
+              <p style={methodCardCopyStyle}>{step.copy}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
+
+const heroStyle: CSSProperties = {
+  paddingInline: "var(--gutter-inline)",
+  paddingBlock: "calc(var(--gutter-block) * 1.05)",
+  background: "var(--paper)",
+};
+
+const heroInnerStyle: CSSProperties = {
+  maxWidth: "var(--measure-wide)",
+  marginInline: "auto",
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 24rem), 1fr))",
+  gap: "clamp(2rem, 5vw, 4rem)",
+  alignItems: "start",
+};
+
+const heroCopyStyle: CSSProperties = {
+  display: "grid",
+  gap: "1rem",
+  paddingBlockStart: "1rem",
+};
+
+const eyebrowStyle: CSSProperties = {
+  margin: 0,
+  color: "var(--accent-action)",
+};
+
+const heroHeadingStyle: CSSProperties = {
+  margin: 0,
+  fontFamily: "var(--font-serif)",
+  fontSize: "clamp(3rem, 8vw, 7rem)",
+  fontWeight: 520,
+  lineHeight: 0.95,
+  textWrap: "balance",
+};
+
+const heroTextStyle: CSSProperties = {
+  margin: 0,
+  maxWidth: "56ch",
+  fontFamily: "var(--font-serif)",
+  fontSize: "var(--step-1)",
+  lineHeight: 1.5,
+  color: "var(--ink-secondary)",
+};
+
+const heroCtaStyle: CSSProperties = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "0.85rem",
+  alignItems: "center",
+};
+
+const primaryCtaStyle: CSSProperties = {
+  display: "inline-flex",
+  padding: "0.8rem 1rem",
+  borderRadius: "var(--radius-sm)",
+  background: "var(--ink-primary)",
+  color: "var(--paper)",
+  textDecoration: "none",
+  fontWeight: 650,
+};
+
+const secondaryCtaStyle: CSSProperties = {
+  display: "inline-flex",
+  padding: "0.8rem 1rem",
+  borderRadius: "var(--radius-sm)",
+  border: "1px solid var(--rule-strong)",
+  color: "var(--ink-primary)",
+  textDecoration: "none",
+};
+
+const dashboardStyle: CSSProperties = {
+  paddingInline: "var(--gutter-inline)",
+  paddingBlock: "var(--gutter-block)",
+  borderBlockStart: "1px solid var(--rule)",
+  background: "var(--paper-sunk)",
+};
+
+const wideInnerStyle: CSSProperties = {
+  maxWidth: "var(--measure-wide)",
+  marginInline: "auto",
+};
+
+const dashboardGridStyle: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 24rem), 1fr))",
+  gap: "1.25rem",
+  alignItems: "start",
+};
+
+const sideColumnStyle: CSSProperties = {
+  display: "grid",
+  gap: "1rem",
+};
+
+const todayStyle: CSSProperties = {
+  display: "grid",
+  gap: "0.7rem",
+  padding: "1rem",
+  border: "1px solid var(--rule)",
+  borderRadius: "var(--radius-sm)",
+  background: "var(--paper-elevated)",
+};
+
+const todayEyebrowStyle: CSSProperties = {
+  margin: 0,
+  color: "var(--accent-bitcoin)",
+};
+
+const todayHeadingStyle: CSSProperties = {
+  margin: 0,
+  fontFamily: "var(--font-serif)",
+  fontSize: "var(--step-1)",
+};
+
+const todayCopyStyle: CSSProperties = {
+  margin: 0,
+  fontFamily: "var(--font-serif)",
+  lineHeight: 1.5,
+  color: "var(--ink-secondary)",
+};
+
+const caseLinkStyle: CSSProperties = {
+  justifySelf: "start",
+  color: "var(--accent-action)",
+  textDecoration: "none",
+  fontWeight: 650,
+};
+
+const methodStyle: CSSProperties = {
+  paddingInline: "var(--gutter-inline)",
+  paddingBlock: "var(--gutter-block)",
+  borderBlockStart: "1px solid var(--rule)",
+  background: "var(--paper)",
+};
+
+const methodHeaderStyle: CSSProperties = {
+  maxWidth: "72ch",
+};
+
+const methodHeadingStyle: CSSProperties = {
+  margin: "0.6rem 0 0",
+  fontFamily: "var(--font-serif)",
+  fontSize: "var(--step-3)",
+  lineHeight: 1.05,
+};
+
+const methodCopyStyle: CSSProperties = {
+  margin: "1rem 0 0",
+  fontFamily: "var(--font-serif)",
+  fontSize: "var(--step-1)",
+  lineHeight: 1.5,
+  color: "var(--ink-secondary)",
+};
+
+const methodGridStyle: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(13rem, 1fr))",
+  gap: "1rem",
+  marginBlockStart: "2rem",
+};
+
+const methodCardStyle: CSSProperties = {
+  paddingBlockStart: "1rem",
+  borderBlockStart: "1px solid var(--rule)",
+};
+
+const methodCardHeadingStyle: CSSProperties = {
+  margin: 0,
+  fontFamily: "var(--font-serif)",
+  fontSize: "var(--step-1)",
+};
+
+const methodCardCopyStyle: CSSProperties = {
+  margin: "0.55rem 0 0",
+  fontFamily: "var(--font-serif)",
+  lineHeight: 1.5,
+  color: "var(--ink-secondary)",
+};

@@ -5,13 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS: Array<{ href: string; label: string }> = [
-  { href: "/#beginner-path", label: "Beginner Path" },
-  { href: "/modules", label: "Modules" },
-  { href: "/thinkers", label: "Thinkers" },
+  { href: "/learn/praxeology-101", label: "Praxeology 101" },
+  { href: "/cases", label: "Daily Cases" },
   { href: "/glossary", label: "Glossary" },
+  { href: "/thinkers", label: "Thinkers" },
+  { href: "/modules", label: "Archive" },
   { href: "/manifesto", label: "Manifesto" },
-  { href: "/built", label: "Built" },
-  { href: "/colophon", label: "Colophon" },
 ];
 
 export function Header() {
@@ -57,7 +56,7 @@ export function Header() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "2rem",
+          gap: "1rem",
         }}
       >
         <Link
@@ -77,15 +76,21 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav aria-label="Primary" className="only-desktop">
+        <nav
+          aria-label="Primary"
+          className="only-desktop"
+          style={{ flex: "1 1 auto", minWidth: 0 }}
+        >
           <ul
             style={{
               listStyle: "none",
               padding: 0,
               margin: 0,
               display: "flex",
-              gap: "2rem",
+              gap: "0.75rem 1rem",
               alignItems: "center",
+              justifyContent: "flex-end",
+              flexWrap: "wrap",
             }}
           >
             {LINKS.map((link) => (

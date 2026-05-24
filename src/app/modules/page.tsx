@@ -5,9 +5,9 @@ import { MODULE_REGISTRY } from "@/modules/registry";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Modules",
+  title: "Legacy Modules",
   description:
-    "Every Praxeos module — explorable explanations of Austrian economics and praxeology.",
+    "The original Praxeos visual modules, preserved as a legacy archive while the site shifts toward practical praxeology training.",
 };
 
 export default async function ModulesIndexPage() {
@@ -28,10 +28,13 @@ export default async function ModulesIndexPage() {
           paddingBlock: "var(--gutter-block)",
         }}
       >
-        <p className="label-mono" style={{ marginBottom: "1rem" }}>
-          Praxeos · Modules
+        <p
+          className="label-mono"
+          style={{ marginBottom: "1rem", color: "var(--ink-tertiary)" }}
+        >
+          Praxeos · Legacy archive
         </p>
-        <h1 style={{ marginBottom: "1rem" }}>The library.</h1>
+        <h1 style={{ marginBottom: "1rem" }}>The old visual modules.</h1>
         <p
           className="italic"
           style={{
@@ -41,9 +44,9 @@ export default async function ModulesIndexPage() {
             maxWidth: "52ch",
           }}
         >
-          Each module pairs an interactive or generative piece with a
-          primary-source-backed essay. They can be read in any order; Fascicle I is
-          intended to be read together.
+          These interactive art pieces remain available, but they are no longer the main
+          learning path. The current direction is the Praxeology Gym: short scenarios,
+          action analysis, daily cases, and a personal Action Journal.
         </p>
 
         {modules.length === 0 ? (

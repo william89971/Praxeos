@@ -40,7 +40,8 @@ export function Footer() {
             className="label-mono"
             style={{ color: "var(--ink-tertiary)", maxWidth: "60ch" }}
           >
-            Written and built by William Menjivar. Code MIT. Content CC BY 4.0.
+            A practical training ground for seeing human action clearly. Written and
+            built by William Menjivar.
           </p>
         </div>
 
@@ -53,6 +54,12 @@ export function Footer() {
             alignItems: "end",
           }}
         >
+          <Link href="/learn/praxeology-101" className="label-mono">
+            Praxeology 101
+          </Link>
+          <Link href="/cases" className="label-mono">
+            Daily Cases
+          </Link>
           <Link href="/manifesto" className="label-mono">
             Manifesto
           </Link>

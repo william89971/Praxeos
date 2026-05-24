@@ -141,7 +141,8 @@ export function WebsiteJsonLd() {
     "@type": "WebSite",
     name: "Praxeos",
     url: SITE_URL,
-    description: "Explorable explanations for Austrian economics and praxeology.",
+    description:
+      "A practical training ground for praxeology and the logic of purposeful human action.",
     publisher: {
       "@type": "Person",
       name: "William Menjivar",
