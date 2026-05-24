@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Praxeos - Learn praxeology by practicing it.";
+export const alt = "Praxeos - Learn praxeology with real-life choices.";
 
 /**
  * Homepage OG - the wordmark over a quiet field of typographic ornaments.
@@ -70,8 +70,10 @@ export default function HomeOG() {
           color: "#8B8275",
         }}
       >
-        <span>Praxeology Gym</span>
-        <span style={{ fontStyle: "italic", textTransform: "none" }}>Homo agit.</span>
+        <span>Praxeology study room</span>
+        <span style={{ fontStyle: "italic", textTransform: "none" }}>
+          Start with one choice.
+        </span>
       </div>
 
       {/* Hero title block */}
@@ -97,7 +99,7 @@ export default function HomeOG() {
             maxWidth: "72ch",
           }}
         >
-          Learn to see human action clearly.
+          Learn praxeology with real-life choices.
         </p>
       </div>
 

@@ -21,25 +21,25 @@ export function LearningPathProgress() {
     <section aria-labelledby="praxeology-path-heading" style={shellStyle}>
       <div style={introStyle}>
         <p className="label-mono" style={eyebrowStyle}>
-          Praxeology 101
+          Start here
         </p>
         <h2 id="praxeology-path-heading" style={headingStyle}>
-          Train the logic of action.
+          Learn one choice at a time.
         </h2>
         <p style={copyStyle}>
-          Eleven short lessons move from the action axiom to prices and everyday
-          application. The goal is not memorization. The goal is learning to see action
-          clearly.
+          Eleven short stops take you from the basic idea to everyday use. No need to
+          memorize a system first. Just practice seeing what people want, what they
+          choose, and what it costs.
         </p>
         <div style={ctaRowStyle}>
           <Link href={`/learn/praxeology-101#${nextLesson.slug}`} style={primaryStyle}>
             {completedLessonCount > 0
-              ? `Continue ${nextLesson.shortTitle}`
-              : "Start Praxeology 101"}
+              ? `Keep going: ${nextLesson.shortTitle}`
+              : "Start the intro"}
           </Link>
           <span className="label-mono" style={metaStyle}>
-            {completedLessonCount}/{PRAXEOLOGY_101.length} complete -{" "}
-            {PRAXEOLOGY_TOTAL_MINUTES} min
+            {completedLessonCount}/{PRAXEOLOGY_101.length} done - about{" "}
+            {PRAXEOLOGY_TOTAL_MINUTES} min total
           </span>
         </div>
       </div>
@@ -67,7 +67,7 @@ export function LearningPathProgress() {
           onClick={resetProgress}
           style={resetStyle}
         >
-          Reset learning progress
+          Reset lesson progress
         </button>
       ) : null}
     </section>
@@ -99,7 +99,7 @@ function ProgressLesson({
       }}
     >
       <span className="label-mono" style={lessonMetaStyle}>
-        {complete ? "Complete" : current ? "Next" : `Lesson ${lesson.order}`}
+        {complete ? "Done" : current ? "Up next" : `Stop ${lesson.order}`}
       </span>
       <strong style={lessonTitleStyle}>{lesson.shortTitle}</strong>
       <span style={lessonCopyStyle}>{lesson.principle}</span>
@@ -111,9 +111,9 @@ const shellStyle: CSSProperties = {
   display: "grid",
   gap: "1.4rem",
   padding: "1.2rem",
-  border: "1px solid var(--rule)",
+  border: "1px solid color-mix(in oklab, var(--accent-bitcoin) 34%, var(--rule))",
   borderRadius: "var(--radius-sm)",
-  background: "var(--paper-elevated)",
+  background: "color-mix(in oklab, var(--accent-bitcoin) 5%, var(--paper-elevated))",
 };
 
 const introStyle: CSSProperties = {

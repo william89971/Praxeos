@@ -16,7 +16,7 @@ test("judgment checks hide feedback until a learner chooses", async ({ page }) =
   await expect(wrongChoice).toHaveAttribute("aria-pressed", "true");
   await expect(judgment.getByText(/The phone changed the menu/i)).toBeVisible();
   await expect(judgment.getByText(/Strong answer/i)).toHaveCount(0);
-  await expect(judgment.getByText("Strongest answer")).toBeVisible();
+  await expect(judgment.getByText("Best fit")).toBeVisible();
 
   const strongChoice = judgment.getByRole("button", {
     name: /preferred immediate relief over the workout/i,

@@ -58,11 +58,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.org";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Praxeos - Learn praxeology by practicing it",
+    default: "Praxeos - Learn praxeology with real-life choices",
     template: "%s - Praxeos",
   },
   description:
-    "A practical training ground for praxeology: learn to see human action through actors, ends, means, tradeoffs, opportunity cost, and incentives.",
+    "A student-friendly place to learn praxeology with short lessons, everyday examples, practice cases, and saved notes.",
   keywords: [
     "Austrian economics",
     "praxeology",
@@ -85,15 +85,15 @@ export const metadata: Metadata = {
     siteName: "Praxeos",
     locale: "en_US",
     url: siteUrl,
-    title: "Praxeos - Learn praxeology by practicing it",
+    title: "Praxeos - Learn praxeology with real-life choices",
     description:
-      "A practical training ground for understanding purposeful human action.",
+      "Short lessons and everyday examples for understanding purposeful human action.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Praxeos - Learn praxeology by practicing it",
+    title: "Praxeos - Learn praxeology with real-life choices",
     description:
-      "Practice actors, ends, means, tradeoffs, opportunity cost, and incentives.",
+      "Start with ordinary choices, then learn actors, ends, means, tradeoffs, and opportunity cost.",
   },
   alternates: {
     canonical: siteUrl,

@@ -38,37 +38,37 @@ const FIELDS: readonly {
   {
     key: "actor",
     label: "Actor",
-    hint: "Who is choosing?",
+    hint: "Who made the choice?",
   },
   {
     key: "end",
     label: "End",
-    hint: "What improvement is being sought?",
+    hint: "What did they want to get, avoid, or fix?",
   },
   {
     key: "means",
     label: "Means",
-    hint: "What is being used to pursue the end?",
+    hint: "What did they use to try to get there?",
   },
   {
     key: "constraint",
     label: "Constraint",
-    hint: "What scarcity, rule, or limit shapes the choice?",
+    hint: "What limit made the choice harder?",
   },
   {
     key: "tradeoff",
     label: "Tradeoff",
-    hint: "What is accepted to get the end?",
+    hint: "What did they accept or give up?",
   },
   {
     key: "opportunityCost",
     label: "Opportunity cost",
-    hint: "What is the best forgone alternative?",
+    hint: "What was the next-best thing they did not do?",
   },
   {
     key: "revealedPreference",
     label: "Revealed preference",
-    hint: "What did the action rank highest in that moment?",
+    hint: "What did the action show mattered most right then?",
   },
 ];
 
@@ -137,12 +137,15 @@ export function ActionAnalyzer({
     <section aria-labelledby={`${id}-heading`} style={shellStyle}>
       <div style={headerStyle}>
         <p className="label-mono" style={eyebrowStyle}>
-          Action Analyzer
+          Practice box
         </p>
         <h3 id={`${id}-heading`} style={headingStyle}>
           {title}
         </h3>
         <p style={scenarioStyle}>{scenario}</p>
+        <p style={coachNoteStyle}>
+          Short, plain answers count. Messy wording is part of learning.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} style={formStyle}>
@@ -179,7 +182,7 @@ export function ActionAnalyzer({
               cursor: allFieldsComplete ? "pointer" : "not-allowed",
             }}
           >
-            Check the action
+            Check my read
           </button>
           <button
             type="button"
@@ -193,7 +196,7 @@ export function ActionAnalyzer({
               cursor: complete && !saved ? "pointer" : "not-allowed",
             }}
           >
-            {saved ? "Saved to journal" : "Save to journal"}
+            {saved ? "Saved" : "Save my note"}
           </button>
         </div>
       </form>
@@ -201,7 +204,7 @@ export function ActionAnalyzer({
       {complete ? (
         <div style={resultStyle} aria-live="polite">
           <p className="label-mono" style={resultLabelStyle}>
-            You just did praxeology.
+            Nice. You just did praxeology.
           </p>
           <p style={resultCopyStyle}>{insight}</p>
           {sourceNote ? <p style={sourceStyle}>{sourceNote}</p> : null}
@@ -215,10 +218,10 @@ const shellStyle: CSSProperties = {
   display: "grid",
   gap: "1rem",
   padding: "1rem",
-  border: "1px solid var(--rule)",
+  border: "1px solid color-mix(in oklab, var(--accent-action) 32%, var(--rule))",
   borderRadius: "var(--radius-sm)",
-  background: "var(--paper-elevated)",
-  boxShadow: "0 18px 55px -42px rgb(28 24 20 / 0.55)",
+  background: "color-mix(in oklab, var(--accent-action) 5%, var(--paper-elevated))",
+  boxShadow: "0 16px 42px -38px rgb(28 24 20 / 0.5)",
 };
 
 const headerStyle: CSSProperties = {
@@ -245,6 +248,13 @@ const scenarioStyle: CSSProperties = {
   lineHeight: 1.5,
 };
 
+const coachNoteStyle: CSSProperties = {
+  margin: 0,
+  color: "var(--accent-action)",
+  fontSize: "var(--step--1)",
+  lineHeight: 1.4,
+};
+
 const formStyle: CSSProperties = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(15rem, 1fr))",
@@ -269,7 +279,7 @@ const textareaStyle: CSSProperties = {
   color: "var(--ink-primary)",
   padding: "0.65rem",
   fontFamily: "var(--font-serif)",
-  fontSize: "var(--step--1)",
+  fontSize: "var(--step-0)",
   lineHeight: 1.35,
 };
 

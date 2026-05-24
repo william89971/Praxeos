@@ -9,9 +9,9 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 
 export const metadata: Metadata = {
-  title: "Praxeology 101",
+  title: "Start Here",
   description:
-    "A practical beginner path for learning praxeology as the logic of purposeful human action.",
+    "A beginner-friendly path for learning praxeology through everyday choices.",
 };
 
 export default function Praxeology101Page() {
@@ -19,10 +19,10 @@ export default function Praxeology101Page() {
     <SiteChrome>
       <header style={headerStyle}>
         <p className="label-mono" style={eyebrowStyle}>
-          Praxeology 101
+          Start here
         </p>
-        <DisplayTitle subtitle="A practical course in seeing actors, ends, means, tradeoffs, opportunity costs, and incentives in ordinary life.">
-          The logic of action.
+        <DisplayTitle subtitle="Praxeology can sound intimidating. Here it just means practicing how to read choices: who acted, what they wanted, what they used, and what they gave up.">
+          Choices make more sense when you slow them down.
         </DisplayTitle>
       </header>
 
@@ -33,13 +33,13 @@ export default function Praxeology101Page() {
         </div>
       </section>
 
-      <section aria-label="Praxeology 101 lessons" style={lessonsStyle}>
+      <section aria-label="Start Here lessons" style={lessonsStyle}>
         <div style={lessonStackStyle}>
           {PRAXEOLOGY_101.map((lesson) => (
             <article key={lesson.slug} id={lesson.slug} style={lessonStyle}>
               <div style={lessonHeaderStyle}>
                 <p className="label-mono" style={lessonMetaStyle}>
-                  Lesson {lesson.order} - {lesson.durationMin} min
+                  Stop {lesson.order} - about {lesson.durationMin} min
                 </p>
                 <h2 style={lessonTitleStyle}>{lesson.title}</h2>
                 <p style={principleStyle}>{lesson.principle}</p>

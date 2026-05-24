@@ -186,7 +186,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       revealedPreference: "A clearer offer seemed worth the late-night effort",
     },
     insight:
-      "Uneasiness is not a mood to diagnose. It is the practical reason action starts: the actor wants reality to be otherwise.",
+      "Uneasiness is not just a feeling to label. It is the practical reason action starts: the actor wants reality to be otherwise.",
     applyPrompt:
       "Name one current uneasiness in your life. What action are you using to remove it?",
     sourceNote:
@@ -549,9 +549,9 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       revealedPreference: "Name what my action showed in that moment",
     },
     insight:
-      "When you can describe your own action this way, praxeology stops being a term and becomes a discipline of attention.",
+      "When you can describe your own action this way, praxeology stops being a term and becomes a habit you can use.",
     applyPrompt:
-      "Save one honest Action Journal entry. Do not make it flattering. Make it accurate.",
+      "Save one honest study note. Do not make it flattering. Make it useful.",
     sourceNote:
       "This capstone keeps history brief: Mises gave the method its systematic form, but the practice starts with seeing action clearly.",
     concepts: ["action-axiom", "subjective-value", "time-preference"],

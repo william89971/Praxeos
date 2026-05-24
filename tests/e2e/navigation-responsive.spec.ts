@@ -6,12 +6,12 @@ test("desktop header exposes the primary learning routes", async ({ page }) => {
 
   const nav = page.getByRole("navigation", { name: "Primary" });
   for (const label of [
-    "Praxeology 101",
-    "Daily Cases",
-    "Glossary",
+    "Start Here",
+    "Practice",
+    "Words",
     "Thinkers",
-    "Archive",
-    "Manifesto",
+    "Old Stuff",
+    "Why This Exists",
   ]) {
     await expect(nav.getByRole("link", { name: label })).toBeVisible();
   }
@@ -39,10 +39,12 @@ test("mobile menu navigates to cases and closes", async ({ page }) => {
   await page.getByRole("button", { name: "Open menu" }).click();
   const mobileNav = page.getByRole("navigation", { name: "Mobile primary" });
   await expect(mobileNav).toBeVisible();
-  await mobileNav.getByRole("link", { name: "Daily Cases" }).click();
+  await mobileNav.getByRole("link", { name: "Practice" }).click();
 
   await expect(page).toHaveURL(/\/cases$/);
-  await expect(page.getByRole("heading", { name: "Practice the lens." })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Practice without a lecture." }),
+  ).toBeVisible();
   await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Mobile primary" })).toHaveCount(0);
 });

@@ -1,12 +1,12 @@
 # Praxeos
 
-> *Homo agit.*
+> Start with one choice.
 
-Praxeos is a practical learning site for praxeology: the study of purposeful
-human action.
+Praxeos is a student-friendly learning site for praxeology: the study of
+purposeful human action.
 
-The goal is not to memorize Austrian history or admire economic diagrams. The
-goal is to learn a discipline of attention:
+The goal is not to memorize Austrian history or sound academic. The goal is to
+practice a simple way of looking at choices:
 
 - Who is acting?
 - What end are they pursuing?
@@ -15,25 +15,25 @@ goal is to learn a discipline of attention:
 - What opportunity cost is being paid?
 - What incentive or knowledge problem is shaping the action?
 
-Praxeos teaches that lens through short lessons, daily cases, and a personal
-Action Journal.
+Praxeos teaches that lens through short lessons, everyday practice cases, and
+saved study notes.
 
 ## What ships now
 
-**Praxeology 101** - An eleven-lesson beginner path that moves from the action
-axiom to ends and means, opportunity cost, subjective value, time preference,
-exchange, prices, and everyday application.
+**Start Here** - An eleven-stop beginner path that moves from the basic idea of
+purposeful action to ends and means, opportunity cost, subjective value, time
+preference, exchange, prices, and everyday application.
 
-**Daily Cases** - Practical 2-5 minute scenarios about work, money, habits,
+**Practice Cases** - Quick 2-5 minute scenarios about work, money, habits,
 health, entrepreneurship, policy, and consumption. Each case asks the learner to
-diagnose action instead of passively read.
+write a plain-language read instead of passively reading.
 
-**Action Analyzer** - The reusable core exercise. It asks the learner to break
-any situation into actor, end, means, constraint, tradeoff, opportunity cost, and
+**Practice Box** - The reusable core exercise. It asks the learner to break any
+situation into actor, end, means, constraint, tradeoff, opportunity cost, and
 revealed preference.
 
-**Action Journal** - A local-first journal for saved insights. It turns lessons
-into a record of applied thinking.
+**Study Notes** - Local saved notes for useful takeaways. They turn lessons into
+a record of applied thinking.
 
 **Concept Library** - A practical glossary with plain definitions, real-life
 examples, exercises, and brief thinker links.
@@ -41,8 +41,8 @@ examples, exercises, and brief thinker links.
 ## What remains archived
 
 The original visual modules are still available under `/modules`, but they are
-now a legacy archive. The main product direction is the Praxeology Gym: applied
-practice before historical exposition.
+now a legacy archive. The main product direction is a friendlier Praxeology
+study room: applied practice before historical exposition.
 
 ## Stack
 

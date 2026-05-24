@@ -7,9 +7,9 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 
 export const metadata: Metadata = {
-  title: "Daily Cases",
+  title: "Practice Cases",
   description:
-    "Short practical praxeology cases for training judgment around action, incentives, tradeoffs, and opportunity cost.",
+    "Short student-friendly practice cases for spotting action, incentives, tradeoffs, and opportunity cost.",
 };
 
 export default function CasesPage() {
@@ -17,10 +17,10 @@ export default function CasesPage() {
     <SiteChrome>
       <header style={headerStyle}>
         <p className="label-mono" style={eyebrowStyle}>
-          Daily cases
+          Practice cases
         </p>
-        <DisplayTitle subtitle="Short practical scenarios. Read the situation, diagnose the action, save the insight, then look for the same pattern in your own life.">
-          Practice the lens.
+        <DisplayTitle subtitle="Short everyday situations. Read one, write what is going on, then save the part you want to remember.">
+          Practice without a lecture.
         </DisplayTitle>
       </header>
 
@@ -31,7 +31,8 @@ export default function CasesPage() {
               <article key={entry.slug} id={entry.slug} style={caseStyle}>
                 <div style={caseHeaderStyle}>
                   <p className="label-mono" style={caseMetaStyle}>
-                    Case {index + 1} - {entry.domain} - {entry.durationMin} min
+                    Practice {index + 1} - {entry.domain} - about {entry.durationMin}{" "}
+                    min
                   </p>
                   <h2 style={caseTitleStyle}>{entry.title}</h2>
                   <p style={caseQuestionStyle}>{entry.question}</p>

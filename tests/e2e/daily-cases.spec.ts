@@ -7,7 +7,9 @@ test("daily cases complete through analyzer work and save to the journal panel",
 }) => {
   await page.goto("/cases");
 
-  await expect(page.getByRole("heading", { name: "Practice the lens." })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Practice without a lecture." }),
+  ).toBeVisible();
   const firstCase = page.locator("article#procrastination-revealed");
   await expect(
     firstCase.getByRole("heading", { name: "The procrastination trade" }),
@@ -16,17 +18,15 @@ test("daily cases complete through analyzer work and save to the journal panel",
   const analyzer = page.locator(
     '[aria-labelledby="case-procrastination-revealed-heading"]',
   );
-  await expect(analyzer.getByText("Action Analyzer")).toBeVisible();
-  await expect(
-    analyzer.getByRole("button", { name: "Save to journal" }),
-  ).toBeDisabled();
+  await expect(analyzer.getByText("Practice box")).toBeVisible();
+  await expect(analyzer.getByRole("button", { name: "Save my note" })).toBeDisabled();
 
   const journal = page.locator('[aria-labelledby="action-journal-heading"]');
-  await expect(journal.getByRole("heading", { name: "Saved insights" })).toBeVisible();
+  await expect(journal.getByRole("heading", { name: "My saved notes" })).toBeVisible();
 
   await fillAnalyzer(analyzer);
-  await analyzer.getByRole("button", { name: "Check the action" }).click();
-  await expect(analyzer.getByText("You just did praxeology.")).toBeVisible();
+  await analyzer.getByRole("button", { name: "Check my read" }).click();
+  await expect(analyzer.getByText("Nice. You just did praxeology.")).toBeVisible();
 
   const learning = await page.evaluate((storageKey) => {
     const raw = window.localStorage.getItem(storageKey);
@@ -34,7 +34,7 @@ test("daily cases complete through analyzer work and save to the journal panel",
   }, STORAGE_KEY);
   expect(learning.completedCases["procrastination-revealed"]).toBeTruthy();
 
-  await analyzer.getByRole("button", { name: "Save to journal" }).click();
+  await analyzer.getByRole("button", { name: "Save my note" }).click();
   await expect(
     journal.getByRole("heading", { name: "The procrastination trade" }),
   ).toBeVisible();

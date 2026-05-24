@@ -142,7 +142,7 @@ export function WebsiteJsonLd() {
     name: "Praxeos",
     url: SITE_URL,
     description:
-      "A practical training ground for praxeology and the logic of purposeful human action.",
+      "A student-friendly place to learn praxeology through everyday choices, short lessons, and practice notes.",
     publisher: {
       "@type": "Person",
       name: "William Menjivar",

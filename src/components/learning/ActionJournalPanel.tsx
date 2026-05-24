@@ -12,10 +12,10 @@ export function ActionJournalPanel() {
       <div style={headerStyle}>
         <div>
           <p className="label-mono" style={eyebrowStyle}>
-            Action Journal
+            Study notes
           </p>
           <h2 id="action-journal-heading" style={headingStyle}>
-            Saved insights
+            My saved notes
           </h2>
         </div>
         {state.journal.length > 0 ? (
@@ -49,8 +49,7 @@ export function ActionJournalPanel() {
         </ol>
       ) : (
         <p style={emptyStyle}>
-          Save an analyzer result and it will appear here. This journal is local to this
-          browser for now.
+          Notes you save will show up here. They stay in this browser for now.
         </p>
       )}
     </section>
@@ -72,9 +71,9 @@ const shellStyle: CSSProperties = {
   display: "grid",
   gap: "1rem",
   padding: "1rem",
-  border: "1px solid var(--rule)",
+  border: "1px solid color-mix(in oklab, var(--accent-capital) 30%, var(--rule))",
   borderRadius: "var(--radius-sm)",
-  background: "var(--paper-elevated)",
+  background: "color-mix(in oklab, var(--accent-capital) 5%, var(--paper-elevated))",
 };
 
 const headerStyle: CSSProperties = {

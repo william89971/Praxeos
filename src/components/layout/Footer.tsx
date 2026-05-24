@@ -34,14 +34,14 @@ export function Footer() {
               marginBlockEnd: "0.5rem",
             }}
           >
-            Homo agit.
+            Keep noticing choices.
           </p>
           <p
             className="label-mono"
             style={{ color: "var(--ink-tertiary)", maxWidth: "60ch" }}
           >
-            A practical training ground for seeing human action clearly. Written and
-            built by William Menjivar.
+            A student-friendly place to learn praxeology through ordinary life. Written
+            and built by William Menjivar.
           </p>
         </div>
 
@@ -55,13 +55,13 @@ export function Footer() {
           }}
         >
           <Link href="/learn/praxeology-101" className="label-mono">
-            Praxeology 101
+            Start Here
           </Link>
           <Link href="/cases" className="label-mono">
-            Daily Cases
+            Practice
           </Link>
           <Link href="/manifesto" className="label-mono">
-            Manifesto
+            Why This Exists
           </Link>
           <Link href="/colophon" className="label-mono">
             Colophon

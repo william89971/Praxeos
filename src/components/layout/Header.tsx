@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS: Array<{ href: string; label: string }> = [
-  { href: "/learn/praxeology-101", label: "Praxeology 101" },
-  { href: "/cases", label: "Daily Cases" },
-  { href: "/glossary", label: "Glossary" },
+  { href: "/learn/praxeology-101", label: "Start Here" },
+  { href: "/cases", label: "Practice" },
+  { href: "/glossary", label: "Words" },
   { href: "/thinkers", label: "Thinkers" },
-  { href: "/modules", label: "Archive" },
-  { href: "/manifesto", label: "Manifesto" },
+  { href: "/modules", label: "Old Stuff" },
+  { href: "/manifesto", label: "Why This Exists" },
 ];
 
 export function Header() {

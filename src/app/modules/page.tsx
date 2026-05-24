@@ -45,8 +45,8 @@ export default async function ModulesIndexPage() {
           }}
         >
           These interactive art pieces remain available, but they are no longer the main
-          learning path. The current direction is the Praxeology Gym: short scenarios,
-          action analysis, daily cases, and a personal Action Journal.
+          learning path. The current direction is the Praxeology study room: short
+          scenarios, practice boxes, everyday cases, and saved study notes.
         </p>
 
         {modules.length === 0 ? (

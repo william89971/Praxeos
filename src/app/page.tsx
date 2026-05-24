@@ -29,31 +29,31 @@ function HeroSection() {
       <div style={heroInnerStyle}>
         <div style={heroCopyStyle}>
           <p className="label-mono" style={eyebrowStyle}>
-            Praxeology Gym
+            Praxeology study room
           </p>
-          <h1 style={heroHeadingStyle}>Learn to see human action clearly.</h1>
+          <h1 style={heroHeadingStyle}>Learn praxeology with real-life choices.</h1>
           <p style={heroTextStyle}>
-            Praxeos is becoming a practical training ground for praxeology: the
-            discipline of understanding purposeful action through actors, ends, means,
-            tradeoffs, and incentives.
+            Praxeology is a big word for a simple habit: look at what someone did, ask
+            what they wanted, and notice what they gave up. Praxeos turns that into
+            short lessons, practice cases, and a notebook you can keep.
           </p>
           <div style={heroCtaStyle}>
             <Link href="/learn/praxeology-101" style={primaryCtaStyle}>
-              Start Praxeology 101
+              Start the intro
             </Link>
             <Link href="/cases" style={secondaryCtaStyle}>
-              Practice daily cases
+              Try a daily case
             </Link>
           </div>
         </div>
 
         <ActionAnalyzer
           id="homepage-action-microscope"
-          title="The action microscope"
+          title="A tiny practice round"
           scenario={firstLesson.scenario}
           seed={firstLesson.analyzerSeed}
           insight={firstLesson.insight}
-          sourceNote="This is the basic move: describe action before judging it."
+          sourceNote="That is the whole starting move: describe the choice before judging it."
         />
       </div>
     </section>
@@ -70,12 +70,12 @@ function DashboardSection() {
             {todayCase ? (
               <section style={todayStyle}>
                 <p className="label-mono" style={todayEyebrowStyle}>
-                  Today's case
+                  Try this today
                 </p>
                 <h2 style={todayHeadingStyle}>{todayCase.title}</h2>
                 <p style={todayCopyStyle}>{todayCase.scenario}</p>
                 <Link href={`/cases#${todayCase.slug}`} style={caseLinkStyle}>
-                  Solve the case
+                  Work through it
                 </Link>
               </section>
             ) : null}
@@ -91,19 +91,19 @@ function MethodSection() {
   const steps = [
     {
       title: "Actor",
-      copy: "Who is choosing? Praxeology starts with the acting person, not an abstract aggregate.",
+      copy: "Who is making the choice? Start with the person in the situation.",
     },
     {
       title: "End",
-      copy: "What improvement is being sought? Action means the actor wants reality to be otherwise.",
+      copy: "What are they trying to get, avoid, fix, or feel?",
     },
     {
       title: "Means",
-      copy: "What is being used? Money, time, attention, rules, tools, and relationships can all be means.",
+      copy: "What are they using to get there: time, money, attention, tools, or rules?",
     },
     {
       title: "Cost",
-      copy: "What is given up? The real cost is the best alternative displaced by the action.",
+      copy: "What did they give up? Every choice pushes something else aside.",
     },
   ] as const;
 
@@ -112,13 +112,13 @@ function MethodSection() {
       <div style={wideInnerStyle}>
         <div style={methodHeaderStyle}>
           <p className="label-mono" style={eyebrowStyle}>
-            The method
+            The basic move
           </p>
-          <h2 style={methodHeadingStyle}>Praxeology is not history first.</h2>
+          <h2 style={methodHeadingStyle}>No need to sound academic.</h2>
           <p style={methodCopyStyle}>
-            History asks what happened. Psychology asks what mental process produced it.
-            Statistics asks what patterns appear in data. Praxeology asks what must be
-            true when a person acts purposefully.
+            You do not have to start with famous thinkers or old debates. Start with one
+            ordinary choice. Name the person, the goal, the tool, and the tradeoff. That
+            is enough to begin.
           </p>
         </div>
 

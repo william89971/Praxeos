@@ -23,7 +23,7 @@ export function JudgmentCheck({ id, question, choices }: Props) {
   return (
     <section aria-labelledby={`${id}-heading`} style={shellStyle}>
       <p className="label-mono" style={labelStyle}>
-        Judgment check
+        Quick check
       </p>
       <h3 id={`${id}-heading`} style={questionStyle}>
         {question}
@@ -56,7 +56,7 @@ export function JudgmentCheck({ id, question, choices }: Props) {
               <span style={choiceTitleStyle}>{choice.label}</span>
               {showStrongMark ? (
                 <span className="label-mono" style={strongMarkStyle}>
-                  Strongest answer
+                  Best fit
                 </span>
               ) : null}
             </button>
@@ -67,7 +67,7 @@ export function JudgmentCheck({ id, question, choices }: Props) {
       {selected ? (
         <div style={feedbackStyle} aria-live="polite">
           <p className="label-mono" style={feedbackLabelStyle}>
-            Feedback
+            Why it matters
           </p>
           <p style={feedbackCopyStyle}>{selected.feedback}</p>
         </div>

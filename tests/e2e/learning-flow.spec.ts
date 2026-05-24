@@ -14,13 +14,15 @@ const ANALYZER_FIELDS = [
   "Revealed preference",
 ] as const;
 
-test("Praxeology 101 requires learner input and preserves journal entries", async ({
+test("Start Here requires learner input and preserves journal entries", async ({
   page,
 }) => {
   await page.goto("/learn/praxeology-101");
 
   await expect(
-    page.getByRole("heading", { name: "The logic of action." }),
+    page.getByRole("heading", {
+      name: "Choices make more sense when you slow them down.",
+    }),
   ).toBeVisible();
   const lesson = page.locator("article#what-is-praxeology");
   await expect(
@@ -30,7 +32,7 @@ test("Praxeology 101 requires learner input and preserves journal entries", asyn
   const analyzer = page.locator(FIRST_LESSON_ANALYZER);
   await assertAnalyzerFieldsEmpty(analyzer);
 
-  const checkButton = analyzer.getByRole("button", { name: "Check the action" });
+  const checkButton = analyzer.getByRole("button", { name: "Check my read" });
   await expect(checkButton).toBeDisabled();
   await analyzer.getByLabel("Actor").fill("A tired learner after dinner");
   await expect(checkButton).toBeDisabled();
@@ -38,31 +40,29 @@ test("Praxeology 101 requires learner input and preserves journal entries", asyn
   await fillAnalyzer(analyzer, "lesson");
   await expect(checkButton).toBeEnabled();
   await checkButton.click();
-  await expect(analyzer.getByText("You just did praxeology.")).toBeVisible();
-  await expect(page.getByText(/1\/11 complete/i)).toBeVisible();
+  await expect(analyzer.getByText("Nice. You just did praxeology.")).toBeVisible();
+  await expect(page.getByText(/1\/11 done/i)).toBeVisible();
 
-  await analyzer.getByRole("button", { name: "Save to journal" }).click();
+  await analyzer.getByRole("button", { name: "Save my note" }).click();
   const journal = page.locator(JOURNAL);
   await expect(
     journal.getByRole("heading", { name: "What is praxeology?" }),
   ).toBeVisible();
 
   await page.reload();
-  await expect(page.getByText(/1\/11 complete/i)).toBeVisible();
+  await expect(page.getByText(/1\/11 done/i)).toBeVisible();
   await expect(
     page.locator(JOURNAL).getByRole("heading", { name: "What is praxeology?" }),
   ).toBeVisible();
 
-  await page.getByRole("button", { name: "Reset learning progress" }).click();
-  await expect(page.getByText(/0\/11 complete/i)).toBeVisible();
+  await page.getByRole("button", { name: "Reset lesson progress" }).click();
+  await expect(page.getByText(/0\/11 done/i)).toBeVisible();
   await expect(
     page.locator(JOURNAL).getByRole("heading", { name: "What is praxeology?" }),
   ).toBeVisible();
 
   await page.locator(JOURNAL).getByRole("button", { name: "Clear" }).click();
-  await expect(
-    page.locator(JOURNAL).getByText(/Save an analyzer result/i),
-  ).toBeVisible();
+  await expect(page.locator(JOURNAL).getByText(/Notes you save/i)).toBeVisible();
   await expect(
     page.locator(JOURNAL).getByRole("heading", { name: "What is praxeology?" }),
   ).toHaveCount(0);
@@ -82,11 +82,11 @@ test("blocked storage keeps the current learning session usable", async ({ page 
 
   const analyzer = page.locator(FIRST_LESSON_ANALYZER);
   await fillAnalyzer(analyzer, "blocked storage");
-  await analyzer.getByRole("button", { name: "Check the action" }).click();
-  await expect(analyzer.getByText("You just did praxeology.")).toBeVisible();
-  await expect(page.getByText(/1\/11 complete/i)).toBeVisible();
+  await analyzer.getByRole("button", { name: "Check my read" }).click();
+  await expect(analyzer.getByText("Nice. You just did praxeology.")).toBeVisible();
+  await expect(page.getByText(/1\/11 done/i)).toBeVisible();
 
-  await analyzer.getByRole("button", { name: "Save to journal" }).click();
+  await analyzer.getByRole("button", { name: "Save my note" }).click();
   await expect(
     page.locator(JOURNAL).getByRole("heading", { name: "What is praxeology?" }),
   ).toBeVisible();

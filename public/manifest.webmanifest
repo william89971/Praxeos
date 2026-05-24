@@ -1,7 +1,7 @@
 {
   "name": "Praxeos",
   "short_name": "Praxeos",
-  "description": "Practice praxeology through action analysis, lessons, cases, and journaling.",
+  "description": "Learn praxeology with short lessons, everyday cases, and saved study notes.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F5F0E6",
