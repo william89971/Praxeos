@@ -2,8 +2,10 @@ import { SiteChrome } from "@/components/layout/SiteChrome";
 import { ActionAnalyzer } from "@/components/learning/ActionAnalyzer";
 import { ActionJournalPanel } from "@/components/learning/ActionJournalPanel";
 import { LearningPathProgress } from "@/components/learning/LearningPathProgress";
+import { PraxeologyMotionGraphic } from "@/components/learning/PraxeologyMotionGraphic";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { DAILY_CASES, PRAXEOLOGY_101 } from "@/lib/praxeology";
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
@@ -16,6 +18,7 @@ export default function HomePage() {
       <WebsiteJsonLd />
       <HeroSection />
       <DashboardSection />
+      <VisualSection />
       <MethodSection />
     </SiteChrome>
   );
@@ -47,14 +50,26 @@ function HeroSection() {
           </div>
         </div>
 
-        <ActionAnalyzer
-          id="homepage-action-microscope"
-          title="A tiny practice round"
-          scenario={firstLesson.scenario}
-          seed={firstLesson.analyzerSeed}
-          insight={firstLesson.insight}
-          sourceNote="That is the whole starting move: describe the choice before judging it."
-        />
+        <div style={heroPracticeStyle}>
+          <Image
+            src="/images/learning/everyday-choice-desk.png"
+            alt="Illustrated study desk with a notebook, phone, groceries, and branching arrows for everyday choices."
+            width={1672}
+            height={941}
+            priority
+            sizes="(min-width: 900px) 46vw, 100vw"
+            style={heroImageStyle}
+          />
+
+          <ActionAnalyzer
+            id="homepage-action-microscope"
+            title="A tiny practice round"
+            scenario={firstLesson.scenario}
+            seed={firstLesson.analyzerSeed}
+            insight={firstLesson.insight}
+            sourceNote="That is the whole starting move: describe the choice before judging it."
+          />
+        </div>
       </div>
     </section>
   );
@@ -79,8 +94,49 @@ function DashboardSection() {
                 </Link>
               </section>
             ) : null}
+            <Image
+              src="/images/learning/reflection-journal-desk.png"
+              alt="Illustrated notebook and note cards organizing observations about time, money, attention, goals, and tradeoffs."
+              width={1672}
+              height={941}
+              sizes="(min-width: 900px) 38vw, 100vw"
+              style={journalImageStyle}
+            />
             <ActionJournalPanel />
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function VisualSection() {
+  return (
+    <section style={visualStyle} aria-labelledby="visual-lens-heading">
+      <div style={wideInnerStyle}>
+        <div style={visualHeaderStyle}>
+          <p className="label-mono" style={eyebrowStyle}>
+            Choice lens
+          </p>
+          <h2 id="visual-lens-heading" style={visualHeadingStyle}>
+            Every action points at a priority.
+          </h2>
+          <p style={visualCopyStyle}>
+            Praxeology gets practical when you can see both sides of a choice: what the
+            person picked, and what had to wait.
+          </p>
+        </div>
+
+        <div style={visualGridStyle}>
+          <Image
+            src="/images/learning/opportunity-cost-path.png"
+            alt="Illustrated notebook with a vivid chosen path and quieter forgone paths for opportunity cost."
+            width={1672}
+            height={941}
+            sizes="(min-width: 900px) 48vw, 100vw"
+            style={visualImageStyle}
+          />
+          <PraxeologyMotionGraphic variant="tradeoff-balance" />
         </div>
       </div>
     </section>
@@ -110,16 +166,19 @@ function MethodSection() {
   return (
     <section style={methodStyle}>
       <div style={wideInnerStyle}>
-        <div style={methodHeaderStyle}>
-          <p className="label-mono" style={eyebrowStyle}>
-            The basic move
-          </p>
-          <h2 style={methodHeadingStyle}>No need to sound academic.</h2>
-          <p style={methodCopyStyle}>
-            You do not have to start with famous thinkers or old debates. Start with one
-            ordinary choice. Name the person, the goal, the tool, and the tradeoff. That
-            is enough to begin.
-          </p>
+        <div style={methodHeaderGridStyle}>
+          <div style={methodHeaderStyle}>
+            <p className="label-mono" style={eyebrowStyle}>
+              The basic move
+            </p>
+            <h2 style={methodHeadingStyle}>No need to sound academic.</h2>
+            <p style={methodCopyStyle}>
+              You do not have to start with famous thinkers or old debates. Start with
+              one ordinary choice. Name the person, the goal, the tool, and the
+              tradeoff. That is enough to begin.
+            </p>
+          </div>
+          <PraxeologyMotionGraphic variant="action-map" />
         </div>
 
         <div style={methodGridStyle}>
@@ -186,6 +245,21 @@ const heroCtaStyle: CSSProperties = {
   alignItems: "center",
 };
 
+const heroPracticeStyle: CSSProperties = {
+  display: "grid",
+  gap: "1rem",
+};
+
+const heroImageStyle: CSSProperties = {
+  width: "100%",
+  height: "auto",
+  aspectRatio: "16 / 9",
+  objectFit: "cover",
+  border: "1px solid var(--rule)",
+  borderRadius: "var(--radius-sm)",
+  boxShadow: "0 1rem 3rem color-mix(in srgb, var(--ink-primary) 10%, transparent)",
+};
+
 const primaryCtaStyle: CSSProperties = {
   display: "inline-flex",
   padding: "0.8rem 1rem",
@@ -238,6 +312,15 @@ const todayStyle: CSSProperties = {
   background: "var(--paper-elevated)",
 };
 
+const journalImageStyle: CSSProperties = {
+  width: "100%",
+  height: "auto",
+  aspectRatio: "16 / 9",
+  objectFit: "cover",
+  border: "1px solid var(--rule)",
+  borderRadius: "var(--radius-sm)",
+};
+
 const todayEyebrowStyle: CSSProperties = {
   margin: 0,
   color: "var(--accent-bitcoin)",
@@ -263,11 +346,63 @@ const caseLinkStyle: CSSProperties = {
   fontWeight: 650,
 };
 
+const visualStyle: CSSProperties = {
+  paddingInline: "var(--gutter-inline)",
+  paddingBlock: "var(--gutter-block)",
+  borderBlockStart: "1px solid var(--rule)",
+  background: "var(--paper)",
+};
+
+const visualHeaderStyle: CSSProperties = {
+  maxWidth: "70ch",
+};
+
+const visualHeadingStyle: CSSProperties = {
+  margin: "0.6rem 0 0",
+  fontFamily: "var(--font-serif)",
+  fontSize: "var(--step-4)",
+  lineHeight: 1.02,
+  textWrap: "balance",
+};
+
+const visualCopyStyle: CSSProperties = {
+  margin: "1rem 0 0",
+  fontFamily: "var(--font-serif)",
+  fontSize: "var(--step-1)",
+  lineHeight: 1.5,
+  color: "var(--ink-secondary)",
+};
+
+const visualGridStyle: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 22rem), 1fr))",
+  gap: "1rem",
+  marginBlockStart: "1.5rem",
+  alignItems: "stretch",
+};
+
+const visualImageStyle: CSSProperties = {
+  width: "100%",
+  height: "100%",
+  minHeight: "clamp(16rem, 34vw, 22rem)",
+  aspectRatio: "16 / 9",
+  objectFit: "cover",
+  border: "1px solid var(--rule)",
+  borderRadius: "var(--radius-sm)",
+};
+
 const methodStyle: CSSProperties = {
   paddingInline: "var(--gutter-inline)",
   paddingBlock: "var(--gutter-block)",
   borderBlockStart: "1px solid var(--rule)",
   background: "var(--paper)",
+};
+
+const methodHeaderGridStyle: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 22rem), 1fr))",
+  gap: "1.25rem",
+  alignItems: "stretch",
 };
 
 const methodHeaderStyle: CSSProperties = {

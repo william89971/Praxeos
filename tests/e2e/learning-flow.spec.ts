@@ -24,6 +24,12 @@ test("Start Here requires learner input and preserves journal entries", async ({
       name: "Choices make more sense when you slow them down.",
     }),
   ).toBeVisible();
+  await expect(page.getByAltText(/Illustrated index cards/i)).toBeVisible();
+  await expect(
+    page.getByText("Read the action before you argue about it."),
+  ).toBeVisible();
+  await expect(page.getByText("Actor").first()).toBeVisible();
+  await expect(page.getByText("Tradeoff").first()).toBeVisible();
   const lesson = page.locator("article#what-is-praxeology");
   await expect(
     lesson.getByRole("heading", { name: "What is praxeology?" }),

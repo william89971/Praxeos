@@ -12,6 +12,12 @@ test("homepage exposes the praxeology practice surface", async ({ page }) => {
     page.getByRole("link", { name: /Start the intro/i }).first(),
   ).toBeVisible();
   await expect(page.getByRole("link", { name: /Try a daily case/i })).toBeVisible();
+  await expect(page.getByAltText(/Illustrated study desk/i)).toBeVisible();
+  await expect(page.getByAltText(/Illustrated notebook and note cards/i)).toBeVisible();
+  await expect(page.getByAltText(/vivid chosen path/i)).toBeVisible();
+  await expect(page.getByText("Every action points at a priority.")).toBeVisible();
+  await expect(page.getByText("Chosen").first()).toBeVisible();
+  await expect(page.getByText("Given up").first()).toBeVisible();
   await expect(page.getByText("Practice box").first()).toBeVisible();
   await expect(page.getByText("Learn one choice at a time.")).toBeVisible();
   await expect(page.getByText("Try this today")).toBeVisible();

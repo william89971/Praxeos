@@ -16,6 +16,7 @@ const withMDX = createMDX({
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  outputFileTracingRoot: __dirname,
   pageExtensions: ["ts", "tsx", "mdx"],
   experimental: {
     viewTransition: true,

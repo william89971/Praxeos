@@ -10,6 +10,11 @@ test("daily cases complete through analyzer work and save to the journal panel",
   await expect(
     page.getByRole("heading", { name: "Practice without a lecture." }),
   ).toBeVisible();
+  await expect(page.getByAltText(/Illustrated table/i)).toBeVisible();
+  await expect(page.getByAltText(/quieter alternatives/i)).toBeVisible();
+  await expect(page.getByText("Practice spotting the trade.")).toBeVisible();
+  await expect(page.getByText("Chosen")).toBeVisible();
+  await expect(page.getByText("Given up")).toBeVisible();
   const firstCase = page.locator("article#procrastination-revealed");
   await expect(
     firstCase.getByRole("heading", { name: "The procrastination trade" }),

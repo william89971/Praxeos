@@ -160,3 +160,219 @@ button {
     opacity: 0.45;
   }
 }
+
+/* ==========================================================================
+   Praxeology learning graphics
+   ========================================================================== */
+
+.praxeology-motion {
+  position: relative;
+  min-height: clamp(16rem, 34vw, 22rem);
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-capital) 9%, transparent),
+      transparent 42%
+    ),
+    linear-gradient(
+      315deg,
+      color-mix(in srgb, var(--accent-bitcoin) 12%, transparent),
+      transparent 44%
+    ), var(--paper-elevated);
+  color: var(--ink-primary);
+}
+
+.praxeology-motion::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent 72%);
+  opacity: 0.24;
+}
+
+.praxeology-motion__node,
+.praxeology-motion__choice {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  gap: 0.25rem;
+  width: min(42%, 13rem);
+  padding: 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  box-shadow: var(--shadow-lift);
+}
+
+.praxeology-motion__node span,
+.praxeology-motion__choice span {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+}
+
+.praxeology-motion__node strong,
+.praxeology-motion__choice strong {
+  font-family: var(--font-serif);
+  font-size: var(--step-0);
+  font-weight: 560;
+  line-height: 1.1;
+}
+
+.praxeology-motion__node--actor {
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+  border-color: color-mix(in srgb, var(--accent-action) 48%, var(--rule));
+}
+
+.praxeology-motion__node--end {
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  border-color: color-mix(in srgb, var(--accent-bitcoin) 52%, var(--rule));
+}
+
+.praxeology-motion__node--means {
+  inset-block-end: 1rem;
+  inset-inline-start: 1rem;
+  border-color: color-mix(in srgb, var(--accent-capital) 52%, var(--rule));
+}
+
+.praxeology-motion__node--tradeoff {
+  inset-block-end: 1rem;
+  inset-inline-end: 1rem;
+  border-color: color-mix(in srgb, var(--accent-action) 42%, var(--rule));
+}
+
+.praxeology-motion__route {
+  position: absolute;
+  inset: 22% 21%;
+  z-index: 1;
+  border: 2px dashed color-mix(in srgb, var(--ink-primary) 34%, transparent);
+  border-radius: 45% 55% 48% 52%;
+  transform: rotate(-6deg);
+  animation: praxeologyRouteBreathe 7s var(--ease-organic) infinite;
+}
+
+.praxeology-motion__pulse {
+  position: absolute;
+  z-index: 3;
+  inline-size: 0.9rem;
+  block-size: 0.9rem;
+  border-radius: 999px;
+  background: var(--accent-action);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-action) 28%, transparent);
+  animation: praxeologyMapPulse 7s var(--ease-slack) infinite;
+}
+
+.praxeology-motion__rail {
+  position: absolute;
+  inset-block: 18%;
+  inset-inline: 50%;
+  inline-size: 1px;
+  background: var(--rule-strong);
+}
+
+.praxeology-motion__choice {
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+.praxeology-motion__choice--chosen {
+  inset-inline-start: 1rem;
+  border-color: color-mix(in srgb, var(--accent-capital) 60%, var(--rule));
+}
+
+.praxeology-motion__choice--cost {
+  inset-inline-end: 1rem;
+  border-color: color-mix(in srgb, var(--accent-bitcoin) 58%, var(--rule));
+}
+
+.praxeology-motion__balance-beam {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 18%;
+  z-index: 1;
+  block-size: 0.35rem;
+  border-radius: 999px;
+  background: var(--ink-primary);
+  transform-origin: center;
+  animation: praxeologyBalanceTilt 6.5s var(--ease-organic) infinite;
+}
+
+.praxeology-motion__balance-beam span {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  inline-size: 1px;
+  block-size: clamp(4rem, 10vw, 6rem);
+  background: var(--ink-primary);
+  transform: translateX(-50%);
+}
+
+@keyframes praxeologyMapPulse {
+  0%,
+  100% {
+    inset-block-start: 22%;
+    inset-inline-start: 22%;
+    transform: scale(1);
+  }
+  24% {
+    inset-block-start: 22%;
+    inset-inline-start: 74%;
+    transform: scale(0.92);
+  }
+  50% {
+    inset-block-start: 74%;
+    inset-inline-start: 74%;
+    transform: scale(1);
+  }
+  74% {
+    inset-block-start: 74%;
+    inset-inline-start: 22%;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes praxeologyRouteBreathe {
+  0%,
+  100% {
+    opacity: 0.34;
+    transform: rotate(-6deg) scale(1);
+  }
+  50% {
+    opacity: 0.58;
+    transform: rotate(-3deg) scale(1.025);
+  }
+}
+
+@keyframes praxeologyBalanceTilt {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .praxeology-motion__node,
+  .praxeology-motion__choice {
+    width: min(46%, 11rem);
+    padding: 0.65rem;
+  }
+
+  .praxeology-motion__node strong,
+  .praxeology-motion__choice strong {
+    font-size: var(--step--1);
+  }
+}
