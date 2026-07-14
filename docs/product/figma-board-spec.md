@@ -1,121 +1,83 @@
 # Praxeos Product Map board specification
 
-This is the complete build specification for the editable Figma draft. It is the repository fallback required because the connected Starter plan permits only one variable mode and cannot represent Praxeos's required Light/Dark semantic token collection.
+This is the repository source of truth for the editable Figma draft. The connected Starter plan still permits only one variable mode, so the complete Light/Dark board specification remains here until an edit-capable plan is available.
 
-## File
+## File and visual foundation
 
 - Name: `Praxeos Product Map`
 - Verified draft: <https://www.figma.com/design/ZiEe4IeEPtGfkMeXLwE1Zk>
 - Captured current-product node: `2:2`
-- Board overview: [product-map-overview.svg](./assets/product-map-overview.svg)
 - Approved concept: [approved-flagship-concept.png](./assets/approved-flagship-concept.png)
-
-## Canvas system
-
-- Background: `#F5F0E6`
-- Raised paper: `#EDE6D6`
-- Ink: `#1C1814`
-- Secondary ink: `#5C5348`
-- Rule: `#D8CFBE`
-- Action accent: `#8B3A3A`
-- Capital accent: `#3A5A4A`
-- Display/prose: Fraunces
-- UI: Inter
-- Evidence/state: JetBrains Mono
-- Section frame: 1440px wide, 96px outer padding, 72px inter-section gap
-- Geometry: thin rules, 2–6px radii, no glossy dashboard cards, no gradients
+- Board overview: [product-map-overview.svg](./assets/product-map-overview.svg)
+- Background `#f5f0e6`; raised paper `#ede6d6`; ink `#1c1814`; secondary ink `#5c5348`; rule `#d8cfbe`
+- Oxblood action `#8b3a3a`; forest capital `#3a5a4a`; ochre price/money `#e87722`
+- Fraunces display/prose, Inter UI, JetBrains Mono evidence/state
+- Thin rules, 2–6px radii, no glossy cards, no gradients
 
 ## Board sections
 
-### A. Cover and decision
+### A. Locked product decision
 
-Title: `Praxeos Product Map`
+Show the product identity, preserved editorial system, `Begin 8-minute journey` action, and the progression:
 
-Subtitle: `A flagship learning journey for seeing the structure inside every choice.`
+1. The Choice Machine
+2. Market Without a Manager — canonical flagship
+3. The Entrepreneur’s Discovery
+4. The Money Time Machine
 
-Include the product statement, learner audience, approved homepage offer, primary action, secondary action, canonical URL decision, draft-release gate, and board legend.
+Mark the retired Labs and standalone journey as historical inputs, not active destinations.
 
 ### B. Annotated current product
 
-Place the captured production homepage and the eight audit screenshots. Add numbered annotations for:
+Place the captured homepage and audit screenshots. Preserve annotations for confirmed failure, unverified claim, recommendation, and existing strength. Add an annotation that the old Labs index is a flat card grid and that its WebGL/reduced-motion split conflicts with the new shared interaction contract.
 
-1. fragmented navigation;
-2. answer-revealing analyzer placeholders;
-3. any-text completion rule;
-4. static reduced-motion lab;
-5. archived-lab language;
-6. unresolved canonical domain;
-7. unsupported case-study metrics; and
-8. current strengths worth preserving: editorial voice, source density, deterministic lab engines, and warm visual identity.
+### C. Current-to-target routes
 
-### C. Current-to-target route map
+Show all permanent navigation routes plus the four active Lab routes. Include the Calculation Labyrinth journey redirect, the four old Lab-slug redesign notices, and legacy `/modules/<slug>` handling.
 
-Use two columns connected by thin arrows. Show every redirect in `flagship-learning-system.md`, the eleven lesson routes, four lab routes, Notebook, Sources, and Built.
+### D. Shared Lab sequence
 
-### D. Seven-step journey
+Show the seven-part sequence: editorial cover; Guided decision; What changed; concept reveal; interpretation/self-review/optional Guide/revision; Notebook/export; Explore. Each step includes learner action, saved state, visible evidence, accessibility equivalent, and continue condition.
 
-Use a horizontal path on desktop and a vertical path on mobile:
+### E. Four Lab storyboards
 
-1. Meet the decision
-2. Read the action
-3. Name scarcity
-4. Navigate with prices
-5. Navigate without prices
-6. Revise with feedback
-7. Reflect and export
+- Choice Machine: branching timeline, changed constraint, preserved forgone paths.
+- Market Without a Manager: participant network, offer/trade event stream, completed-trade prices, incomplete information, shortage, and ceiling.
+- Entrepreneur’s Discovery: obscured opportunity map, hypothesis, evidence, resource-limited experiment, pivot or stop.
+- Money Time Machine: six participant lanes, monetary rule, time advance, comparison, assumptions, and distribution.
 
-Each step includes learner action, saved state, feedback state, accessibility equivalent, and the condition for continuing.
+Create desktop and mobile frames for every Lab. Desktop uses a dominant field plus compact evidence rail. Mobile uses a vertical narrative and sequential comparisons.
 
-### E. Approved product concepts
+### F. Feedback and Guide boundary
 
-Place the approved concept at native aspect ratio, then separate callouts for:
+Show deterministic feedback as a transparent checklist driven only by explicit completion, selected observation IDs, acknowledged assumption IDs, revision, and self-review. Place a visible prohibition on semantic keyword grading.
 
-- desktop homepage hierarchy;
-- lab canvas plus interpretation rail;
-- mobile two-dimensional maze;
-- navigation names;
-- warm-paper palette;
-- exact CTA copy.
+Show Claude as the only semantic guidance path. `Allowed in` contains Lab slug, capped reasoning, and allowlisted evidence IDs. `Validated out` contains one question, cited source notes, why-this-feedback, status, and retry timing. `Never stored` contains learner prose in URLs, learner text in Redis/logs, unrelated Notebook records, and permanent transcripts.
 
-### F. Guide boundaries
+### G. Source and viewpoint labels
 
-Use a three-column context map:
+Create distinct components for simulation observation, assumption, source claim, Austrian interpretation, and credible counterargument. Source packet components show claim, locator, stable URL, Lab allowlist, and verification state.
 
-- `Allowed in`: current reasoning, normalized lab state, allowlisted source packets.
-- `Validated out`: exactly one question, cited explanation blocks, why-this-feedback, status, retry timing.
-- `Never stored`: prose in URLs, student text in Redis/logs, unrelated Notebook records, permanent transcripts.
+### H. Editorial image system
 
-Show deterministic fallback as a complete peer provider, not a degraded error card.
+Place the homepage hero, four Lab covers, transition imagery, historical artifacts, and code-native diagrams. Every image callout links to its attribution-manifest entry. Generated images contain no important text.
 
-### G. Acceptance gates
+### I. Acceptance gates
 
-Group checks into Foundation, Reasoning, Guide, Journey, Accessibility, Cross-browser, Performance, Sources, Deployment, and Learner Study. Each row has `Pending`, `Pass`, `Fail`, or `Blocked`; no decorative green state is allowed before evidence exists.
+Group checks into runtime, persistence/share, feedback boundary, Guide, accessibility, cross-browser, performance, sources/assets, internal beginner review, deployment, and five-person study. Each row uses Pending, Pass, Fail, or Blocked; decorative pass states are not allowed.
 
-### H. Five-learner study flow
-
-Show consent, homepage comprehension, unassisted journey, comparison explanation, feedback usefulness, Notebook/export verification, accessibility barriers, and revision decision. Mark the entire section `Pending`.
+The internal review follows Market Without a Manager and does not block implementation of the remaining three Labs. The five-person study covers all four completed Labs and blocks v1.0 until at least one evidence-based revision is committed.
 
 ## Component inventory
 
 - Button: Primary and Secondary; Default, Hover, Focus, Disabled
 - Annotation: Confirmed failure, Unverified claim, Recommendation, Preserve
-- Route node: Current, Target, Redirect
-- Journey step: Not started, Active, Complete, Needs revision
+- Route node: Current, Active target, Redirect, Historical
+- Lab stage: Not started, Active, Complete, Needs review
+- Evidence label: Observation, Assumption, Source, Interpretation, Counterargument
 - Gate row: Pending, Pass, Fail, Blocked
-- Source packet: Claim, Locator, Stable URL, Verification state
-
-All components bind to code-matched variables. On a plan that supports multiple modes, create `Praxeos Primitives` (Value), `Praxeos Color` (Light/Dark), and `Praxeos Layout` (Value) collections before the components.
+- Source packet: Claim, Locator, URL, Lab allowlist, Verification
 
 ## Completion test
 
-The Figma board is complete only when:
-
-- every section A–H exists;
-- all screenshots and the approved concept are visible and annotated;
-- route and journey labels match production code;
-- Fraunces, Inter, and JetBrains Mono are verified by readback;
-- Light/Dark semantic variables resolve without broken aliases;
-- reusable nodes are component instances;
-- no placeholder text remains;
-- screenshots at full-board and section level show no clipping or overlap; and
-- view access works from the URL recorded above.
+The board is complete only when every section A–I exists; all four Lab storyboards include desktop and mobile; route labels match production; typefaces and tokens are verified by readback; Light/Dark variables resolve without broken aliases; reusable nodes are component instances; no placeholder text remains; and screenshots show no clipping or overlap. The study section remains `Pending` until the real study is complete.
