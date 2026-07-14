@@ -1,488 +1,158 @@
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import productMapOverview from "../../../docs/product/assets/product-map-overview.png";
+import flagshipHomepage from "../../../tests/visual/snapshots/desktop-chromium/homepage.png";
+import journeyBrief from "../../../tests/visual/snapshots/desktop-chromium/journey-brief.png";
 
 export const metadata: Metadata = {
-  title: "How this was built",
+  title: "How It Was Built",
   description:
-    "Architecture, engineering decisions, and design philosophy behind Praxeos.",
+    "The decisions, mistakes, architecture, accessibility work, and pending educational validation behind Praxeos.",
 };
+
+const sections = [
+  [
+    "Problem",
+    "Economic concepts are often presented as conclusions to memorize. Praxeos is for curious learners who need a concrete situation, a system they can manipulate, and a record of how their reasoning changed.",
+  ],
+  [
+    "William’s decisions",
+    "William chose a warm editorial interface, a calculation journey as the flagship offer, local-first persistence, deterministic feedback instead of scores, optional source-grounded Claude guidance, and an honest study gate before v1.0.",
+  ],
+  [
+    "Abandoned approaches",
+    "Three early module runtimes, private data proxies, answer-revealing analyzer patterns, static reduced-motion posters, pseudo-telemetry, and unsupported performance claims were removed. Their history remains in Git and informed the new contracts.",
+  ],
+  [
+    "Claude’s contribution",
+    "Claude is optional and narrow: one Socratic question grounded in allowlisted source packets. Learner text is untrusted data, never stored in Redis, and never logged intentionally. Missing keys, invalid citations, rate limits, cancellation, and upstream failures fall back deterministically.",
+  ],
+  [
+    "Architecture",
+    "Next.js 16 renders the curriculum and case study; pure TypeScript drives rubric rules, lab state, migrations, exports, citation validation, and provider normalization. One versioned browser store holds progress and reasoning. Only POST /api/guide is dynamic.",
+  ],
+  [
+    "Accessibility",
+    "The flagship is semantic 2D with large controls, keyboard operation, live change summaries, readable non-visual state, dark theme, print output, and the same complete journey under reduced motion. Four advanced labs keep their controls, tasks, and readable state without canvas.",
+  ],
+  [
+    "Mistakes and tradeoffs",
+    "The first product had breadth without a clear first journey and treated visual fallback as educational equivalence. The upgrade prioritizes one complete path. Local-only storage avoids accounts and transcripts but means records do not sync across devices.",
+  ],
+  [
+    "Verified outcomes",
+    "Dependency and route verification results are recorded in the pull request and build report. Educational impact is not yet verified. Lighthouse budgets are acceptance targets, not claims, until the recorded runs pass.",
+  ],
+] as const;
 
 export default function BuiltPage() {
   return (
     <SiteChrome>
-      <article
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-          paddingInline: "var(--gutter-inline)",
-          paddingBlock: "var(--gutter-block)",
-        }}
-      >
-        <p
-          className="label-mono"
-          style={{ marginBottom: "1rem", color: "var(--ink-tertiary)" }}
+      <main className="page-shell">
+        <header className="page-section content-header">
+          <p className="label-mono">Case study · educational validation pending</p>
+          <h1 className="editorial-heading">
+            From a promising experiment to one honest learning journey.
+          </h1>
+          <p>
+            This page separates design intent, implemented behavior, measured checks,
+            and evidence that still has to be earned.
+          </p>
+          <div className="editorial-actions">
+            <Link href="/journey/calculation-labyrinth">
+              Run the 90-second demo path
+            </Link>
+            <a
+              href="https://www.figma.com/design/ZiEe4IeEPtGfkMeXLwE1Zk"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open product-map draft
+            </a>
+          </div>
+        </header>
+        <section
+          className="page-section"
+          style={{ paddingBlock: "var(--gutter-block)" }}
         >
-          Praxeos · Engineering
-        </p>
-        <h1 style={{ marginBottom: "1rem" }}>How this was built.</h1>
-        <p
-          className="italic"
-          style={{
-            fontSize: "var(--step-1)",
-            color: "var(--ink-secondary)",
-            marginBottom: "3rem",
-            maxWidth: "52ch",
-          }}
+          <Image
+            src={productMapOverview}
+            alt="Praxeos product map showing the current product, target routes, seven-step journey, Guide boundaries, and acceptance gates."
+            sizes="(max-width: 768px) 100vw, 1200px"
+            loading="eager"
+            fetchPriority="high"
+            style={{ width: "100%", height: "auto", border: "1px solid var(--rule)" }}
+          />
+        </section>
+        <section
+          className="page-section content-grid"
+          aria-label="Annotated build screenshots"
         >
-          A calm, precise account of the architecture, the decisions that mattered, and
-          the constraints that shaped them.
-        </p>
-
-        <Section
-          id="philosophy"
-          label="§ I — Philosophy"
-          title="The medium is the argument."
-        >
+          <figure className="content-card">
+            <small>Implemented surface · homepage</small>
+            <Image
+              src={flagshipHomepage}
+              alt="Praxeos homepage with a clear eight-minute flagship action, editorial navigation, and three supporting learning paths."
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ width: "100%", height: "auto" }}
+            />
+            <figcaption>
+              One offer sits above the fold: begin the Calculation Labyrinth. Learn,
+              daily practice, and Notebook remain visible without competing with it.
+            </figcaption>
+          </figure>
+          <figure className="content-card">
+            <small>Implemented surface · journey</small>
+            <Image
+              src={journeyBrief}
+              alt="Calculation Labyrinth brief with seven named stages, a twelve-hundred-dollar budget, twenty volunteer-hours, and a privacy boundary."
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ width: "100%", height: "auto" }}
+            />
+            <figcaption>
+              The first stage makes the scarce means, seven-step path, and local-only
+              writing boundary explicit before asking for an interpretation.
+            </figcaption>
+          </figure>
+        </section>
+        <section className="page-section content-grid">
+          {sections.map(([title, body]) => (
+            <article className="content-card" key={title}>
+              <small>Case-study note</small>
+              <div>
+                <h2>{title}</h2>
+                <p>{body}</p>
+              </div>
+            </article>
+          ))}
+        </section>
+        <section className="page-section content-header">
+          <p className="label-mono">90-second demonstration</p>
+          <h2 className="editorial-heading">
+            Brief → structure → two runs → revision.
+          </h2>
           <p>
-            Praxeos is not a blog with extra CSS. It is an explorable explanation — a
-            format in which the reader learns by manipulating a system, not by reading a
-            proof. The site is its own argument: that Austrian economics deserves the
-            same craft attention as any other intellectual tradition.
+            Open the Calculation Labyrinth. Identify actor, end, and means; name the
+            binding constraint; complete the priced and unpriced plans; compare waste
+            and uncertainty; request one grounded question or use fallback; then open
+            Notebook to show the initial and revised reasoning together.
           </p>
+        </section>
+        <section className="page-section content-header">
+          <p className="label-mono">Five-person study · Pending</p>
+          <h2 className="editorial-heading">v1.0 waits for learners.</h2>
           <p>
-            Every module pairs a <strong>real-time simulation</strong> with a
-            primary-source-backed essay. The simulation is not decoration; it is the
-            argument made visible. The essay is not captioning; it is the scholarly
-            grounding without which the simulation is mere entertainment.
+            William will recruit five learners. Each participant completes the journey
+            with consent, then answers comprehension, confidence, friction, and transfer
+            questions. An anonymized results table records completion, observed
+            confusion, quotation permission, and the revision it motivated. At least one
+            evidence-based revision is required before this draft PR can become a
+            release candidate.
           </p>
-        </Section>
-
-        <Section
-          id="architecture"
-          label="§ II — Architecture"
-          title="A system designed for correctness and beauty."
-        >
-          <ArchitectureDiagram />
-
-          <h4>Next.js 15 App Router</h4>
-          <p>
-            The App Router gives us server components by default. This means the HTML
-            that reaches the reader is pre-rendered, searchable, and fast. Client
-            components are pushed to the leaves — only where interactivity is genuinely
-            needed: sketches, the theme toggle, and the custom cursor.
-          </p>
-
-          <h4>Pure interaction state</h4>
-          <p>
-            The active modules keep their teaching logic in pure helpers before it ever
-            reaches WebGL: monetary metrics, signal propagation, labyrinth movement
-            costs, and coordination coherence. Zero rendering coupling. This means:
-          </p>
-          <ul>
-            <li>
-              The same state model drives the scene, the controls, query hydration, and
-              unit tests.
-            </li>
-            <li>Every invariant is testable in Vitest without a browser.</li>
-            <li>Seeded modules stay deterministic: same seed, identical layout.</li>
-          </ul>
-
-          <h4>3D stages with poster fallbacks</h4>
-          <p>
-            The four live modules use React Three Fiber where the interactive thesis
-            benefits from spatial structure. A shared scene shell handles DPR capping,
-            IntersectionObserver mounting, and <code>prefers-reduced-motion</code>{" "}
-            fallbacks. Reduced-motion users get the poster frame and no canvas mount.
-          </p>
-        </Section>
-
-        <Section
-          id="interaction"
-          label="§ III — Interaction System"
-          title="Every interaction teaches something."
-        >
-          <p>
-            The interaction design follows a simple rule:{" "}
-            <em>
-              if the reader does nothing, the system still teaches; if the reader acts,
-              the system teaches more.
-            </em>
-          </p>
-
-          <h4>Monetary Garden controls</h4>
-          <p>
-            Credit expansion and savings backing are separate controls. The correction
-            action reveals the difference between growth funded by real saving and
-            growth funded by an edited money signal.
-          </p>
-
-          <h4>Actor-first signaling</h4>
-          <p>
-            The Signal Orchard starts with action: buy, sell, wait, or discover.
-            Clicking an actor emits a local pulse, updates neighbors, and records the
-            action in a concise log.
-          </p>
-
-          <h4>Calculation as exercise</h4>
-          <p>
-            The Calculation Labyrinth makes the reader move the planner. With prices,
-            legal exits carry comparable costs; without prices, the markers disappear
-            and the waste counter records wrong turns and backtracking.
-          </p>
-
-          <h4>Coordination as synchrony</h4>
-          <p>
-            The Coordination Engine focuses on reliability, latency, and shocks. Node
-            pulses show how demand and supply signals become coherent throughput or
-            missed plans.
-          </p>
-        </Section>
-
-        <Section
-          id="performance"
-          label="§ IV — Performance"
-          title="Fast by design, not by optimisation."
-        >
-          <MetricsGrid />
-
-          <h4>Static generation</h4>
-          <p>
-            Every module page, thinker page, and content page is statically generated at
-            build time. The only dynamic routes are the API proxies (mempool.space
-            blocks, FRED M2 data, tile redirects) — and those are Edge functions with
-            aggressive caching.
-          </p>
-
-          <h4>Lazy loading</h4>
-          <p>
-            Sketches are loaded with <code>next/dynamic</code> and{" "}
-            <code>ssr: false</code>. The homepage Teleology sketch loads only after the
-            rest of the page has painted. Module sketches load on route navigation. The
-            JS bundle for a module route stays under 200 KB gzipped.
-          </p>
-
-          <h4>Shareable state</h4>
-          <p>
-            Each active module hydrates from query params. A reader can share a garden
-            with a specific credit/savings mix, an orchard action mode, a labyrinth
-            challenge, or a coordination reliability/latency state.
-          </p>
-        </Section>
-
-        <Section
-          id="testing"
-          label="§ V — Testing"
-          title="Correctness is not optional."
-        >
-          <p>The interaction layer has four focused invariant groups in Vitest:</p>
-          <ol>
-            <li>
-              <strong>Monetary metrics</strong> respond correctly to credit, savings,
-              and correction.
-            </li>
-            <li>
-              <strong>Signal propagation</strong> preserves action kind, origin, and
-              neighbor updates.
-            </li>
-            <li>
-              <strong>Labyrinth movement</strong> distinguishes legal moves, wrong
-              turns, and waste.
-            </li>
-            <li>
-              <strong>Coordination parameters</strong> connect reliability and latency
-              to coherence, throughput, failed links, and missed plans.
-            </li>
-          </ol>
-          <p>
-            E2E tests run in Playwright with visual regression snapshots. The site must
-            pass Lighthouse 100/100/100/100 on desktop before any PR merges.
-          </p>
-        </Section>
-
-        <Section
-          id="blender-pipeline"
-          label="§ VI — Blender Pipeline"
-          title="From .blend to the browser."
-        >
-          <p>
-            The 3D modules — Monetary Garden, Signal Orchard, Calculation Labyrinth,
-            Coordination Engine — are designed to receive Blender exports without code
-            changes. Each scene element is wrapped in a <code>GltfAsset</code> component
-            (<code>src/sketches/lib/GltfAsset.tsx</code>) that fetches a{" "}
-            <code>.glb</code> from <code>/public/models/&lt;module-slug&gt;/</code> and
-            falls back to procedural geometry when the file is absent. Drop a Blender
-            export into the right folder and the next page load uses it.
-          </p>
-
-          <h4>Folder convention</h4>
-          <pre
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--step--2)",
-              background: "var(--paper-elevated)",
-              padding: "1rem",
-              borderRadius: "var(--radius-md)",
-              border: "1px solid var(--rule)",
-              overflowX: "auto",
-              lineHeight: 1.55,
-              color: "var(--ink-secondary)",
-            }}
-          >{`/public/models/
-  monetary-garden/
-    tree-0.glb       tree-1.glb       tree-2.glb
-    production-node.glb
-  signal-orchard/
-    cypress.glb
-  calculation-labyrinth/
-    planner.glb      goal.glb
-  coordination-engine/
-    agent.glb`}</pre>
-
-          <h4>Blender export checklist</h4>
-          <ul>
-            <li>
-              <strong>Format:</strong> File → Export → glTF 2.0 (.glb / .gltf), choose{" "}
-              <em>glTF Binary (.glb)</em> with embedded textures.
-            </li>
-            <li>
-              <strong>Geometry:</strong> apply transforms before export (Object → Apply
-              → All Transforms); include normals and tangents.
-            </li>
-            <li>
-              <strong>Materials:</strong> Principled BSDF only — node groups do not
-              survive the export. Use baseline colour, roughness, and metalness; the
-              scene provides local procedural lighting.
-            </li>
-            <li>
-              <strong>Scale:</strong> 1 Blender unit = 1 metre. Most Praxeos elements
-              expect ~0.5 m to 2 m on the longest axis.
-            </li>
-            <li>
-              <strong>Up axis:</strong> +Y up, +Z forward (the glTF default).
-            </li>
-            <li>
-              <strong>Compression:</strong>{" "}
-              <code>npx gltf-pipeline -i in.glb -o out.glb -d</code> for Draco. drei's{" "}
-              <code>useGLTF</code> auto-resolves Draco and KTX2 transcoders.
-            </li>
-            <li>
-              <strong>Drop in:</strong> place the file at the path expected by the scene
-              component (e.g. <code>/public/models/monetary-garden/tree-0.glb</code>);
-              no code change required.
-            </li>
-          </ul>
-
-          <h4>Why the procedural fallback exists</h4>
-          <p>
-            The fallback is not a placeholder for "later" — it is the canonical first
-            paint, designed to look intentional. The Blender pipeline is an asset
-            upgrade path, not a dependency: if the .glb is missing, slow, or corrupted,
-            the procedural geometry takes over and the module remains shippable. This
-            decouples the design pipeline from the engineering pipeline.
-          </p>
-        </Section>
-
-        <Section
-          id="design"
-          label="§ VII — Design System"
-          title="Editorial brutalism with organic soul."
-        >
-          <p>
-            The design system is documented in three files: <code>tokens.css</code>{" "}
-            (colors, space, motion), <code>typography.css</code> (Fraunces, Inter,
-            JetBrains Mono), and <code>AESTHETIC.md</code> (the philosophy). Key
-            non-negotiables:
-          </p>
-          <ul>
-            <li>
-              No pure black or pure white — paper is warm cream; ink is warm near-black.
-            </li>
-            <li>
-              No off-the-shelf icon sets — all icons are hand-drawn at 1.5px stroke.
-            </li>
-            <li>
-              No default CSS ease — every transition uses <code>--ease-organic</code>.
-            </li>
-            <li>Typography is the protagonist — decoration is secondary or absent.</li>
-          </ul>
-        </Section>
-
-        <hr />
-
-        <p
-          className="label-mono"
-          style={{
-            textAlign: "center",
-            marginTop: "3rem",
-            color: "var(--ink-tertiary)",
-          }}
-        >
-          <Link href="/colophon" style={{ textDecoration: "none" }}>
-            Colophon →
-          </Link>
-        </p>
-      </article>
+        </section>
+      </main>
     </SiteChrome>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-
-function Section({
-  id,
-  label,
-  title,
-  children,
-}: {
-  id: string;
-  label: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} style={{ marginBottom: "3.5rem" }}>
-      <p
-        className="label-mono"
-        style={{
-          color: "var(--ink-tertiary)",
-          marginBottom: "0.75rem",
-          fontSize: "var(--step--2)",
-          letterSpacing: "0.06em",
-        }}
-      >
-        {label}
-      </p>
-      <h3 style={{ marginTop: 0, marginBottom: "1.25rem" }}>{title}</h3>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) minmax(0, 2fr)",
-          gap: "clamp(1.5rem, 4vw, 4rem)",
-        }}
-      >
-        <div aria-hidden="true" />
-        <div style={{ maxWidth: "var(--measure-prose)" }}>{children}</div>
-      </div>
-    </section>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-
-function ArchitectureDiagram() {
-  return (
-    <div
-      style={{
-        border: "1px solid var(--rule)",
-        borderRadius: "var(--radius-md)",
-        padding: "1.5rem",
-        background: "var(--paper-elevated)",
-        marginBlock: "2rem",
-        fontFamily: "var(--font-mono)",
-        fontSize: "var(--step--2)",
-        lineHeight: 1.6,
-        color: "var(--ink-secondary)",
-        overflowX: "auto",
-      }}
-      aria-label="System architecture diagram"
-    >
-      <pre style={{ margin: 0 }}>
-        {`┌─────────────────────────────────────────────────────────────┐
-│  Reader (Browser)                                           │
-│  ─────────────────                                          │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │ Static HTML │  │ R3F canvas  │  │ Query state         │  │
-│  │ App Router  │  │ if allowed  │  │ share + hydrate     │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-└────────────────────┬────────────────────┬───────────────────┘
-                     │                    │
-        ┌────────────┘                    └────────────┐
-        │                                              │
-        ▼                                              ▼
-┌──────────────────┐                       ┌──────────────────┐
-│ Pure state logic │                       │ Reduced motion   │
-│ metrics / costs  │                       │ poster fallback  │
-│ pulses / params  │                       │ no canvas mount  │
-└──────────────────┘                       └──────────────────┘
-        │
-        ▼
-┌─────────────────────────────────────────────────────────────┐
-│ Monetary Garden · Signal Orchard · Calculation Labyrinth    │
-│ Coordination Engine                                         │
-└─────────────────────────────────────────────────────────────┘`}
-      </pre>
-    </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-
-function MetricsGrid() {
-  const metrics = [
-    { label: "Homepage JS", value: "≤ 100 KB", note: "gzipped, sketch lazy-loaded" },
-    { label: "Module JS", value: "≤ 200 KB", note: "gzipped, engine + canvas" },
-    { label: "Lighthouse", value: "100/100/100/100", note: "desktop target" },
-    { label: "LCP", value: "< 1.8 s", note: "4G mobile, poster frame" },
-    { label: "Type coverage", value: "Strict", note: "noUncheckedIndexedAccess" },
-    { label: "Test layers", value: "4", note: "unit, e2e, visual, type" },
-  ];
-
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(14ch, 1fr))",
-        gap: "1rem",
-        marginBlock: "2rem",
-      }}
-    >
-      {metrics.map((m) => (
-        <div
-          key={m.label}
-          style={{
-            border: "1px solid var(--rule)",
-            borderRadius: "var(--radius-md)",
-            padding: "1rem",
-            background: "var(--paper-elevated)",
-          }}
-        >
-          <p
-            className="label-mono"
-            style={{
-              margin: 0,
-              marginBottom: "0.5rem",
-              color: "var(--ink-tertiary)",
-              fontSize: "var(--step--2)",
-            }}
-          >
-            {m.label}
-          </p>
-          <p
-            style={{
-              margin: 0,
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--step-1)",
-              color: "var(--ink-primary)",
-              fontVariantNumeric: "tabular-nums",
-            }}
-          >
-            {m.value}
-          </p>
-          <p
-            style={{
-              margin: 0,
-              marginTop: "0.35rem",
-              fontFamily: "var(--font-serif)",
-              fontSize: "var(--step--2)",
-              color: "var(--ink-tertiary)",
-              fontStyle: "italic",
-            }}
-          >
-            {m.note}
-          </p>
-        </div>
-      ))}
-    </div>
   );
 }
