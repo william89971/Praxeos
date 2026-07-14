@@ -276,7 +276,7 @@ export function ModuleLayout({
             {metadata.thinkers.map((slug) => (
               <li key={slug}>
                 <Link
-                  href={`/thinkers/${slug}`}
+                  href={`/sources/thinkers/${slug}`}
                   className="label-mono"
                   style={{
                     textDecoration: "none",

@@ -51,7 +51,7 @@ export interface ModuleRun<State extends object, Metrics extends object> {
   readonly insight: string;
 }
 
-const RUN_STORAGE_KEY = "praxeos.module-runs.v1";
+const RUN_STORAGE_KEY = "praxeos.learning.v2";
 const MAX_RUNS = 60;
 
 export function evaluateChallenges<State extends object, Metrics extends object>(
@@ -114,9 +114,9 @@ export function recordModuleRun<State extends object, Metrics extends object>(
   };
 
   try {
-    const current = readModuleRuns();
-    const next = [recorded, ...current].slice(0, MAX_RUNS);
-    window.localStorage.setItem(RUN_STORAGE_KEY, JSON.stringify(next));
+    const currentStore = JSON.parse(window.localStorage.getItem(RUN_STORAGE_KEY) ?? "{}") as { labRuns?: ModuleRun<object, object>[] };
+    const next = [recorded, ...(currentStore.labRuns ?? [])].slice(0, MAX_RUNS);
+    window.localStorage.setItem(RUN_STORAGE_KEY, JSON.stringify({ ...currentStore, version: 2, labRuns: next }));
     trackInteraction("run_recorded", {
       moduleSlug: run.slug,
       payload: { completedGoals: run.completedGoals.length },
@@ -133,8 +133,8 @@ export function readModuleRuns(): ModuleRun<object, object>[] {
   try {
     const raw = window.localStorage.getItem(RUN_STORAGE_KEY);
     if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as ModuleRun<object, object>[]) : [];
+    const parsed = JSON.parse(raw) as { labRuns?: ModuleRun<object, object>[] };
+    return Array.isArray(parsed.labRuns) ? parsed.labRuns : [];
   } catch {
     return [];
   }

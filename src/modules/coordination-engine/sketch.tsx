@@ -5,7 +5,6 @@ import { ModuleChallengePanel } from "@/components/experience/ModuleChallengePan
 import { OnboardingOverlay } from "@/components/experience/OnboardingOverlay";
 import { ModuleHeroChrome } from "@/components/sketch/ModuleHeroChrome";
 import { useModuleRuntime } from "@/hooks/useModuleRuntime";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { CoordinationControls } from "./components/DistortionSlider";
@@ -30,7 +29,6 @@ const GUIDED_PRESETS: readonly { reliability: number; latency: number }[] = [
 ];
 
 export default function CoordinationEngineSketch() {
-  const prefersReducedMotion = usePrefersReducedMotion();
   const runtime = useModuleRuntime(coordinationEngineRuntime);
   const updateRuntimeState = runtime.updateState;
   const mode = runtime.state.mode;
@@ -116,10 +114,6 @@ export default function CoordinationEngineSketch() {
     }, 120);
     return () => window.clearTimeout(timeout);
   }, [runtime.state.shock, updateRuntimeState]);
-
-  if (prefersReducedMotion) {
-    return <ReducedMotionPoster />;
-  }
 
   return (
     <ModuleHeroChrome

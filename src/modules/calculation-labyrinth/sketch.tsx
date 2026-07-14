@@ -5,7 +5,6 @@ import { ModuleChallengePanel } from "@/components/experience/ModuleChallengePan
 import { OnboardingOverlay } from "@/components/experience/OnboardingOverlay";
 import { ModuleHeroChrome } from "@/components/sketch/ModuleHeroChrome";
 import { useModuleRuntime } from "@/hooks/useModuleRuntime";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo } from "react";
 import { ModeToggle } from "./components/ModeToggle";
@@ -30,7 +29,6 @@ const LabyrinthScene = dynamic(
 );
 
 export default function CalculationLabyrinthSketch() {
-  const prefersReducedMotion = usePrefersReducedMotion();
   const runtime = useModuleRuntime(calculationLabyrinthRuntime);
   const updateRuntimeState = runtime.updateState;
   const { priced, challenge, current, waste } = runtime.state;
@@ -133,10 +131,6 @@ export default function CalculationLabyrinthSketch() {
     return () => window.removeEventListener("keydown", onKey);
   }, [handleMove]);
 
-  if (prefersReducedMotion) {
-    return <ReducedMotionPoster />;
-  }
-
   return (
     <ModuleHeroChrome
       moduleNumber="03"
@@ -184,7 +178,7 @@ export default function CalculationLabyrinthSketch() {
       controlSlot={null}
       mobileActionBar={
         <MobileModuleActionBar
-          nextHref="/modules/coordination-engine?path=beginner"
+          nextHref="/labs/coordination-engine?path=beginner"
           nextLabel="Next"
           controlsHref="#module-directions"
         />

@@ -5,7 +5,6 @@ import { ModuleChallengePanel } from "@/components/experience/ModuleChallengePan
 import { OnboardingOverlay } from "@/components/experience/OnboardingOverlay";
 import { ModuleHeroChrome } from "@/components/sketch/ModuleHeroChrome";
 import { useModuleRuntime } from "@/hooks/useModuleRuntime";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import dynamic from "next/dynamic";
 import { ExplanationPanel } from "./components/ExplanationPanel";
 import { MoneyControls } from "./components/MoneySlider";
@@ -19,7 +18,6 @@ const MonetaryGardenScene = dynamic(
 );
 
 export default function MonetaryGardenSketch() {
-  const prefersReducedMotion = usePrefersReducedMotion();
   const runtime = useModuleRuntime(monetaryGardenRuntime);
   const gardenState = runtime.state;
 
@@ -34,10 +32,6 @@ export default function MonetaryGardenSketch() {
       },
     });
   };
-
-  if (prefersReducedMotion) {
-    return <ReducedMotionPoster />;
-  }
 
   return (
     <ModuleHeroChrome
@@ -70,7 +64,7 @@ export default function MonetaryGardenSketch() {
       controlSlot={<MoneyControls value={gardenState} onChange={updateGardenState} />}
       mobileActionBar={
         <MobileModuleActionBar
-          nextHref="/modules/calculation-labyrinth?path=beginner"
+          nextHref="/labs/calculation-labyrinth?path=beginner"
           nextLabel="Next"
         />
       }

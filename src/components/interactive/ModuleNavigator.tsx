@@ -35,7 +35,7 @@ export function ModuleNavigator({
     >
       {prev ? (
         <Link
-          href={`/modules/${prev.slug}`}
+          href={`/labs/${prev.slug}`}
           style={{
             textDecoration: "none",
             display: "flex",
@@ -90,7 +90,7 @@ export function ModuleNavigator({
 
       {next ? (
         <Link
-          href={`/modules/${next.slug}`}
+          href={`/labs/${next.slug}`}
           style={{
             textDecoration: "none",
             display: "flex",
@@ -144,7 +144,7 @@ export function ModuleNavigator({
       ) : (
         <div style={{ textAlign: "end" }}>
           <Link
-            href="/modules"
+            href="/labs"
             className="label"
             style={{
               textDecoration: "none",

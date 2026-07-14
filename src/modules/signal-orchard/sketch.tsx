@@ -5,7 +5,6 @@ import { ModuleChallengePanel } from "@/components/experience/ModuleChallengePan
 import { OnboardingOverlay } from "@/components/experience/OnboardingOverlay";
 import { ModuleHeroChrome } from "@/components/sketch/ModuleHeroChrome";
 import { useModuleRuntime } from "@/hooks/useModuleRuntime";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { InteractionPanel } from "./components/InteractionPanel";
@@ -19,7 +18,6 @@ const SignalOrchardScene = dynamic(
 );
 
 export default function SignalOrchardSketch() {
-  const prefersReducedMotion = usePrefersReducedMotion();
   const runtime = useModuleRuntime(signalOrchardRuntime);
   const mode = runtime.state.mode;
   const selectedAction = runtime.state.action;
@@ -39,10 +37,6 @@ export default function SignalOrchardSketch() {
       payload: { control: "signal-action", action },
     });
   };
-
-  if (prefersReducedMotion) {
-    return <ReducedMotionPoster />;
-  }
 
   const onSelect = (id: number) => {
     setActions((current) => [
@@ -120,7 +114,7 @@ export default function SignalOrchardSketch() {
       controlSlot={null}
       mobileActionBar={
         <MobileModuleActionBar
-          nextHref="/modules/monetary-garden?path=beginner"
+          nextHref="/labs/monetary-garden?path=beginner"
           nextLabel="Next"
           controlsHref="#module-directions"
         />

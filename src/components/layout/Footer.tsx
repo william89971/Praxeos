@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ThinkerFooterSection } from "./ThinkerFooterSection";
 
 export function Footer() {
   return (
@@ -10,7 +9,6 @@ export function Footer() {
         marginBlockStart: "auto",
       }}
     >
-      <ThinkerFooterSection />
       <div
         style={{
           maxWidth: "var(--measure-wide)",
@@ -54,17 +52,20 @@ export function Footer() {
             alignItems: "end",
           }}
         >
-          <Link href="/learn/praxeology-101" className="label-mono">
-            Start Here
+          <Link href="/learn" className="label-mono">
+            Learn
           </Link>
-          <Link href="/cases" className="label-mono">
+          <Link href="/practice" className="label-mono">
             Practice
           </Link>
-          <Link href="/manifesto" className="label-mono">
-            Why This Exists
+          <Link href="/labs" className="label-mono">
+            Labs
           </Link>
-          <Link href="/colophon" className="label-mono">
-            Colophon
+          <Link href="/sources" className="label-mono">
+            Sources
+          </Link>
+          <Link href="/built" className="label-mono">
+            How It Was Built
           </Link>
           <Link href="/rss.xml" className="label-mono">
             RSS
