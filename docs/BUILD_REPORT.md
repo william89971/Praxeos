@@ -23,7 +23,7 @@ production verification, and v1.0 remain blocked by design.
 | Internal link contracts | Nine current route contracts resolved on the local app | Pass |
 | Primary-source links | Nine route contracts and all four cited source URLs passed after replacing one retired Liberty Fund URL | Pass |
 | Cross-browser flow | The 90-test run produced 82 passes, seven intentional skips, and one WebKit persistence assertion that timed out at 300 ms; after increasing only that assertion's poll window, its five-browser regression suite passed 15/15 with five expected conditional skips | Pass after test-timing correction |
-| Visual regression | Desktop, mobile, and reduced-motion snapshots passed with a 50-pixel antialiasing tolerance | Pass |
+| Visual regression | Desktop, mobile, and reduced-motion snapshots passed with a 50-pixel antialiasing tolerance; the harness injects pinned OFL fonts so layout metrics are stable on Windows and Linux without affecting production font loading | Pass |
 | Desktop Lighthouse | Three-run medians across seven routes: performance 0.99–1.00; accessibility, best practices, and SEO 1.00; LCP 0.81–0.93 s; CLS 0–0.012 | Pass |
 | Mobile Lighthouse | Three-run medians: performance 0.97–0.99; accessibility, best practices, and SEO 1.00; LCP 2.27–2.46 s; CLS 0–0.0003 | Pass |
 | Dependency audit | Production-only audit reports two moderate PostCSS advisories inside Next 16.2.10; the full development tree reports 15 transitive advisories, including Lighthouse tooling. npm offers no safe automatic resolution for the production pair | Blocker documented |
@@ -103,6 +103,12 @@ resolution.
   time out at 300 ms. No application error appeared; increasing only the test's
   polling window to three seconds produced 15/15 passes in the targeted
   cross-browser suite, with the five documented conditional skips.
+- The first GitHub Actions E2E run passed all 80 executed non-visual checks but
+  failed the three visual projects because Ubuntu substituted different system
+  fonts from the Windows baselines. The screenshot harness now serves pinned
+  OFL test fonts through same-origin Playwright routes. Production retains its
+  fast system-font stack, and the regenerated desktop, mobile, and
+  reduced-motion baselines pass locally without update mode.
 
 ### Remaining improvements and blockers
 
