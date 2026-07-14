@@ -53,16 +53,16 @@ const jetbrainsMono = localFont({
   preload: false,
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.org";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Praxeos - Learn praxeology with real-life choices",
+    default: "Praxeos - See the structure inside every choice",
     template: "%s - Praxeos",
   },
   description:
-    "A student-friendly place to learn praxeology with short lessons, everyday examples, practice cases, and saved notes.",
+    "An interactive learning laboratory for understanding human choices and economic systems through cases, simulations, source-grounded Claude guidance, and reflection.",
   keywords: [
     "Austrian economics",
     "praxeology",
@@ -85,15 +85,15 @@ export const metadata: Metadata = {
     siteName: "Praxeos",
     locale: "en_US",
     url: siteUrl,
-    title: "Praxeos - Learn praxeology with real-life choices",
+    title: "Praxeos - See the structure inside every choice",
     description:
-      "Short lessons and everyday examples for understanding purposeful human action.",
+      "Learn through a flagship calculation journey, deterministic feedback, interactive labs, sources, and reflection.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Praxeos - Learn praxeology with real-life choices",
+    title: "Praxeos - See the structure inside every choice",
     description:
-      "Start with ordinary choices, then learn actors, ends, means, tradeoffs, and opportunity cost.",
+      "Begin an eight-minute journey through actors, ends, means, scarcity, prices, and revision.",
   },
   alternates: {
     canonical: siteUrl,

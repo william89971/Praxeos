@@ -1,6 +1,6 @@
 import { MODULE_REGISTRY } from "@/modules/registry";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.org";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.vercel.app";
 
 export async function GET(): Promise<Response> {
   const modules = await Promise.all(
@@ -18,7 +18,7 @@ export async function GET(): Promise<Response> {
 
   const items = modules
     .map((m) => {
-      const link = `${SITE_URL}/modules/${m.slug}`;
+      const link = `${SITE_URL}/labs/${m.slug}`;
       const ogImage = `${link}/opengraph-image`;
       const pubDate = new Date(m.meta.publishedAt).toUTCString();
       return `    <item>
@@ -43,7 +43,7 @@ export async function GET(): Promise<Response> {
     <title>Praxeos</title>
     <link>${SITE_URL}</link>
     <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
-    <description>Practical praxeology lessons, daily cases, and action analysis.</description>
+    <description>Interactive lessons, cases, labs, sources, and reflection for reading human choices.</description>
     <language>en-us</language>
     <copyright>CC BY 4.0 — William Menjivar</copyright>
     <managingEditor>squilliam89971@gmail.com (William Menjivar)</managingEditor>

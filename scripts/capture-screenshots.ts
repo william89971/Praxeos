@@ -22,16 +22,12 @@ const BASE_URL =
 
 const TARGETS: Array<{ slug: string; path: string; wait?: number }> = [
   { slug: "home", path: "/", wait: 2500 },
-  { slug: "halving-garden", path: "/modules/halving-garden", wait: 3500 },
-  {
-    slug: "time-preference-forest",
-    path: "/modules/time-preference-forest",
-    wait: 2000,
-  },
-  { slug: "calculation-problem", path: "/modules/calculation-problem", wait: 2000 },
-  { slug: "manifesto", path: "/manifesto", wait: 1000 },
-  { slug: "glossary", path: "/glossary", wait: 1000 },
-  { slug: "thinkers", path: "/thinkers", wait: 1000 },
+  { slug: "calculation-labyrinth", path: "/journey/calculation-labyrinth", wait: 1000 },
+  { slug: "labs", path: "/labs", wait: 1000 },
+  { slug: "learn", path: "/learn", wait: 1000 },
+  { slug: "notebook", path: "/notebook", wait: 1000 },
+  { slug: "sources", path: "/sources", wait: 1000 },
+  { slug: "built", path: "/built", wait: 1000 },
 ];
 
 const THEMES = ["light", "dark"] as const;

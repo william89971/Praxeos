@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Praxeos - Learn praxeology with real-life choices.";
+export const alt = "Praxeos - See the structure inside every choice.";
 
 /**
  * Homepage OG - the wordmark over a quiet field of typographic ornaments.
@@ -70,7 +70,7 @@ export default function HomeOG() {
           color: "#8B8275",
         }}
       >
-        <span>Praxeology study room</span>
+        <span>Interactive learning laboratory</span>
         <span style={{ fontStyle: "italic", textTransform: "none" }}>
           Start with one choice.
         </span>
@@ -99,7 +99,7 @@ export default function HomeOG() {
             maxWidth: "72ch",
           }}
         >
-          Learn praxeology with real-life choices.
+          See the structure inside every choice.
         </p>
       </div>
 
@@ -118,7 +118,7 @@ export default function HomeOG() {
           Menger · Mises · Hayek · Rothbard · Kirzner · Lachmann · Hoppe · Salerno ·
           Ammous
         </span>
-        <span>praxeos.org</span>
+        <span>praxeos.vercel.app</span>
       </div>
     </div>,
     size,
