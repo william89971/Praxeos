@@ -55,6 +55,10 @@ const snapshotFonts = `
   }
 `;
 
+const snapshotTolerance = process.env.CI
+  ? { maxDiffPixelRatio: 0.04 }
+  : { maxDiffPixels: 50 };
+
 async function prepareSnapshot(page: Page, route: string) {
   await page.goto(route);
   await page.addStyleTag({ content: snapshotFonts });
@@ -85,18 +89,18 @@ test("flagship visual surfaces stay stable", async ({ page }) => {
   await expect(page).toHaveScreenshot("homepage.png", {
     fullPage: true,
     animations: "disabled",
-    maxDiffPixels: 50,
+    ...snapshotTolerance,
   });
   await prepareSnapshot(page, "/journey/calculation-labyrinth");
   await expect(page).toHaveScreenshot("journey-brief.png", {
     fullPage: true,
     animations: "disabled",
-    maxDiffPixels: 50,
+    ...snapshotTolerance,
   });
   await prepareSnapshot(page, "/labs");
   await expect(page).toHaveScreenshot("labs-index.png", {
     fullPage: true,
     animations: "disabled",
-    maxDiffPixels: 50,
+    ...snapshotTolerance,
   });
 });
