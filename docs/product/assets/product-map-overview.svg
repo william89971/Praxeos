@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Praxeos Product Map overview</title>
+  <desc id="desc">Overview of the target routes, seven-step Calculation Labyrinth journey, Claude Guide boundaries, and release gates.</desc>
+  <rect width="1600" height="1000" fill="#f5f0e6"/>
+  <g fill="#1c1814" font-family="Georgia, 'Times New Roman', serif">
+    <text x="80" y="92" font-size="62">Praxeos Product Map</text>
+    <text x="80" y="138" font-size="24" fill="#5c5348">See the structure inside every choice.</text>
+  </g>
+  <line x1="80" y1="172" x2="1520" y2="172" stroke="#b8ad97"/>
+
+  <g font-family="Arial, sans-serif">
+    <text x="80" y="225" font-size="16" font-weight="700" letter-spacing="2" fill="#8b3a3a">UNIFIED PRODUCT</text>
+    <g font-size="20" fill="#1c1814">
+      <rect x="80" y="248" width="1440" height="76" rx="6" fill="#ede6d6" stroke="#d8cfbe"/>
+      <text x="110" y="294">Learn</text>
+      <text x="292" y="294">Practice</text>
+      <text x="492" y="294">Labs</text>
+      <text x="652" y="294">Notebook</text>
+      <text x="870" y="294">Sources</text>
+      <text x="1082" y="294">How It Was Built</text>
+      <rect x="1330" y="268" width="154" height="38" rx="3" fill="#8b3a3a"/>
+      <text x="1351" y="294" fill="#f5f0e6" font-size="16">Begin journey</text>
+    </g>
+
+    <text x="80" y="380" font-size="16" font-weight="700" letter-spacing="2" fill="#3a5a4a">FLAGSHIP JOURNEY · 7–10 MINUTES</text>
+    <g font-size="16" fill="#1c1814">
+      <g transform="translate(80 404)"><circle cx="38" cy="38" r="38" fill="#8b3a3a"/><text x="33" y="44" fill="#f5f0e6">1</text><text x="0" y="104">Meet the</text><text x="0" y="126">decision</text></g>
+      <line x1="164" y1="442" x2="264" y2="442" stroke="#b8ad97" stroke-width="2"/>
+      <g transform="translate(270 404)"><circle cx="38" cy="38" r="38" fill="#ede6d6" stroke="#8b3a3a"/><text x="33" y="44">2</text><text x="0" y="104">Read the</text><text x="0" y="126">action</text></g>
+      <line x1="354" y1="442" x2="454" y2="442" stroke="#b8ad97" stroke-width="2"/>
+      <g transform="translate(460 404)"><circle cx="38" cy="38" r="38" fill="#ede6d6" stroke="#8b3a3a"/><text x="33" y="44">3</text><text x="0" y="104">Name</text><text x="0" y="126">scarcity</text></g>
+      <line x1="544" y1="442" x2="644" y2="442" stroke="#b8ad97" stroke-width="2"/>
+      <g transform="translate(650 404)"><circle cx="38" cy="38" r="38" fill="#3a5a4a"/><text x="33" y="44" fill="#f5f0e6">4</text><text x="0" y="104">Navigate with</text><text x="0" y="126">prices</text></g>
+      <line x1="734" y1="442" x2="834" y2="442" stroke="#b8ad97" stroke-width="2"/>
+      <g transform="translate(840 404)"><circle cx="38" cy="38" r="38" fill="#ede6d6" stroke="#3a5a4a"/><text x="33" y="44">5</text><text x="0" y="104">Navigate without</text><text x="0" y="126">prices</text></g>
+      <line x1="924" y1="442" x2="1024" y2="442" stroke="#b8ad97" stroke-width="2"/>
+      <g transform="translate(1030 404)"><circle cx="38" cy="38" r="38" fill="#ede6d6" stroke="#3a5a4a"/><text x="33" y="44">6</text><text x="0" y="104">Revise with</text><text x="0" y="126">feedback</text></g>
+      <line x1="1114" y1="442" x2="1214" y2="442" stroke="#b8ad97" stroke-width="2"/>
+      <g transform="translate(1220 404)"><circle cx="38" cy="38" r="38" fill="#1c1814"/><text x="33" y="44" fill="#f5f0e6">7</text><text x="0" y="104">Reflect and</text><text x="0" y="126">export</text></g>
+    </g>
+
+    <g transform="translate(80 590)">
+      <rect width="440" height="270" rx="6" fill="#ede6d6" stroke="#d8cfbe"/>
+      <text x="28" y="42" font-size="16" font-weight="700" letter-spacing="2" fill="#8b3a3a">DETERMINISTIC FEEDBACK</text>
+      <text x="28" y="84" font-size="24" fill="#1c1814">Transparent reasoning rules</text>
+      <g font-size="17" fill="#5c5348">
+        <text x="28" y="126">• presence and substance</text>
+        <text x="28" y="158">• scenario evidence</text>
+        <text x="28" y="190">• concept fit</text>
+        <text x="28" y="222">• key distinctions</text>
+      </g>
+      <text x="28" y="252" font-size="14" fill="#8b3a3a">No score · multiple defensible readings</text>
+    </g>
+
+    <g transform="translate(580 590)">
+      <rect width="440" height="270" rx="6" fill="#ede6d6" stroke="#d8cfbe"/>
+      <text x="28" y="42" font-size="16" font-weight="700" letter-spacing="2" fill="#3a5a4a">OPTIONAL CLAUDE GUIDE</text>
+      <text x="28" y="84" font-size="24" fill="#1c1814">One cited Socratic question</text>
+      <g font-size="17" fill="#5c5348">
+        <text x="28" y="126">In: current reasoning + lab state</text>
+        <text x="28" y="158">Grounding: allowlisted source packets</text>
+        <text x="28" y="190">Out: cited explanation + one question</text>
+        <text x="28" y="222">Fallback: complete deterministic provider</text>
+      </g>
+      <text x="28" y="252" font-size="14" fill="#3a5a4a">No prose in URLs, Redis, or logs</text>
+    </g>
+
+    <g transform="translate(1080 590)">
+      <rect width="440" height="270" rx="6" fill="#ede6d6" stroke="#d8cfbe"/>
+      <text x="28" y="42" font-size="16" font-weight="700" letter-spacing="2" fill="#8b3a3a">RELEASE GATES</text>
+      <text x="28" y="84" font-size="24" fill="#1c1814">Evidence before claims</text>
+      <g font-size="17" fill="#5c5348">
+        <text x="28" y="126">• clean install + complete checks</text>
+        <text x="28" y="158">• real preview walkthrough</text>
+        <text x="28" y="190">• five learner sessions</text>
+        <text x="28" y="222">• one evidence-based revision</text>
+      </g>
+      <text x="28" y="252" font-size="14" fill="#8b3a3a">Draft PR · educational validation pending</text>
+    </g>
+  </g>
+
+  <line x1="80" y1="916" x2="1520" y2="916" stroke="#b8ad97"/>
+  <text x="80" y="956" font-family="monospace" font-size="16" fill="#5c5348">Canonical: https://praxeos.vercel.app · Figma evidence draft: ZiEe4IeEPtGfkMeXLwE1Zk</text>
+</svg>
