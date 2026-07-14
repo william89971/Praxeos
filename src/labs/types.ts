@@ -42,7 +42,12 @@ export interface RubricFeedback {
   id: string;
   status: SelfReviewState;
   message: string;
-  basedOn: "completion" | "selected evidence" | "acknowledged assumption" | "revision";
+  basedOn:
+    | "completion"
+    | "selected evidence"
+    | "acknowledged assumption"
+    | "revision"
+    | "self-review checklist";
 }
 
 export interface LabSession<

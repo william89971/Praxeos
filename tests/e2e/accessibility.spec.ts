@@ -24,26 +24,29 @@ test("keyboard navigation reaches the primary action", async ({ page }) => {
 
 test("reduced motion keeps full lab controls and readable state", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/labs/calculation-labyrinth?priced=1&challenge=1");
-  await page.getByLabel("Opening interactive").scrollIntoViewIfNeeded();
-  await expect(page.getByAltText(/Calculation Labyrinth poster/i)).toBeVisible();
+  await page.goto("/labs/market-without-a-manager?mode=guided");
   await expect(page.locator("canvas")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Prices", exact: true })).toBeVisible();
   await expect(
-    page.getByRole("button", { name: /North|East|South|West/i }).first(),
+    page.getByRole("button", { name: "Meet the participants" }),
   ).toBeVisible();
-  await expect(page.getByText(/Waste 0/i)).toBeVisible();
+  await page.getByRole("button", { name: "Meet the participants" }).click();
+  await expect(
+    page
+      .getByRole("complementary", { name: "Evidence and change summary" })
+      .getByText(/Each person arrives with different goods/),
+  ).toBeVisible();
+  await expect(page.getByText(/Read the structured market record/)).toBeVisible();
 });
 
 test("mobile flagship controls meet the touch target floor", async ({ page }) => {
   test.skip(test.info().project.name !== "mobile-chromium", "Mobile project only");
-  await page.goto("/journey/calculation-labyrinth");
+  await page.goto("/labs/market-without-a-manager?mode=guided");
   const box = await page
-    .getByRole("button", { name: "Identify the choice" })
+    .getByRole("button", { name: "Meet the participants" })
     .boundingBox();
   expect(box?.height).toBeGreaterThanOrEqual(44);
   await expect(
-    page.getByRole("heading", { name: "The Calculation Labyrinth" }),
+    page.getByRole("heading", { name: "Market Without a Manager" }),
   ).toBeVisible();
 });
 
@@ -53,18 +56,19 @@ test("advanced lab progress is persisted without a render loop", async ({ page }
     if (message.type() === "error") consoleErrors.push(message.text());
   });
 
-  await page.goto("/labs/calculation-labyrinth");
-  await expect(page.getByText("Your task")).toBeVisible();
+  await page.addInitScript(() => window.localStorage.clear());
+  await page.goto("/labs/market-without-a-manager");
+  await page.getByRole("button", { name: "Meet the participants" }).click();
   await expect
     .poll(
       () =>
         page.evaluate(() => {
-          const raw = window.localStorage.getItem("praxeos.learning.v2");
+          const raw = window.localStorage.getItem("praxeos.learning.v3");
           if (!raw) return false;
           const store = JSON.parse(raw) as {
-            labProgress?: Record<string, { visited?: boolean }>;
+            labSessions?: Record<string, Array<{ guidedStep?: number }>>;
           };
-          return store.labProgress?.["calculation-labyrinth"]?.visited === true;
+          return store.labSessions?.["market-without-a-manager"]?.[0]?.guidedStep === 1;
         }),
       { timeout: 3_000 },
     )

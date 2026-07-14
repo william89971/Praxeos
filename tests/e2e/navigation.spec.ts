@@ -4,7 +4,11 @@ const redirects = [
   ["/learn/praxeology-101", "/learn"],
   ["/cases", "/practice"],
   ["/modules", "/labs"],
-  ["/modules/calculation-labyrinth", "/labs/calculation-labyrinth"],
+  ["/modules/calculation-labyrinth", "/labs?redesigned=calculation-labyrinth"],
+  [
+    "/journey/calculation-labyrinth",
+    "/labs/market-without-a-manager?mode=guided&from=redesign",
+  ],
   ["/glossary", "/sources/glossary"],
   ["/thinkers/mises", "/sources/thinkers/mises"],
   ["/manifesto", "/sources#manifesto"],
@@ -21,7 +25,7 @@ test("all primary routes load without an application error", async ({ page }) =>
   for (const route of [
     "/learn",
     "/practice",
-    "/journey/calculation-labyrinth",
+    "/labs/market-without-a-manager",
     "/labs",
     "/notebook",
     "/sources",

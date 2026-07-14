@@ -1,6 +1,6 @@
 import { LabFoundation } from "@/labs/components/LabFoundation";
-import { findLab } from "@/labs/registry";
+import { getLab } from "@/labs/registry";
 
 export default function ChoiceMachine() {
-  return <LabFoundation lab={findLab("choice-machine")!} />;
+  return <LabFoundation lab={getLab("choice-machine")} />;
 }

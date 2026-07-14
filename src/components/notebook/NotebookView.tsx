@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export function NotebookView() {
   const { store, hydrated } = usePraxeosStore();
-  if (!hydrated) return <p role="status">Opening your local notebook…</p>;
+  if (!hydrated) return <output>Opening your local notebook…</output>;
   const sessions = LAB_REGISTRY.flatMap((lab) => store.labSessions[lab.slug]);
   if (sessions.length === 0 && store.earlierRecords.length === 0) {
     return (

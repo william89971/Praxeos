@@ -7,6 +7,7 @@ export interface SelfReviewInput {
   acknowledgedAssumptionIds: readonly string[];
   revision: string;
   selfReviewChecks: readonly string[];
+  requiredSelfReviewChecks?: number;
 }
 
 export function evaluateSelfReview(input: SelfReviewInput): RubricFeedback[] {
@@ -46,14 +47,22 @@ export function evaluateSelfReview(input: SelfReviewInput): RubricFeedback[] {
       basedOn: "revision",
     });
   }
+  const requiredChecks = input.requiredSelfReviewChecks ?? 3;
+  if (feedback.length === 0 && input.selfReviewChecks.length < requiredChecks) {
+    feedback.push({
+      id: "complete-self-review",
+      status: "revise or confirm",
+      message:
+        "Complete each visible comparison prompt. The checklist records your review; it does not grade the conclusion.",
+      basedOn: "self-review checklist",
+    });
+  }
   if (feedback.length === 0) {
     feedback.push({
       id: "ready-for-self-review",
       status: "ready for self-review",
       message:
-        input.selfReviewChecks.length > 0
-          ? "The required record is complete. Compare the two responses using the checklist; no semantic grade is being assigned."
-          : "Complete the visible self-review checklist. Praxeos does not grade the conclusion.",
+        "The required record and comparison checklist are complete. No semantic grade is being assigned.",
       basedOn: "completion",
     });
   }

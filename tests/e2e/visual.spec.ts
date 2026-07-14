@@ -91,8 +91,8 @@ test("flagship visual surfaces stay stable", async ({ page }) => {
     animations: "disabled",
     ...snapshotTolerance,
   });
-  await prepareSnapshot(page, "/journey/calculation-labyrinth");
-  await expect(page).toHaveScreenshot("journey-brief.png", {
+  await prepareSnapshot(page, "/labs/market-without-a-manager?mode=guided");
+  await expect(page).toHaveScreenshot("market-guided.png", {
     fullPage: true,
     animations: "disabled",
     ...snapshotTolerance,

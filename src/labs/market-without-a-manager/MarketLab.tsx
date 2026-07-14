@@ -1,11 +1,12 @@
 "use client";
 
-import { usePraxeosStore } from "@/hooks/usePraxeosStore";
 import { SiteChrome } from "@/components/layout/SiteChrome";
-import { evaluateSelfReview } from "@/labs/feedback";
+import { usePraxeosStore } from "@/hooks/usePraxeosStore";
 import { OptionalGuide } from "@/labs/components/OptionalGuide";
-import { encodeShareEnvelope, decodeShareEnvelope } from "@/labs/share";
+import { evaluateSelfReview } from "@/labs/feedback";
+import { decodeShareEnvelope, encodeShareEnvelope } from "@/labs/share";
 import type { LabMode, RubricFeedback } from "@/labs/types";
+import type { GuideTurn } from "@/lib/guide/types";
 import {
   type StoredLabSession,
   activeLabSession,
@@ -13,7 +14,6 @@ import {
   labSessionToMarkdown,
   upsertLabSession,
 } from "@/lib/learning-store";
-import type { GuideTurn } from "@/lib/guide/types";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -107,6 +107,21 @@ const ASSUMPTIONS = [
   },
 ] as const;
 
+const SELF_REVIEW_CHECKS = [
+  {
+    id: "compare-responses",
+    label: "I compared the initial response with the revision or confirmation.",
+  },
+  {
+    id: "trace-evidence",
+    label: "I can point to the selected event that most affected my comparison.",
+  },
+  {
+    id: "state-limit",
+    label: "I named at least one assumption that limits what the simulation can show.",
+  },
+] as const;
+
 export default function MarketLab() {
   const searchParams = useSearchParams();
   const { store, update, hydrated } = usePraxeosStore();
@@ -163,6 +178,7 @@ export default function MarketLab() {
       setNotice(
         `That share link was ${decoded.reason}. A fresh deterministic session is ready.`,
       );
+      return;
     }
     const stored = activeLabSession(store, LAB_SLUG);
     if (stored) {
@@ -266,6 +282,15 @@ export default function MarketLab() {
     });
   };
 
+  const toggleSelfReview = (id: string) => {
+    const current = session?.selfReviewChecks ?? [];
+    persist({
+      selfReviewChecks: current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
+    });
+  };
+
   const runSelfReview = () => {
     const result = evaluateSelfReview({
       guidedComplete: state.completed,
@@ -274,6 +299,7 @@ export default function MarketLab() {
       acknowledgedAssumptionIds: session?.acknowledgedAssumptionIds ?? [],
       revision: session?.revision ?? "",
       selfReviewChecks: session?.selfReviewChecks ?? [],
+      requiredSelfReviewChecks: SELF_REVIEW_CHECKS.length,
     });
     setFeedback(result);
     persist({ feedback: result });
@@ -376,7 +402,7 @@ export default function MarketLab() {
         </header>
 
         <div className="lab-save-strip">
-          <p role="status">{notice}</p>
+          <output>{notice}</output>
           <span>{online ? "Local save ready" : "Offline · local save active"}</span>
         </div>
 
@@ -575,6 +601,19 @@ export default function MarketLab() {
                 placeholder="After reviewing the selected evidence and assumptions, what changes—or stays the same?"
               />
             </label>
+            <fieldset>
+              <legend>Transparent self-review checklist</legend>
+              {SELF_REVIEW_CHECKS.map((check) => (
+                <label key={check.id} className="lab-check-row">
+                  <input
+                    type="checkbox"
+                    checked={(session?.selfReviewChecks ?? []).includes(check.id)}
+                    onChange={() => toggleSelfReview(check.id)}
+                  />
+                  <span>{check.label}</span>
+                </label>
+              ))}
+            </fieldset>
           </div>
           <div className="lab-inline-actions">
             <button type="button" className="button-primary" onClick={runSelfReview}>
@@ -582,7 +621,7 @@ export default function MarketLab() {
             </button>
           </div>
           {feedback.length ? (
-            <div className="self-review-results" role="status">
+            <output className="self-review-results">
               {feedback.map((item) => (
                 <article key={item.id}>
                   <p className="label-mono">{item.status}</p>
@@ -590,7 +629,7 @@ export default function MarketLab() {
                   <small>Based on: {item.basedOn}</small>
                 </article>
               ))}
-            </div>
+            </output>
           ) : null}
 
           <OptionalGuide

@@ -1,5 +1,6 @@
 "use client";
 
+import type { LabSlug } from "@/labs/types";
 import {
   LEARNING_STORE_KEY,
   type LearningStore,
@@ -8,7 +9,6 @@ import {
   migrateLearningStore,
   upsertLabSession,
 } from "@/lib/learning-store";
-import type { LabSlug } from "@/labs/types";
 import { useCallback, useEffect, useState } from "react";
 
 const LEGACY_KEYS = [

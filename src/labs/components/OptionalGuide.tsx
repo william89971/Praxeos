@@ -93,7 +93,7 @@ export function OptionalGuide({
           </button>
         ) : null}
       </div>
-      <p role="status" className="lab-guide__status">
+      <output className="lab-guide__status">
         {status === "loading" ? "Asking the optional Guide…" : null}
         {status === "offline"
           ? "You are offline. The transparent self-review remains fully available."
@@ -104,7 +104,7 @@ export function OptionalGuide({
         {status === "error"
           ? "The Guide is unavailable. No learner writing was lost; continue with self-review."
           : null}
-      </p>
+      </output>
       {turn ? (
         <div className="guide-result">
           <p className="guide-mode">

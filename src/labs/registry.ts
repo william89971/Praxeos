@@ -78,6 +78,12 @@ export function findLab(slug: string): LabRegistryEntry | undefined {
   return LAB_REGISTRY.find((lab) => lab.slug === slug);
 }
 
+export function getLab(slug: LabSlug): LabRegistryEntry {
+  const lab = findLab(slug);
+  if (!lab) throw new Error(`Unknown Lab slug: ${slug}`);
+  return lab;
+}
+
 export function adjacentLabs(slug: LabSlug) {
   const index = LAB_REGISTRY.findIndex((lab) => lab.slug === slug);
   return {

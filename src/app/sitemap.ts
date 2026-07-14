@@ -1,5 +1,5 @@
-import { PRAXEOLOGY_101 } from "@/lib/praxeology";
 import { LAB_REGISTRY } from "@/labs/registry";
+import { PRAXEOLOGY_101 } from "@/lib/praxeology";
 import { THINKER_SLUGS } from "@/types/module";
 import type { MetadataRoute } from "next";
 
