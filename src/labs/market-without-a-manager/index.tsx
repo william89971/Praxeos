@@ -1,6 +1,3 @@
-import { LabFoundation } from "@/labs/components/LabFoundation";
-import { findLab } from "@/labs/registry";
+import MarketLab from "./MarketLab";
 
-export default function MarketWithoutAManager() {
-  return <LabFoundation lab={findLab("market-without-a-manager")!} />;
-}
+export default MarketLab;

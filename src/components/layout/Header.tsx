@@ -46,7 +46,6 @@ export function Header() {
         position: "sticky",
         top: 0,
         zIndex: 50,
-        backdropFilter: "saturate(1.1) blur(6px)",
       }}
     >
       <div
