@@ -114,9 +114,14 @@ export function recordModuleRun<State extends object, Metrics extends object>(
   };
 
   try {
-    const currentStore = JSON.parse(window.localStorage.getItem(RUN_STORAGE_KEY) ?? "{}") as { labRuns?: ModuleRun<object, object>[] };
+    const currentStore = JSON.parse(
+      window.localStorage.getItem(RUN_STORAGE_KEY) ?? "{}",
+    ) as { labRuns?: ModuleRun<object, object>[] };
     const next = [recorded, ...(currentStore.labRuns ?? [])].slice(0, MAX_RUNS);
-    window.localStorage.setItem(RUN_STORAGE_KEY, JSON.stringify({ ...currentStore, version: 2, labRuns: next }));
+    window.localStorage.setItem(
+      RUN_STORAGE_KEY,
+      JSON.stringify({ ...currentStore, version: 2, labRuns: next }),
+    );
     trackInteraction("run_recorded", {
       moduleSlug: run.slug,
       payload: { completedGoals: run.completedGoals.length },

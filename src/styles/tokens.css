@@ -13,7 +13,7 @@
 
     --ink-primary: #1c1814;
     --ink-secondary: #5c5348;
-    --ink-tertiary: #8b8275;
+    --ink-tertiary: #6b6358;
 
     --rule: #d8cfbe;
     --rule-strong: #b8ad97;
@@ -29,10 +29,9 @@
     --accent-capital-wash: rgb(58 90 74 / 0.08);
 
     /* ---------- Typography: families ---------- */
-    --font-serif: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
-    --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
-    --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo,
-      monospace;
+    --font-serif: ui-serif, Georgia, "Times New Roman", serif;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "SFMono-Regular", Consolas, Menlo, monospace;
 
     /* ---------- Typography: fluid scale (utopia.fyi) ---------- */
     --step--2: clamp(0.78rem, 0.76rem + 0.1vw, 0.83rem);
@@ -91,7 +90,7 @@
 
     --ink-primary: #f0eada;
     --ink-secondary: #b5ac99;
-    --ink-tertiary: #7a7265;
+    --ink-tertiary: #8b8275;
 
     --rule: #2e2820;
     --rule-strong: #4a4133;
@@ -109,7 +108,7 @@
       --paper-sunk: #0d0b08;
       --ink-primary: #f0eada;
       --ink-secondary: #b5ac99;
-      --ink-tertiary: #7a7265;
+      --ink-tertiary: #8b8275;
       --rule: #2e2820;
       --rule-strong: #4a4133;
       --accent-bitcoin-wash: rgb(232 119 34 / 0.14);

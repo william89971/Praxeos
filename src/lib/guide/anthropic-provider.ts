@@ -1,7 +1,13 @@
-import Anthropic from "@anthropic-ai/sdk";
 import type { SourcePacket } from "@/lib/source-packets";
+import type Anthropic from "@anthropic-ai/sdk";
 import { DeterministicGuideProvider } from "./deterministic-provider";
-import type { GuideBlock, GuideCitation, GuideProvider, GuideRequest, GuideTurn } from "./types";
+import type {
+  GuideBlock,
+  GuideCitation,
+  GuideProvider,
+  GuideRequest,
+  GuideTurn,
+} from "./types";
 import { classifyBlock, validateGuideTurn } from "./validate";
 
 interface NativeCitation {
@@ -44,20 +50,28 @@ export class AnthropicGuideProvider implements GuideProvider {
       {
         model: "claude-sonnet-5",
         max_tokens: 650,
-        messages: [{ role: "user", content: [...documents, { type: "text", text: prompt }] }],
+        messages: [
+          { role: "user", content: [...documents, { type: "text", text: prompt }] },
+        ],
       },
       { signal },
     );
 
-    const blocks = normalizeNativeBlocks(response.content as NativeTextBlock[], request.sourcePackets);
+    const blocks = normalizeNativeBlocks(
+      response.content as NativeTextBlock[],
+      request.sourcePackets,
+    );
     const question = extractQuestion(blocks.map((block) => block.text).join(" "));
     const citations = dedupeCitations(blocks.flatMap((block) => block.citations));
     const turn: GuideTurn = {
       providerMode: "claude",
       question,
-      blocks: blocks.map((block) => ({ ...block, text: block.text.replace(question, "").trim() })).filter((block) => block.text),
+      blocks: blocks
+        .map((block) => ({ ...block, text: block.text.replace(question, "").trim() }))
+        .filter((block) => block.text),
       citations,
-      whyThisFeedback: "Claude received only this reasoning, normalized non-sensitive lab state, and the cited source packets shown below.",
+      whyThisFeedback:
+        "Claude received only this reasoning, normalized non-sensitive lab state, and the cited source packets shown below.",
       insufficiency: citations.length > 0 ? "none" : "invalid-response",
       retryAfterSeconds: null,
     };
@@ -78,26 +92,43 @@ export function normalizeNativeBlocks(
       category: classifyBlock(block.text ?? "", index),
       text: block.text?.trim() ?? "",
       citations: (block.citations ?? []).flatMap((citation) => {
-        const packet = typeof citation.document_index === "number" ? packets[citation.document_index] : undefined;
+        const packet =
+          typeof citation.document_index === "number"
+            ? packets[citation.document_index]
+            : undefined;
         return packet
-          ? [{
-              sourceId: packet.id,
-              title: packet.title,
-              url: packet.url,
-              locator: packet.locator,
-              ...(citation.cited_text ? { citedText: citation.cited_text } : {}),
-            }]
+          ? [
+              {
+                sourceId: packet.id,
+                title: packet.title,
+                url: packet.url,
+                locator: packet.locator,
+                ...(citation.cited_text ? { citedText: citation.cited_text } : {}),
+              },
+            ]
           : [];
       }),
     }));
 }
 
 function extractQuestion(text: string): string {
-  const questions = text.match(/[^.!?]*\?/g)?.map((item) => item.trim()).filter(Boolean) ?? [];
-  return questions.length === 1 ? questions[0] ?? "What would you revise?" : "What scenario evidence would you use in your revision?";
+  const questions =
+    text
+      .match(/[^.!?]*\?/g)
+      ?.map((item) => item.trim())
+      .filter(Boolean) ?? [];
+  return questions.length === 1
+    ? (questions[0] ?? "What would you revise?")
+    : "What scenario evidence would you use in your revision?";
 }
 
 function dedupeCitations(citations: GuideCitation[]): GuideCitation[] {
-  return [...new Map(citations.map((citation) => [`${citation.sourceId}:${citation.locator}`, citation])).values()];
+  return [
+    ...new Map(
+      citations.map((citation) => [
+        `${citation.sourceId}:${citation.locator}`,
+        citation,
+      ]),
+    ).values(),
+  ];
 }
-

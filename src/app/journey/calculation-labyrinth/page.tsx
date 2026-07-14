@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { FlagshipJourney } from "@/components/journey/FlagshipJourney";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Calculation Labyrinth",

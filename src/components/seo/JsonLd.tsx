@@ -95,43 +95,6 @@ export function ModuleJsonLd({
 }
 
 /**
- * Article-schema for the manifesto.
- */
-export function ManifestoJsonLd() {
-  const url = `${SITE_URL}/manifesto`;
-  const schema = escapeJsonLdValue({
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: "Ends and Means — The Praxeos Manifesto",
-    description:
-      "A manifesto on explorable explanations, the Austrian tradition, and the craft of teaching ideas seriously.",
-    image: `${url}/opengraph-image`,
-    datePublished: "2026-04-23",
-    author: {
-      "@type": "Person",
-      name: "William Menjivar",
-      url: `${SITE_URL}/built`,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Praxeos",
-      url: SITE_URL,
-    },
-    mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    license: "https://creativecommons.org/licenses/by/4.0/",
-    isAccessibleForFree: true,
-  });
-
-  return (
-    <script
-      type="application/ld+json"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: typed source object, HTML-escaped.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
-
-/**
  * WebSite-schema for the homepage. Includes a SearchAction so Google can
  * offer in-result search once /glossary is wired.
  */

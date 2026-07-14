@@ -12,7 +12,7 @@ export const SOURCE_PACKETS: readonly SourcePacket[] = [
     id: "mises-human-action-action",
     title: "Human Action",
     author: "Ludwig von Mises",
-    url: "https://oll.libertyfund.org/titles/mises-human-action-a-treatise-on-economics",
+    url: "https://oll.libertyfund.org/titles/greaves-human-action-a-treatise-on-economics-fee-ed",
     locator: "Part One, Chapter I, sections 1–2",
     claims: [
       "Human action is purposeful behavior directed toward chosen ends.",
@@ -57,4 +57,3 @@ export const SOURCE_PACKETS: readonly SourcePacket[] = [
 export function sourcePacket(id: string): SourcePacket | undefined {
   return SOURCE_PACKETS.find((packet) => packet.id === id);
 }
-

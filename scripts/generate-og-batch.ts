@@ -9,8 +9,7 @@ async function main() {
     generatedAt: new Date().toISOString(),
     routes: [
       "/opengraph-image",
-      "/manifesto/opengraph-image",
-      ...MODULE_REGISTRY.map((entry) => `/modules/${entry.slug}/opengraph-image`),
+      ...MODULE_REGISTRY.map((entry) => `/labs/${entry.slug}/opengraph-image`),
     ],
   };
 

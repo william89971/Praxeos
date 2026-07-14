@@ -4,54 +4,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Crosshair } from "@/components/cursor/Crosshair";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
 import type { ReactNode } from "react";
-
-const fraunces = localFont({
-  src: [
-    {
-      path: "../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2",
-      weight: "100 900",
-      style: "normal",
-    },
-    {
-      path: "../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2",
-      weight: "100 900",
-      style: "italic",
-    },
-  ],
-  variable: "--font-fraunces",
-  display: "swap",
-  adjustFontFallback: "Times New Roman",
-  preload: true,
-});
-
-const inter = localFont({
-  src: [
-    {
-      path: "../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
-      weight: "100 900",
-      style: "normal",
-    },
-  ],
-  variable: "--font-inter",
-  display: "swap",
-  adjustFontFallback: "Arial",
-  preload: true,
-});
-
-const jetbrainsMono = localFont({
-  src: [
-    {
-      path: "../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2",
-      weight: "100 800",
-      style: "normal",
-    },
-  ],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-  preload: false,
-});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.vercel.app";
 
@@ -120,11 +73,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning>
       <body>
         <a href="#main" className="skip-link">
           Skip to content

@@ -9,4 +9,3 @@ export function createGuideProvider(): GuideProvider {
     ? new AnthropicGuideProvider(new Anthropic({ apiKey }))
     : new DeterministicGuideProvider();
 }
-

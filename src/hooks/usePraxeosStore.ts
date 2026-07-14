@@ -1,14 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import {
-  emptyLearningStore,
   LEARNING_STORE_KEY,
-  migrateLearningStore,
   type LearningStore,
+  emptyLearningStore,
+  migrateLearningStore,
 } from "@/lib/learning-store";
+import { useCallback, useEffect, useState } from "react";
 
-const LEGACY_KEYS = ["praxeos.learning.v1", "praxeos.progress.v1", "praxeos.module-runs.v1"];
+const LEGACY_KEYS = [
+  "praxeos.learning.v1",
+  "praxeos.progress.v1",
+  "praxeos.module-runs.v1",
+];
 
 export function usePraxeosStore() {
   const [store, setStore] = useState<LearningStore>(emptyLearningStore);
@@ -17,7 +21,9 @@ export function usePraxeosStore() {
   useEffect(() => {
     try {
       const current = window.localStorage.getItem(LEARNING_STORE_KEY);
-      const legacy = LEGACY_KEYS.map((key) => window.localStorage.getItem(key)).find(Boolean);
+      const legacy = LEGACY_KEYS.map((key) => window.localStorage.getItem(key)).find(
+        Boolean,
+      );
       const parsed = current ?? legacy;
       const migrated = migrateLearningStore(parsed ? JSON.parse(parsed) : null);
       window.localStorage.setItem(LEARNING_STORE_KEY, JSON.stringify(migrated));
@@ -42,9 +48,11 @@ export function usePraxeosStore() {
   }, []);
 
   const resetJourney = useCallback(() => {
-    update((current) => ({ ...emptyLearningStore(), completedLessons: current.completedLessons }));
+    update((current) => ({
+      ...emptyLearningStore(),
+      completedLessons: current.completedLessons,
+    }));
   }, [update]);
 
   return { store, update, hydrated, resetJourney };
 }
-

@@ -183,5 +183,5 @@ console.log(
   `    4. Implement src/modules/${slug}/sketch.tsx per /src/sketches/CLAUDE.md`,
 );
 console.log("    5. npm run typecheck && npm run lint");
-console.log(`    6. npm run dev → open http://localhost:3000/modules/${slug}\n`);
+console.log(`    6. npm run dev → open http://localhost:3000/labs/${slug}\n`);
 console.log("  Homo agit.\n");

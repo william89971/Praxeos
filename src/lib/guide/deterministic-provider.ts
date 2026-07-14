@@ -13,7 +13,8 @@ export class DeterministicGuideProvider implements GuideProvider {
           locator: source.locator,
         }
       : null;
-    const hasScenarioEvidence = /1200|20|budget|volunteer|priced|unpriced|path|waste/i.test(request.reasoning);
+    const hasScenarioEvidence =
+      /1200|20|budget|volunteer|priced|unpriced|path|waste/i.test(request.reasoning);
 
     return {
       providerMode: "deterministic",
@@ -32,17 +33,21 @@ export class DeterministicGuideProvider implements GuideProvider {
           ? [
               {
                 category: "concept" as const,
-                text: source?.claims[0] ?? "Economic reasoning compares chosen means with forgone alternatives.",
+                text:
+                  source?.claims[0] ??
+                  "Economic reasoning compares chosen means with forgone alternatives.",
                 citations: [citation],
               },
             ]
           : []),
       ],
       citations: citation ? [citation] : [],
-      whyThisFeedback: "The Guide checks for scenario evidence first, then uses only allowlisted source claims to frame one revision question.",
-      insufficiency: hasScenarioEvidence ? "provider-unavailable" : "needs-more-evidence",
+      whyThisFeedback:
+        "The Guide checks for scenario evidence first, then uses only allowlisted source claims to frame one revision question.",
+      insufficiency: hasScenarioEvidence
+        ? "provider-unavailable"
+        : "needs-more-evidence",
       retryAfterSeconds: null,
     };
   }
 }
-

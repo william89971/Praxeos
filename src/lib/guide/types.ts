@@ -23,7 +23,11 @@ export interface GuideTurn {
   blocks: GuideBlock[];
   citations: GuideCitation[];
   whyThisFeedback: string;
-  insufficiency: "none" | "needs-more-evidence" | "provider-unavailable" | "invalid-response";
+  insufficiency:
+    | "none"
+    | "needs-more-evidence"
+    | "provider-unavailable"
+    | "invalid-response";
   retryAfterSeconds: number | null;
 }
 
@@ -37,4 +41,3 @@ export interface GuideProvider {
   readonly mode: GuideProviderMode;
   respond(request: GuideRequest, signal?: AbortSignal): Promise<GuideTurn>;
 }
-

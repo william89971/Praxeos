@@ -1,14 +1,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import createMDX from "@next/mdx";
-import remarkFootnotes from "remark-footnotes";
-import remarkGfm from "remark-gfm";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkGfm, remarkFootnotes],
+    remarkPlugins: ["remark-gfm", "remark-footnotes"],
   },
 });
 
@@ -100,15 +98,6 @@ const nextConfig = {
       },
       {
         source: "/fonts/(.*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        source: "/_next/static/(.*)",
         headers: [
           {
             key: "Cache-Control",

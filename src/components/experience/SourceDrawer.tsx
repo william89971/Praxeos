@@ -34,7 +34,9 @@ export function SourceDrawer({ sources, thinkers }: Props) {
             Source lineage:{" "}
             {thinkers.slice(0, 4).map((thinker, index) => (
               <span key={thinker}>
-                <Link href={`/sources/thinkers/${thinker}`}>{formatThinkerName(thinker)}</Link>
+                <Link href={`/sources/thinkers/${thinker}`}>
+                  {formatThinkerName(thinker)}
+                </Link>
                 {index < Math.min(thinkers.length, 4) - 1 ? ", " : ""}
               </span>
             ))}

@@ -31,15 +31,18 @@ export interface LearningStore {
   version: typeof LEARNING_STORE_VERSION;
   completedLessons: string[];
   journey: JourneyRecord;
-  labProgress: Record<string, {
-    visited?: boolean;
-    firstInteraction?: boolean;
-    challenge?: boolean;
-    essay?: boolean;
-    insight?: boolean;
-    lastInsight?: string;
-    updatedAt?: string;
-  }>;
+  labProgress: Record<
+    string,
+    {
+      visited?: boolean;
+      firstInteraction?: boolean;
+      challenge?: boolean;
+      essay?: boolean;
+      insight?: boolean;
+      lastInsight?: string;
+      updatedAt?: string;
+    }
+  >;
   dismissedLabOnboarding: Record<string, boolean>;
   labRuns: Array<{
     id: string;
@@ -87,17 +90,23 @@ export function migrateLearningStore(value: unknown): LearningStore {
   if (!value || typeof value !== "object") return emptyLearningStore();
   const input = value as Record<string, unknown>;
   if (input.version === LEARNING_STORE_VERSION && input.journey) {
-    return { ...emptyLearningStore(), ...(input as unknown as LearningStore), version: 2 };
+    return {
+      ...emptyLearningStore(),
+      ...(input as unknown as LearningStore),
+      version: 2,
+    };
   }
 
   const legacyProgress = Array.isArray(input.completedLessons)
     ? input.completedLessons.filter((item): item is string => typeof item === "string")
     : [];
-  const legacyJournal = typeof input.journal === "object" && input.journal
-    ? (input.journal as Record<string, unknown>)
-    : {};
+  const legacyJournal =
+    typeof input.journal === "object" && input.journal
+      ? (input.journal as Record<string, unknown>)
+      : {};
   const journey = emptyJourney();
-  if (typeof legacyJournal.reflection === "string") journey.finalReflection = legacyJournal.reflection;
+  if (typeof legacyJournal.reflection === "string")
+    journey.finalReflection = legacyJournal.reflection;
 
   return {
     ...emptyLearningStore(),
@@ -117,14 +126,26 @@ export function serializeShareState(state: LabState): string {
     w: Math.max(0, Math.min(99, Math.round(state.waste))),
     u: Math.max(0, Math.min(99, Math.round(state.uncertainty))),
   };
-  return btoa(JSON.stringify(safe)).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+  return btoa(JSON.stringify(safe))
+    .replaceAll("+", "-")
+    .replaceAll("/", "_")
+    .replaceAll("=", "");
 }
 
 export function parseShareState(encoded: string): LabState | null {
   try {
-    const padded = encoded.replaceAll("-", "+").replaceAll("_", "/").padEnd(Math.ceil(encoded.length / 4) * 4, "=");
-    const raw = JSON.parse(atob(padded)) as { p?: unknown; r?: unknown; w?: unknown; u?: unknown };
-    if (!Array.isArray(raw.r) || !raw.r.every((item) => typeof item === "string")) return null;
+    const padded = encoded
+      .replaceAll("-", "+")
+      .replaceAll("_", "/")
+      .padEnd(Math.ceil(encoded.length / 4) * 4, "=");
+    const raw = JSON.parse(atob(padded)) as {
+      p?: unknown;
+      r?: unknown;
+      w?: unknown;
+      u?: unknown;
+    };
+    if (!Array.isArray(raw.r) || !raw.r.every((item) => typeof item === "string"))
+      return null;
     return {
       priced: raw.p === 1,
       path: raw.r.slice(0, 12),
@@ -144,7 +165,9 @@ export function journeyToMarkdown(record: JourneyRecord): string {
     "",
     "## Initial interpretation",
     "",
-    ...Object.entries(record.initial).map(([field, value]) => `- **${field}:** ${value || "Not recorded"}`),
+    ...Object.entries(record.initial).map(
+      ([field, value]) => `- **${field}:** ${value || "Not recorded"}`,
+    ),
     "",
     "## Revision",
     "",

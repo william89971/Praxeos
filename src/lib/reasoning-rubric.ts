@@ -24,30 +24,43 @@ const RULES: Record<
   actor: {
     concepts: [/student/i, /team/i, /volunteer/i, /organizer/i, /school/i],
     evidence: [/plan/i, /event/i, /choose/i, /decid/i],
-    distinction: "Name the person or group making the choice, not the budget or the event.",
+    distinction:
+      "Name the person or group making the choice, not the budget or the event.",
   },
   end: {
     concepts: [/event/i, /attend/i, /community/i, /fund/i, /successful/i, /welcom/i],
     evidence: [/want/i, /goal/i, /aim/i, /so that/i, /purpose/i],
-    distinction: "State the desired result; money and volunteer-hours are means or constraints.",
+    distinction:
+      "State the desired result; money and volunteer-hours are means or constraints.",
   },
   means: {
     concepts: [/budget/i, /dollar/i, /volunteer/i, /hour/i, /room/i, /food/i, /music/i],
     evidence: [/use/i, /spend/i, /allocate/i, /provide/i],
-    distinction: "Name resources the team can use, not the outcome those resources serve.",
+    distinction:
+      "Name resources the team can use, not the outcome those resources serve.",
   },
   constraint: {
     concepts: [/1200/i, /budget/i, /20/i, /hour/i, /limited/i, /scarce/i],
     evidence: [/only/i, /cannot/i, /limit/i, /forces/i, /because/i],
-    distinction: "A constraint limits the menu of possible plans; it is not simply a disliked result.",
+    distinction:
+      "A constraint limits the menu of possible plans; it is not simply a disliked result.",
   },
   opportunityCost: {
     concepts: [/give up/i, /forgo/i, /instead/i, /other/i, /next best/i, /less/i],
     evidence: [/food/i, /music/i, /decor/i, /space/i, /time/i, /path/i, /plan/i],
-    distinction: "Opportunity cost is the best forgone alternative, not every possible downside.",
+    distinction:
+      "Opportunity cost is the best forgone alternative, not every possible downside.",
   },
   interpretation: {
-    concepts: [/price/i, /signal/i, /compare/i, /waste/i, /uncertain/i, /knowledge/i, /coordinate/i],
+    concepts: [
+      /price/i,
+      /signal/i,
+      /compare/i,
+      /waste/i,
+      /uncertain/i,
+      /knowledge/i,
+      /coordinate/i,
+    ],
     evidence: [/priced/i, /unpriced/i, /marker/i, /path/i, /resource/i, /labyrinth/i],
     distinction: "Connect the concept to something that happened in the labyrinth.",
   },
@@ -80,7 +93,8 @@ export function evaluateReasoning(field: ReasoningField, raw: string): RubricFee
     return {
       field,
       status: "needs evidence",
-      message: "The concept fits. Now explain how a concrete scenario detail supports it.",
+      message:
+        "The concept fits. Now explain how a concrete scenario detail supports it.",
       evidence: concepts,
     };
   }
@@ -88,7 +102,8 @@ export function evaluateReasoning(field: ReasoningField, raw: string): RubricFee
   return {
     field,
     status: "ready to revise",
-    message: "This is grounded enough to revise. Another interpretation may also be defensible if it uses scenario evidence.",
+    message:
+      "This is grounded enough to revise. Another interpretation may also be defensible if it uses scenario evidence.",
     evidence: [...concepts, ...evidence],
   };
 }
@@ -100,4 +115,3 @@ export function evaluateReasoningSet(
     evaluateReasoning(field, reasoning[field] ?? ""),
   );
 }
-

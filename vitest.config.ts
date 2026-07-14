@@ -20,13 +20,17 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["tests/unit/**/*.test.ts"],
+    include: ["tests/unit/**/*.test.ts", "tests/evaluations/**/*.test.ts"],
     exclude: ["node_modules", "dist", ".next", "tests/e2e/**"],
     environment: "node",
     reporters: ["default"],
     coverage: {
       provider: "v8",
-      include: ["src/modules/**/lib/**/*.ts", "src/sketches/lib/**/*.ts"],
+      include: [
+        "src/lib/**/*.ts",
+        "src/modules/**/lib/**/*.ts",
+        "src/sketches/lib/**/*.ts",
+      ],
     },
   },
 });
