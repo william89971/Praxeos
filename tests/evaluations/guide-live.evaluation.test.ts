@@ -69,14 +69,16 @@ liveDescribe("optional live Claude Guide evaluation", () => {
       ).toBeTruthy();
       const provider = new AnthropicGuideProvider(new Anthropic({ apiKey }));
       const turn = await provider.respond({
+        labSlug: "market-without-a-manager",
         reasoning,
-        labState: {
-          priced: false,
-          path: ["hall", "local-food"],
-          waste: 39,
-          uncertainty: 73,
+        evidence: {
+          observationIds: ["completed-trade-1", "ceiling-missed-trade"],
+          actionIds: ["offer-apple-for-bread", "set-ceiling-3"],
+          assumptionIds: ["five-participants"],
         },
-        sourcePackets: SOURCE_PACKETS.slice(0, 3),
+        sourcePackets: SOURCE_PACKETS.filter((packet) =>
+          packet.labSlugs.includes("market-without-a-manager"),
+        ),
       });
       const validation = validateGuideTurn(turn);
 

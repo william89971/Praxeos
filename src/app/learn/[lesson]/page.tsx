@@ -68,7 +68,9 @@ export default async function LessonPage({
             {next ? (
               <Link href={`/learn/${next.slug}`}>{next.shortTitle} →</Link>
             ) : (
-              <Link href="/journey/calculation-labyrinth">Final synthesis →</Link>
+              <Link href="/labs/market-without-a-manager?mode=guided">
+                Final synthesis →
+              </Link>
             )}
           </nav>
         </section>

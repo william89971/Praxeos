@@ -25,5 +25,5 @@ export function validateGuideTurn(
 export function classifyBlock(text: string, index: number): GuideBlock["category"] {
   if (index === 0 || /you (wrote|noticed|identified)/i.test(text)) return "observation";
   if (/try|revise|next|consider/i.test(text)) return "next-step";
-  return "concept";
+  return "distinction";
 }

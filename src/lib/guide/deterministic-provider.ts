@@ -1,9 +1,9 @@
-import type { GuideProvider, GuideRequest, GuideTurn } from "./types";
+import type { GuideProvider, GuideProviderRequest, GuideTurn } from "./types";
 
 export class DeterministicGuideProvider implements GuideProvider {
   readonly mode = "deterministic" as const;
 
-  async respond(request: GuideRequest): Promise<GuideTurn> {
+  async respond(request: GuideProviderRequest): Promise<GuideTurn> {
     const source = request.sourcePackets[0];
     const citation = source
       ? {
@@ -13,29 +13,29 @@ export class DeterministicGuideProvider implements GuideProvider {
           locator: source.locator,
         }
       : null;
-    const hasScenarioEvidence =
-      /1200|20|budget|volunteer|priced|unpriced|path|waste/i.test(request.reasoning);
+    const evidenceCount = request.evidence.observationIds.length;
+    const assumptionCount = request.evidence.assumptionIds.length;
 
     return {
       providerMode: "deterministic",
-      question: hasScenarioEvidence
-        ? "Which specific path choice best supports the distinction you are making?"
-        : "What detail from the budget, volunteer-hours, or labyrinth run could make your interpretation testable?",
+      question:
+        evidenceCount === 0
+          ? "Which visible event or observation will you select before comparing your two responses?"
+          : assumptionCount === 0
+            ? "Which displayed model assumption most limits what you can conclude from the selected evidence?"
+            : `How does the selected observation “${request.evidence.observationIds[0]}” change—or fail to change—your initial response?`,
       blocks: [
         {
           category: "observation",
-          text: hasScenarioEvidence
-            ? "Your interpretation names at least one detail from the scenario or run."
-            : "Your interpretation needs a concrete scenario or run detail before a concept can be applied confidently.",
+          text: `${evidenceCount} simulation observation${evidenceCount === 1 ? " was" : "s were"} selected and ${assumptionCount} assumption${assumptionCount === 1 ? " was" : "s were"} acknowledged. This count does not evaluate the meaning or quality of the learner’s prose.`,
           citations: [],
         },
         ...(citation
           ? [
               {
-                category: "concept" as const,
+                category: "source-note" as const,
                 text:
-                  source?.claims[0] ??
-                  "Economic reasoning compares chosen means with forgone alternatives.",
+                  source?.claims[0] ?? "A source packet is available for comparison.",
                 citations: [citation],
               },
             ]
@@ -43,10 +43,11 @@ export class DeterministicGuideProvider implements GuideProvider {
       ],
       citations: citation ? [citation] : [],
       whyThisFeedback:
-        "The Guide checks for scenario evidence first, then uses only allowlisted source claims to frame one revision question.",
-      insufficiency: hasScenarioEvidence
-        ? "provider-unavailable"
-        : "needs-more-evidence",
+        "Claude is unavailable, so Praxeos used only explicit evidence selections, acknowledged assumptions, and the allowlisted source packet. It did not interpret semantic correctness.",
+      insufficiency:
+        evidenceCount === 0 || assumptionCount === 0
+          ? "needs-more-evidence"
+          : "provider-unavailable",
       retryAfterSeconds: null,
     };
   }

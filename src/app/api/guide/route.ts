@@ -1,8 +1,8 @@
+import { isLabSlug } from "@/labs/types";
 import { createGuideProvider } from "@/lib/guide/provider";
 import { checkGuideRateLimit } from "@/lib/guide/rate-limit";
-import type { GuideRequest, GuideTurn } from "@/lib/guide/types";
-import type { LabState } from "@/lib/learning-store";
-import { SOURCE_PACKETS } from "@/lib/source-packets";
+import type { GuideProviderRequest, GuideRequest, GuideTurn } from "@/lib/guide/types";
+import { sourcePacketsForLab } from "@/lib/source-packets";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +10,7 @@ export const revalidate = 0;
 
 const MAX_BODY_BYTES = 12_000;
 const MAX_REASONING = 2_400;
+const SAFE_ID = /^[a-z0-9][a-z0-9-]{0,63}$/;
 
 export async function POST(request: Request) {
   const headers = { "Cache-Control": "no-store, max-age=0" };
@@ -34,28 +35,39 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: { reasoning?: unknown; labState?: unknown };
+  let body: Partial<GuideRequest>;
   try {
-    body = (await request.json()) as typeof body;
+    body = (await request.json()) as Partial<GuideRequest>;
   } catch {
     return NextResponse.json({ error: "Invalid JSON." }, { status: 400, headers });
   }
   if (
+    !isLabSlug(body.labSlug) ||
     typeof body.reasoning !== "string" ||
     body.reasoning.trim().length < 12 ||
     body.reasoning.length > MAX_REASONING
   ) {
     return NextResponse.json(
-      { error: "Add a concise reasoning attempt first." },
+      { error: "Choose a valid Lab and add a concise reasoning attempt first." },
+      { status: 400, headers },
+    );
+  }
+  const evidence = normalizeEvidence(body.evidence);
+  if (!evidence) {
+    return NextResponse.json(
+      {
+        error:
+          "Evidence must contain only bounded observation, action, and assumption IDs.",
+      },
       { status: 400, headers },
     );
   }
 
-  const labState = normalizeLabState(body.labState);
-  const guideRequest: GuideRequest = {
+  const guideRequest: GuideProviderRequest = {
+    labSlug: body.labSlug,
     reasoning: body.reasoning.trim(),
-    labState,
-    sourcePackets: SOURCE_PACKETS.slice(0, 3),
+    evidence,
+    sourcePackets: sourcePacketsForLab(body.labSlug).slice(0, 4),
   };
 
   try {
@@ -82,22 +94,26 @@ export async function POST(request: Request) {
   }
 }
 
-function normalizeLabState(value: unknown): LabState {
-  const input =
-    value && typeof value === "object" ? (value as Record<string, unknown>) : {};
-  return {
-    priced: input.priced === true,
-    path: Array.isArray(input.path)
-      ? input.path
-          .filter((item): item is string => typeof item === "string")
-          .slice(0, 12)
-      : [],
-    waste: typeof input.waste === "number" ? Math.max(0, Math.min(99, input.waste)) : 0,
-    uncertainty:
-      typeof input.uncertainty === "number"
-        ? Math.max(0, Math.min(99, input.uncertainty))
-        : 0,
-  };
+function normalizeEvidence(value: unknown): GuideRequest["evidence"] | null {
+  if (!value || typeof value !== "object") return null;
+  const input = value as Record<string, unknown>;
+  const observationIds = normalizeIds(input.observationIds, 16);
+  const actionIds = normalizeIds(input.actionIds, 40);
+  const assumptionIds = normalizeIds(input.assumptionIds, 16);
+  return observationIds && actionIds && assumptionIds
+    ? { observationIds, actionIds, assumptionIds }
+    : null;
+}
+
+function normalizeIds(value: unknown, limit: number): string[] | null {
+  if (
+    !Array.isArray(value) ||
+    value.length > limit ||
+    !value.every((item) => typeof item === "string" && SAFE_ID.test(item))
+  ) {
+    return null;
+  }
+  return [...new Set(value)];
 }
 
 function statusFromError(error: unknown): number | null {

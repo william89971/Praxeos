@@ -7,7 +7,7 @@ const ROUTES = [
   "/",
   "/learn",
   "/practice",
-  "/journey/calculation-labyrinth",
+  "/labs/market-without-a-manager",
   "/labs",
   "/notebook",
   "/sources",

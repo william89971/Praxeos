@@ -1,52 +1,29 @@
-# src/ — Code Conventions
+# Praxeos source architecture
 
-This file scopes rules that apply to anything under `/src`. Read `/CLAUDE.md` at the repo root first.
+Praxeos uses Next.js App Router, React server components by default, and client components only for local state or direct interaction.
 
-## Path aliases
+## Active product structure
 
-Use aliases. Never `../../../` relative paths across domain boundaries.
+- `app/` owns routes, metadata, redirects, feeds, and the Guide boundary.
+- `labs/registry.ts` is the only active Lab registry.
+- `labs/<slug>/` contains a rendering-independent deterministic engine and its 2D SVG/HTML experience.
+- `labs/components/` contains shared editorial Lab UI.
+- `lib/learning-store.ts` owns the versioned v3 local-first record and legacy archive migration.
+- `lib/source-packets.ts` owns verified, Lab-allowlisted claims and counterarguments.
+- `lib/guide/` owns the provider-neutral optional Guide.
 
-```ts
-import { ModuleLayout } from "@/components/layout/ModuleLayout";
-import { findModule } from "@/modules/registry";
-import type { Module, Source } from "@/types/module";
-import { cn } from "@/lib/utils/cn";
-```
+The active Lab slugs are `choice-machine`, `market-without-a-manager`, `entrepreneurs-discovery`, and `money-time-machine`. Do not recreate the retired `src/modules` runtime or the standalone Calculation Labyrinth journey.
 
-Full alias map in `/tsconfig.json`.
+## Runtime rules
 
-## Server vs. client components
+- Engines are pure, seeded, deterministic, replayable, and independent of React.
+- Important state is represented in HTML or SVG and has a structured text equivalent.
+- Reduced motion receives the same interaction with state jumps, not a poster.
+- Share URLs include only a Lab slug, seed, mode, bounded assumption IDs, and bounded action IDs.
+- Learner prose remains local and never enters a URL, log, Redis record, or permanent transcript.
+- Deterministic feedback never parses prose for semantic correctness. It reads only completion, explicit evidence selections, explicit assumption acknowledgements, revision, and checklist state.
+- Semantic guidance is optional and belongs only to the source-grounded Guide.
 
-- Everything defaults to **server components**.
-- Reach for `"use client"` only when the component genuinely needs client state (refs, DOM, animation, user input). Push the client boundary as deep as possible.
-- A client island in a server route is fine. A whole route marked client "to simplify" is a smell.
-- `ThemeProvider` and `Crosshair` are client. `ModuleLayout` and all typography primitives are server.
-- Sketches are always client (`"use client"` + `next/dynamic` with `ssr: false`).
+## Visual rules
 
-## Styling
-
-- No inline `<style>` strings in high-traffic components unless truly local. Use `/src/styles/*.css` for shared rules; Tailwind utilities for one-offs.
-- Every color comes from a token var (`var(--paper)`, `var(--ink-primary)`). No `#hex` literals in JSX unless inside a shader string or an OG image (Edge runtime — see `/src/modules/_template/og.tsx`).
-- Transitions must reference a token curve (`var(--ease-organic)`, `var(--ease-slack)`, etc.). Never `ease` / `ease-in-out`.
-
-## TypeScript
-
-- `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` — all on.
-- No `any`. No `@ts-ignore`. Use `as unknown as` only at true boundaries.
-- Prefer `readonly` arrays and objects. Discriminated unions over booleans-with-payloads.
-- Each module's `metadata.ts` must satisfy `ModuleMetadata` from `@/types/module`.
-
-## React
-
-- Avoid `useEffect` when derived state will do.
-- Prefer Server Actions for mutations inside the site (e.g. newsletter signup). Client-only fetches go in `useEffect` — and must handle unmount cleanup.
-- For components that mount heavy subtrees (sketches), gate with `IntersectionObserver`.
-
-## Imports
-
-Biome sorts imports deterministically. Run `npm run lint:fix` to normalize. Groups: node builtins → external packages → alias imports → relative imports.
-
-## Files not to touch
-
-- `/src/modules/_template/` — the canonical module. Changes here propagate to every new module scaffold. Edit consciously.
-- `/mdx-components.tsx` at the repo root — @next/mdx contract; touch only when the MDX components set changes.
+Follow `docs/AESTHETIC.md` and `src/styles/tokens.css`. Preserve warm paper, warm ink, Fraunces-led editorial hierarchy, fine rules, and restrained oxblood, forest, and ochre accents. Do not introduce generic dashboard cards, glossy shadows, off-the-shelf icon sets, or developer-console language.

@@ -61,7 +61,7 @@ export default function BuiltPage() {
             and evidence that still has to be earned.
           </p>
           <div className="editorial-actions">
-            <Link href="/journey/calculation-labyrinth">
+            <Link href="/labs/market-without-a-manager?mode=guided">
               Run the 90-second demo path
             </Link>
             <a

@@ -3,12 +3,16 @@
 import {
   LEARNING_STORE_KEY,
   type LearningStore,
+  emptyLabSession,
   emptyLearningStore,
   migrateLearningStore,
+  upsertLabSession,
 } from "@/lib/learning-store";
+import type { LabSlug } from "@/labs/types";
 import { useCallback, useEffect, useState } from "react";
 
 const LEGACY_KEYS = [
+  "praxeos.learning.v2",
   "praxeos.learning.v1",
   "praxeos.progress.v1",
   "praxeos.module-runs.v1",
@@ -47,12 +51,23 @@ export function usePraxeosStore() {
     });
   }, []);
 
-  const resetJourney = useCallback(() => {
-    update((current) => ({
-      ...emptyLearningStore(),
-      completedLessons: current.completedLessons,
-    }));
-  }, [update]);
+  const startLabSession = useCallback(
+    (labSlug: LabSlug, seed?: string) => {
+      const session = emptyLabSession(labSlug, new Date().toISOString(), seed);
+      update((current) => upsertLabSession(current, session));
+      return session;
+    },
+    [update],
+  );
 
-  return { store, update, hydrated, resetJourney };
+  const resetLab = useCallback(
+    (labSlug: LabSlug) => {
+      const session = emptyLabSession(labSlug);
+      update((current) => upsertLabSession(current, session));
+      return session;
+    },
+    [update],
+  );
+
+  return { store, update, hydrated, startLabSession, resetLab };
 }

@@ -24,8 +24,6 @@
     "test:e2e": "playwright test",
     "test:visual": "playwright test tests/e2e/visual.spec.ts",
     "test:e2e:update": "playwright test --update-snapshots",
-    "new-module": "tsx scripts/new-module.ts",
-    "lint:modules": "tsx scripts/lint-modules.ts",
     "generate:og": "tsx scripts/generate-og-batch.ts",
     "capture:screenshots": "tsx scripts/capture-screenshots.ts",
     "eval:guide": "vitest run tests/evaluations",
@@ -39,8 +37,6 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "16.2.10",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.0",
     "@types/mdx": "^2.0.13",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
@@ -52,8 +48,7 @@
     "react-dom": "19.0.0",
     "remark-footnotes": "^4.0.1",
     "remark-gfm": "^4.0.1",
-    "tailwind-merge": "^3.0.2",
-    "three": "^0.184.0"
+    "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
@@ -67,7 +62,6 @@
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.3",
     "@types/react-dom": "^19.0.2",
-    "@types/three": "^0.184.0",
     "@vitest/coverage-v8": "^4.1.5",
     "eslint": "^9.39.4",
     "eslint-plugin-jsx-a11y": "^6.10.2",

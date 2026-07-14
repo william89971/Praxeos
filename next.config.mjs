@@ -18,12 +18,7 @@ const nextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
   experimental: {
     viewTransition: true,
-    optimizePackageImports: [
-      "framer-motion",
-      "three",
-      "@react-three/fiber",
-      "@react-three/drei",
-    ],
+    optimizePackageImports: ["framer-motion"],
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -34,7 +29,36 @@ const nextConfig = {
       { source: "/learn/praxeology-101", destination: "/learn", permanent: true },
       { source: "/cases", destination: "/practice", permanent: true },
       { source: "/modules", destination: "/labs", permanent: true },
-      { source: "/modules/:slug", destination: "/labs/:slug", permanent: true },
+      {
+        source: "/journey/calculation-labyrinth",
+        destination: "/labs/market-without-a-manager?mode=guided&from=redesign",
+        permanent: true,
+      },
+      {
+        source: "/labs/monetary-garden",
+        destination: "/labs?redesigned=monetary-garden",
+        permanent: true,
+      },
+      {
+        source: "/labs/signal-orchard",
+        destination: "/labs?redesigned=signal-orchard",
+        permanent: true,
+      },
+      {
+        source: "/labs/calculation-labyrinth",
+        destination: "/labs?redesigned=calculation-labyrinth",
+        permanent: true,
+      },
+      {
+        source: "/labs/coordination-engine",
+        destination: "/labs?redesigned=coordination-engine",
+        permanent: true,
+      },
+      {
+        source: "/modules/:slug",
+        destination: "/labs?redesigned=:slug",
+        permanent: true,
+      },
       { source: "/glossary", destination: "/sources/glossary", permanent: true },
       { source: "/thinkers", destination: "/sources", permanent: true },
       {

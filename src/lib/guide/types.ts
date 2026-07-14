@@ -1,4 +1,4 @@
-import type { LabState } from "@/lib/learning-store";
+import type { LabSlug } from "@/labs/types";
 import type { SourcePacket } from "@/lib/source-packets";
 
 export type GuideProviderMode = "claude" | "deterministic";
@@ -12,7 +12,7 @@ export interface GuideCitation {
 }
 
 export interface GuideBlock {
-  category: "observation" | "concept" | "next-step";
+  category: "observation" | "distinction" | "source-note" | "next-step";
   text: string;
   citations: GuideCitation[];
 }
@@ -32,12 +32,20 @@ export interface GuideTurn {
 }
 
 export interface GuideRequest {
+  labSlug: LabSlug;
   reasoning: string;
-  labState: LabState;
+  evidence: {
+    observationIds: string[];
+    actionIds: string[];
+    assumptionIds: string[];
+  };
+}
+
+export interface GuideProviderRequest extends GuideRequest {
   sourcePackets: readonly SourcePacket[];
 }
 
 export interface GuideProvider {
   readonly mode: GuideProviderMode;
-  respond(request: GuideRequest, signal?: AbortSignal): Promise<GuideTurn>;
+  respond(request: GuideProviderRequest, signal?: AbortSignal): Promise<GuideTurn>;
 }

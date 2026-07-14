@@ -1,10 +1,8 @@
 "use client";
 
-import { trackInteraction } from "@/lib/telemetry";
 import type { Source, ThinkerSlug } from "@/types/module";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { useRef } from "react";
 
 interface Props {
   readonly sources: readonly Source[];
@@ -13,18 +11,8 @@ interface Props {
 
 export function SourceDrawer({ sources, thinkers }: Props) {
   const primary = sources.slice(0, 3);
-  const trackedOpenRef = useRef(false);
-
-  const trackOpen = () => {
-    if (trackedOpenRef.current) return;
-    trackedOpenRef.current = true;
-    trackInteraction("source_opened", {
-      payload: { sourceCount: sources.length, thinkerCount: thinkers.length },
-    });
-  };
-
   return (
-    <details style={drawerStyle} onToggle={trackOpen}>
+    <details style={drawerStyle}>
       <summary className="label-mono" style={summaryStyle}>
         Built from primary sources
       </summary>

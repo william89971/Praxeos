@@ -20,22 +20,23 @@ export default function HomePage() {
               guidance, and reflection.
             </p>
             <div className="editorial-actions">
-              <Link href="/journey/calculation-labyrinth">Begin 8-minute journey</Link>
+              <Link href="/labs/market-without-a-manager?mode=guided">
+                Begin 8-minute journey
+              </Link>
               <Link href="/labs">Explore labs</Link>
             </div>
           </div>
           <aside className="editorial-hero__aside">
-            <p className="label-mono">Calculation Labyrinth</p>
+            <p className="label-mono">Market Without a Manager</p>
             <strong>
-              $1,200
+              5 people
+              <br />6 goods
               <br />
-              20 hours
-              <br />
-              one plan
+              no director
             </strong>
             <p>
-              Plan a school event twice—first with price markers, then without them—and
-              revise what you think prices can reveal.
+              Make and reject offers, watch prices emerge from completed trades, then
+              test what changes when information is incomplete or a ceiling binds.
             </p>
           </aside>
         </section>

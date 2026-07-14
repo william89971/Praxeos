@@ -22,7 +22,11 @@ const BASE_URL =
 
 const TARGETS: Array<{ slug: string; path: string; wait?: number }> = [
   { slug: "home", path: "/", wait: 2500 },
-  { slug: "calculation-labyrinth", path: "/journey/calculation-labyrinth", wait: 1000 },
+  {
+    slug: "market-without-a-manager",
+    path: "/labs/market-without-a-manager",
+    wait: 1000,
+  },
   { slug: "labs", path: "/labs", wait: 1000 },
   { slug: "learn", path: "/learn", wait: 1000 },
   { slug: "notebook", path: "/notebook", wait: 1000 },

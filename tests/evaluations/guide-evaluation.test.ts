@@ -1,15 +1,22 @@
 import { normalizeNativeBlocks } from "@/lib/guide/anthropic-provider";
 import { DeterministicGuideProvider } from "@/lib/guide/deterministic-provider";
-import type { GuideTurn } from "@/lib/guide/types";
+import type { GuideProviderRequest, GuideTurn } from "@/lib/guide/types";
 import { validateGuideTurn } from "@/lib/guide/validate";
 import { SOURCE_PACKETS } from "@/lib/source-packets";
 import { describe, expect, it } from "vitest";
 
-const request = {
+const request: GuideProviderRequest = {
+  labSlug: "market-without-a-manager",
   reasoning: "The price markers helped compare the hall path and reduced uncertainty.",
-  labState: { priced: false, path: ["hall", "local-food"], waste: 39, uncertainty: 73 },
-  sourcePackets: SOURCE_PACKETS.slice(0, 3),
-} as const;
+  evidence: {
+    observationIds: ["completed-trade-1"],
+    actionIds: ["offer-apple-for-bread"],
+    assumptionIds: ["five-participants"],
+  },
+  sourcePackets: SOURCE_PACKETS.filter((packet) =>
+    packet.labSlugs.includes("market-without-a-manager"),
+  ),
+};
 
 describe("Guide evaluation suite", () => {
   it.each([
@@ -52,7 +59,7 @@ describe("Guide evaluation suite", () => {
     const invalid: GuideTurn = {
       providerMode: "claude",
       question: "Why? What next?",
-      blocks: [{ category: "concept", text: "A factual claim", citations: [] }],
+      blocks: [{ category: "distinction", text: "A factual claim", citations: [] }],
       citations: [],
       whyThisFeedback: "test",
       insufficiency: "none",
