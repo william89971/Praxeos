@@ -25,9 +25,7 @@ test("Choice Machine preserves alternatives, self-review, and Notebook handoff",
     .getByRole("textbox", { name: "Initial interpretation" })
     .fill("The first path fit four available hours, while the revised path fit two.");
   await page.getByRole("checkbox", { name: "The comparison is ready" }).check();
-  await page
-    .getByRole("checkbox", { name: /Only four named activities/ })
-    .check();
+  await page.getByRole("checkbox", { name: /Only four named activities/ }).check();
   await page
     .getByRole("textbox", { name: /Revision or explicit/ })
     .fill("The two choices reveal rankings under different visible conditions.");
@@ -43,9 +41,45 @@ test("Choice Machine preserves alternatives, self-review, and Notebook handoff",
 
   await page
     .getByRole("textbox", { name: "Final reflection" })
-    .fill("I would change attention next and avoid treating one action as a fixed trait.");
+    .fill(
+      "I would change attention next and avoid treating one action as a fixed trait.",
+    );
   await page.getByRole("button", { name: "Save reflection to Notebook" }).click();
   await expect(page.getByText(/Completed and saved locally/)).toBeVisible();
   await page.goto("/notebook");
   await expect(page.getByRole("heading", { name: "The Choice Machine" })).toBeVisible();
+});
+
+test("Entrepreneur's Discovery spends resources without revealing a perfect path", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.evaluate(() => window.localStorage.clear());
+  await page.goto("/labs/entrepreneurs-discovery?mode=guided");
+
+  for (const action of [
+    "Observe where people stop",
+    "Form a pickup hypothesis",
+    "Interview commuters",
+    "Build a small-team prototype",
+    "Compare action with the hypothesis",
+    "Revise the hypothesis",
+    "Run a limited student pilot",
+    "Choose pivot and preserve resources",
+  ]) {
+    await page.getByRole("button", { name: new RegExp(action) }).click();
+  }
+
+  await expect(page.getByText("$35", { exact: true })).toBeVisible();
+  await expect(page.getByText(/46% illustrative uncertainty remains/)).toBeVisible();
+  await expect(
+    page.getByText("untested · still hidden", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Explore" }).click();
+  await page.getByRole("button", { name: "Test weekend users" }).click();
+  await expect(
+    page
+      .getByRole("complementary", { name: "Evidence and change summary" })
+      .getByText(/Resources were consumed/),
+  ).toBeVisible();
 });

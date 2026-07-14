@@ -1313,6 +1313,34 @@ button {
   background: var(--paper-elevated);
 }
 
+.native-visual-summary strong {
+  max-width: 48ch;
+  font-family: var(--font-serif);
+}
+
+.opportunity-region {
+  fill: var(--paper-elevated);
+  stroke: var(--ink-primary);
+  stroke-width: 1.5;
+}
+
+.opportunity-region--weak {
+  fill: color-mix(in srgb, var(--accent-action) 12%, var(--paper));
+}
+
+.opportunity-region--mixed {
+  fill: color-mix(in srgb, var(--accent-bitcoin) 14%, var(--paper));
+}
+
+.opportunity-region--strong {
+  fill: color-mix(in srgb, var(--accent-capital) 17%, var(--paper));
+}
+
+.discovery-hatch-line {
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+}
+
 .guided-metrics {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
