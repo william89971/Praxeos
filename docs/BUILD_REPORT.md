@@ -23,13 +23,14 @@ production verification, and v1.0 remain blocked by design.
 | Internal link contracts | Nine current route contracts resolved on the local app | Pass |
 | Primary-source links | Nine route contracts and all four cited source URLs passed after replacing one retired Liberty Fund URL | Pass |
 | Cross-browser flow | The 90-test run produced 82 passes, seven intentional skips, and one WebKit persistence assertion that timed out at 300 ms; after increasing only that assertion's poll window, its five-browser regression suite passed 15/15 with five expected conditional skips | Pass after test-timing correction |
-| Visual regression | Desktop, mobile, and reduced-motion snapshots pass with a strict 50-pixel same-platform tolerance. CI uses the same pinned OFL test fonts with a bounded 4% pixel-ratio allowance for Linux rasterization; production font loading is unchanged | Pass locally; CI rerun pending |
+| Visual regression | Desktop, mobile, and reduced-motion snapshots pass with a strict 50-pixel same-platform tolerance. CI uses the same pinned OFL test fonts with a bounded 4% pixel-ratio allowance for Linux rasterization; production font loading is unchanged | Pass locally and in CI |
 | Desktop Lighthouse | Three-run medians across seven routes: performance 0.99–1.00; accessibility, best practices, and SEO 1.00; LCP 0.81–0.93 s; CLS 0–0.012 | Pass |
 | Mobile Lighthouse | Three-run medians: performance 0.97–0.99; accessibility, best practices, and SEO 1.00; LCP 2.27–2.46 s; CLS 0–0.0003 | Pass |
 | Dependency audit | Production-only audit reports two moderate PostCSS advisories inside Next 16.2.10; the full development tree reports 15 transitive advisories, including Lighthouse tooling. npm offers no safe automatic resolution for the production pair | Blocker documented |
 | Live Claude evaluation | Optional and not run without an explicitly supplied API key | Pending, non-blocking for fallback |
 | Five-person learner study | Protocol and anonymized template exist; no learner results have been entered | Blocking v1.0 |
-| Vercel preview | Requires pushed branch and draft PR | Pending |
+| GitHub CI | Head-commit verify passed in 3m37s; head-commit desktop/mobile Lighthouse passed in 6m28s | Pass |
+| Vercel preview | GitHub has no deployment record or Vercel status check for the head commit, so no preview URL exists to walk | Pending external integration |
 
 ## Automated coverage exercised
 
