@@ -1341,6 +1341,29 @@ button {
   stroke-width: 1;
 }
 
+.money-grid-line {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.money-lane {
+  stroke: var(--rule-strong);
+  stroke-width: 2;
+}
+
+.money-point {
+  stroke: var(--paper);
+  stroke-width: 3;
+}
+
+.money-point--primary {
+  fill: var(--accent-bitcoin);
+}
+
+.money-point--comparison {
+  fill: var(--accent-capital);
+}
+
 .guided-metrics {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

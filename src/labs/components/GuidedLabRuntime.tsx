@@ -170,7 +170,7 @@ export function GuidedLabRuntime<
         state: asRecord(restored),
         guidedStep: restored.guidedStep,
       });
-      setMode(stored.completedAt ? "explore" : stored.mode);
+      setMode(restored.completed || stored.completedAt ? "explore" : stored.mode);
       setFeedback(stored.feedback);
       setChange(restored.observations.at(-1) ?? null);
       setNotice("Saved Lab restored from this browser.");
@@ -223,7 +223,7 @@ export function GuidedLabRuntime<
     persist({
       mode,
       guidedStep: next.guidedStep,
-      assumptions: asRecord(definition.defaultAssumptions),
+      assumptions: assumptionsFromState(next, definition.defaultAssumptions),
       actionLog: nextActionLog,
       state: asRecord(next),
     });
@@ -705,6 +705,14 @@ function sessionFromState<
 
 function asRecord(value: object): Record<string, unknown> {
   return value as Record<string, unknown>;
+}
+
+function assumptionsFromState<State extends GuidedState, Assumptions extends object>(
+  state: State,
+  fallback: Assumptions,
+) {
+  const value = (state as State & { assumptions?: object }).assumptions;
+  return asRecord(value ?? fallback);
 }
 
 function downloadFile(name: string, content: string, type: string) {

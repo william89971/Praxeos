@@ -83,3 +83,41 @@ test("Entrepreneur's Discovery spends resources without revealing a perfect path
       .getByText(/Resources were consumed/),
   ).toBeVisible();
 });
+
+test("Money Time Machine compares traceable illustrative scenarios", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.evaluate(() => window.localStorage.clear());
+  await page.goto("/labs/money-time-machine?mode=guided");
+
+  for (const action of [
+    "Meet the six participants",
+    "Select the credit-expansion rule",
+    "Advance to period one",
+    "Advance to period three",
+    "Inspect who changes first",
+    "Compare a steady-growth rule",
+    "Test higher asset pass-through",
+    "Open interpretation",
+  ]) {
+    await page.getByRole("button", { name: new RegExp(action) }).click();
+  }
+
+  await expect(page.getByText("1.3×", { exact: true })).toBeVisible();
+  await expect(page.getByText(/Not a forecast/)).toBeVisible();
+  await expect(page.getByText(/vs\. Steady-growth rule/)).toBeVisible();
+  await page.reload();
+  await expect(page.getByText("1.3×", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Explore" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await page.getByRole("button", { name: "Explore" }).click();
+  await page.getByRole("button", { name: "Use fixed-stock scenario" }).click();
+  await page.getByRole("button", { name: "Advance to period four" }).click();
+  await expect(
+    page.getByText("Fixed-stock rule vs. Steady-growth rule", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText(/Not a forecast/)).toBeVisible();
+});
