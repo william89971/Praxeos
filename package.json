@@ -28,6 +28,7 @@
     "capture:screenshots": "tsx scripts/capture-screenshots.ts",
     "eval:guide": "vitest run tests/evaluations",
     "eval:guide:live": "node scripts/run-live-guide-evals.mjs",
+    "check:assets": "tsx scripts/validate-image-manifest.ts",
     "check:links": "tsx scripts/check-links.ts",
     "lighthouse:desktop": "lhci autorun --config=.lighthouserc.json",
     "lighthouse:mobile": "lhci autorun --config=.lighthouserc.mobile.json"

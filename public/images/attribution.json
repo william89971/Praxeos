@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-14",
+  "entries": [
+    {
+      "id": "home-hero-choice-desk",
+      "sourceFile": "/images/learning/everyday-choice-desk.png",
+      "placements": ["Homepage hero", "Learn transition"],
+      "altText": "Tactile illustrated desk with a notebook branching into everyday choices among time, study, health, relationships, and groceries.",
+      "creator": "OpenAI-generated legacy Praxeos asset",
+      "sourceUrl": null,
+      "license": "Generated for Praxeos; no third-party source artifact is reproduced.",
+      "retrievalDate": null,
+      "generation": {
+        "prompt": null,
+        "model": null,
+        "date": null
+      },
+      "provenanceException": "The legacy generated PNG contains no embedded prompt, model identifier, or creation date; this missing historical metadata is disclosed rather than reconstructed.",
+      "modifications": [
+        "Resized to 1600 and 640 pixel widths",
+        "Converted to WebP and AVIF"
+      ],
+      "derivatives": [
+        { "file": "/images/editorial/home-hero.webp", "width": 1600, "height": 900 },
+        { "file": "/images/editorial/home-hero.avif", "width": 1600, "height": 900 },
+        { "file": "/images/editorial/home-hero-640.webp", "width": 640, "height": 360 },
+        { "file": "/images/editorial/home-hero-640.avif", "width": 640, "height": 360 }
+      ],
+      "review": {
+        "noImportantText": true,
+        "altTextReviewed": true,
+        "subjectMatchesPlacement": true,
+        "lightThemeReviewed": true,
+        "darkThemeReviewed": true,
+        "croppingReviewed": true
+      }
+    },
+    {
+      "id": "choice-machine-cover",
+      "sourceFile": "/images/learning/opportunity-cost-path.png",
+      "placements": ["Labs progression", "Choice Machine cover"],
+      "altText": "Tactile notebook illustration of one selected path and several faded alternatives beside a clock, wallet, phone, and study materials.",
+      "creator": "OpenAI-generated legacy Praxeos asset",
+      "sourceUrl": null,
+      "license": "Generated for Praxeos; no third-party source artifact is reproduced.",
+      "retrievalDate": null,
+      "generation": { "prompt": null, "model": null, "date": null },
+      "provenanceException": "The legacy generated PNG contains no embedded prompt, model identifier, or creation date; this missing historical metadata is disclosed rather than reconstructed.",
+      "modifications": [
+        "Resized to 1200 and 640 pixel widths",
+        "Converted to WebP and AVIF"
+      ],
+      "derivatives": [
+        { "file": "/images/labs/choice-machine.webp", "width": 1200, "height": 675 },
+        { "file": "/images/labs/choice-machine.avif", "width": 1200, "height": 675 },
+        { "file": "/images/labs/choice-machine-640.webp", "width": 640, "height": 360 },
+        { "file": "/images/labs/choice-machine-640.avif", "width": 640, "height": 360 }
+      ],
+      "review": {
+        "noImportantText": true,
+        "altTextReviewed": true,
+        "subjectMatchesPlacement": true,
+        "lightThemeReviewed": true,
+        "darkThemeReviewed": true,
+        "croppingReviewed": true
+      }
+    },
+    {
+      "id": "market-without-manager-cover",
+      "sourceFile": "/images/editorial/market-without-a-manager.png",
+      "placements": ["Labs progression", "Market Without a Manager cover"],
+      "altText": "Cut-paper market with five participant portraits, hands exchanging bread, apples, tea, cloth, and a tool along completed and incomplete paths around a central record.",
+      "creator": "OpenAI image generation tool",
+      "sourceUrl": null,
+      "license": "Generated specifically for Praxeos; no third-party source artifact is reproduced.",
+      "retrievalDate": "2026-07-14",
+      "generation": {
+        "prompt": "Wide 16:9 tactile editorial illustration of a small market without a manager, viewed from above on cream paper, with five diverse participants, bread, apples, tea, cloth, a tool, completed and incomplete exchange paths, restrained teal, ochre, rust, oxblood, olive, and no text.",
+        "model": "OpenAI image generation tool; exact model identifier was not surfaced by the tool",
+        "date": "2026-07-14"
+      },
+      "provenanceException": null,
+      "modifications": [
+        "Resized to 1200 and 640 pixel widths",
+        "Converted to WebP and AVIF"
+      ],
+      "derivatives": [
+        {
+          "file": "/images/labs/market-without-a-manager.webp",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "file": "/images/labs/market-without-a-manager.avif",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "file": "/images/labs/market-without-a-manager-640.webp",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "file": "/images/labs/market-without-a-manager-640.avif",
+          "width": 640,
+          "height": 360
+        }
+      ],
+      "review": {
+        "noImportantText": true,
+        "altTextReviewed": true,
+        "subjectMatchesPlacement": true,
+        "lightThemeReviewed": true,
+        "darkThemeReviewed": true,
+        "croppingReviewed": true
+      }
+    },
+    {
+      "id": "entrepreneurs-discovery-cover",
+      "sourceFile": "/images/learning/action-cards-flow.png",
+      "placements": ["Labs progression", "Entrepreneur's Discovery cover"],
+      "altText": "Editorial desk illustration of cards linking a person, goal, tools, and a balancing decision, with a hand revising the sequence.",
+      "creator": "OpenAI-generated legacy Praxeos asset",
+      "sourceUrl": null,
+      "license": "Generated for Praxeos; no third-party source artifact is reproduced.",
+      "retrievalDate": null,
+      "generation": { "prompt": null, "model": null, "date": null },
+      "provenanceException": "The legacy generated PNG contains no embedded prompt, model identifier, or creation date; this missing historical metadata is disclosed rather than reconstructed.",
+      "modifications": [
+        "Resized to 1200 and 640 pixel widths",
+        "Converted to WebP and AVIF"
+      ],
+      "derivatives": [
+        {
+          "file": "/images/labs/entrepreneurs-discovery.webp",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "file": "/images/labs/entrepreneurs-discovery.avif",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "file": "/images/labs/entrepreneurs-discovery-640.webp",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "file": "/images/labs/entrepreneurs-discovery-640.avif",
+          "width": 640,
+          "height": 360
+        }
+      ],
+      "review": {
+        "noImportantText": true,
+        "altTextReviewed": true,
+        "subjectMatchesPlacement": true,
+        "lightThemeReviewed": true,
+        "darkThemeReviewed": true,
+        "croppingReviewed": true
+      }
+    },
+    {
+      "id": "money-time-machine-cover",
+      "sourceFile": "/images/learning/reflection-journal-desk.png",
+      "placements": [
+        "Labs progression",
+        "Money Time Machine cover",
+        "Notebook transition"
+      ],
+      "altText": "Tactile open journal with branching diagrams and cards for people, time, money, attention, goals, and comparison.",
+      "creator": "OpenAI-generated legacy Praxeos asset",
+      "sourceUrl": null,
+      "license": "Generated for Praxeos; no third-party source artifact is reproduced.",
+      "retrievalDate": null,
+      "generation": { "prompt": null, "model": null, "date": null },
+      "provenanceException": "The legacy generated PNG contains no embedded prompt, model identifier, or creation date; this missing historical metadata is disclosed rather than reconstructed.",
+      "modifications": [
+        "Resized to 1200 and 640 pixel widths",
+        "Converted to WebP and AVIF"
+      ],
+      "derivatives": [
+        {
+          "file": "/images/labs/money-time-machine.webp",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "file": "/images/labs/money-time-machine.avif",
+          "width": 1200,
+          "height": 675
+        },
+        {
+          "file": "/images/labs/money-time-machine-640.webp",
+          "width": 640,
+          "height": 360
+        },
+        {
+          "file": "/images/labs/money-time-machine-640.avif",
+          "width": 640,
+          "height": 360
+        }
+      ],
+      "review": {
+        "noImportantText": true,
+        "altTextReviewed": true,
+        "subjectMatchesPlacement": true,
+        "lightThemeReviewed": true,
+        "darkThemeReviewed": true,
+        "croppingReviewed": true
+      }
+    }
+  ]
+}

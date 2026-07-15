@@ -14,6 +14,7 @@ import {
   labSessionToMarkdown,
   upsertLabSession,
 } from "@/lib/learning-store";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -382,22 +383,33 @@ export default function MarketLab() {
               How can strangers coordinate without one person directing them?
             </p>
           </div>
-          <div className="lab-mode-control" aria-label="Lab mode">
-            <button
-              type="button"
-              aria-pressed={mode === "guided"}
-              onClick={() => switchMode("guided")}
-            >
-              Guided
-            </button>
-            <button
-              type="button"
-              aria-pressed={mode === "explore"}
-              disabled={!exploreUnlocked}
-              onClick={() => switchMode("explore")}
-            >
-              Explore
-            </button>
+          <div className="lab-header-tools">
+            <figure className="lab-header-cover">
+              <Image
+                src="/images/labs/market-without-a-manager.webp"
+                width={1200}
+                height={675}
+                sizes="(max-width: 700px) 100vw, 22rem"
+                alt="Cut-paper market with five participants exchanging bread, apples, tea, cloth, and a tool along completed and incomplete paths."
+              />
+            </figure>
+            <div className="lab-mode-control" aria-label="Lab mode">
+              <button
+                type="button"
+                aria-pressed={mode === "guided"}
+                onClick={() => switchMode("guided")}
+              >
+                Guided
+              </button>
+              <button
+                type="button"
+                aria-pressed={mode === "explore"}
+                disabled={!exploreUnlocked}
+                onClick={() => switchMode("explore")}
+              >
+                Explore
+              </button>
+            </div>
           </div>
         </header>
 

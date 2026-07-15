@@ -1,6 +1,7 @@
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { DAILY_CASES } from "@/lib/praxeology";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -27,6 +28,15 @@ export default function HomePage() {
             </div>
           </div>
           <aside className="editorial-hero__aside">
+            <Image
+              className="editorial-hero__image"
+              src="/images/editorial/home-hero.webp"
+              width={1600}
+              height={900}
+              sizes="(max-width: 760px) 100vw, 34vw"
+              priority
+              alt="Tactile illustrated desk with a notebook branching into everyday choices among time, study, health, relationships, and groceries."
+            />
             <p className="label-mono">Market Without a Manager</p>
             <strong>
               5 people

@@ -20,6 +20,7 @@ import {
   labSessionToMarkdown,
   upsertLabSession,
 } from "@/lib/learning-store";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import {
   type ComponentType,
@@ -350,22 +351,33 @@ export function GuidedLabRuntime<
               {definition.lab.centralQuestion}
             </p>
           </div>
-          <div className="lab-mode-control" aria-label="Lab mode">
-            <button
-              type="button"
-              aria-pressed={mode === "guided"}
-              onClick={() => switchMode("guided")}
-            >
-              Guided
-            </button>
-            <button
-              type="button"
-              aria-pressed={mode === "explore"}
-              disabled={!exploreUnlocked}
-              onClick={() => switchMode("explore")}
-            >
-              Explore
-            </button>
+          <div className="lab-header-tools">
+            <figure className="lab-header-cover">
+              <Image
+                src={definition.lab.visualAsset}
+                width={1200}
+                height={675}
+                sizes="(max-width: 700px) 100vw, 22rem"
+                alt={definition.lab.visualAlt}
+              />
+            </figure>
+            <div className="lab-mode-control" aria-label="Lab mode">
+              <button
+                type="button"
+                aria-pressed={mode === "guided"}
+                onClick={() => switchMode("guided")}
+              >
+                Guided
+              </button>
+              <button
+                type="button"
+                aria-pressed={mode === "explore"}
+                disabled={!exploreUnlocked}
+                onClick={() => switchMode("explore")}
+              >
+                Explore
+              </button>
+            </div>
           </div>
         </header>
 

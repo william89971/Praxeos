@@ -13,6 +13,8 @@ export const LAB_REGISTRY: readonly LabRegistryEntry[] = [
     sourceIds: ["mises-human-action-action", "menger-principles-value"],
     lessonSlugs: ["man-acts", "choice-and-tradeoff", "opportunity-cost"],
     visualAsset: "/images/labs/choice-machine.webp",
+    visualAlt:
+      "Tactile notebook illustration of one selected path and several faded alternatives beside a clock, wallet, phone, and study materials.",
     accent: "action",
     load: () => import("@/labs/choice-machine"),
   },
@@ -33,6 +35,8 @@ export const LAB_REGISTRY: readonly LabRegistryEntry[] = [
     ],
     lessonSlugs: ["exchange", "prices-and-knowledge", "subjective-value"],
     visualAsset: "/images/labs/market-without-a-manager.webp",
+    visualAlt:
+      "Cut-paper market with five participants exchanging bread, apples, tea, cloth, and a tool along completed and incomplete paths.",
     accent: "money",
     flagship: true,
     load: () => import("@/labs/market-without-a-manager"),
@@ -49,6 +53,8 @@ export const LAB_REGISTRY: readonly LabRegistryEntry[] = [
     sourceIds: ["kirzner-competition", "lachmann-market-process"],
     lessonSlugs: ["ends-and-means", "choice-and-tradeoff", "apply-it-to-your-life"],
     visualAsset: "/images/labs/entrepreneurs-discovery.webp",
+    visualAlt:
+      "Editorial desk illustration of cards linking a person, goal, tools, and a balancing decision, with a hand revising the sequence.",
     accent: "capital",
     load: () => import("@/labs/entrepreneurs-discovery"),
   },
@@ -69,6 +75,8 @@ export const LAB_REGISTRY: readonly LabRegistryEntry[] = [
     ],
     lessonSlugs: ["time-preference", "prices-and-knowledge", "apply-it-to-your-life"],
     visualAsset: "/images/labs/money-time-machine.webp",
+    visualAlt:
+      "Tactile open journal with branching diagrams and cards for people, time, money, attention, goals, and comparison.",
     accent: "money",
     load: () => import("@/labs/money-time-machine"),
   },

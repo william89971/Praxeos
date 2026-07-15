@@ -2,6 +2,7 @@ import { RedesignNotice } from "@/components/labs/RedesignNotice";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { LAB_REGISTRY } from "@/labs/registry";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -41,6 +42,15 @@ export default async function LabsPage({
                 {String(lab.position).padStart(2, "0")}
               </div>
               <div className="lab-progression__copy">
+                <figure className="lab-progression__art">
+                  <Image
+                    src={lab.visualAsset}
+                    width={1200}
+                    height={675}
+                    sizes="(max-width: 760px) 100vw, 62vw"
+                    alt={lab.visualAlt}
+                  />
+                </figure>
                 <p className="label-mono">
                   {lab.flagship ? "Flagship journey" : `Lab ${lab.position}`} ·{" "}
                   {lab.duration}

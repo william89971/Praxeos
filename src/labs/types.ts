@@ -97,6 +97,7 @@ export interface LabRegistryEntry {
   sourceIds: readonly string[];
   lessonSlugs: readonly string[];
   visualAsset: string;
+  visualAlt: string;
   accent: "action" | "capital" | "money";
   flagship?: boolean;
   load: () => Promise<{ default: ComponentType }>;
