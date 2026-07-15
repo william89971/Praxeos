@@ -1,3 +1,4 @@
+import type { LabSlug } from "@/labs/types";
 import type { Concept } from "@/types/module";
 
 export interface ActionAnalyzerSeed {
@@ -39,6 +40,7 @@ export interface PraxeologyCase {
   readonly slug: string;
   readonly title: string;
   readonly domain: string;
+  readonly labSlug: LabSlug;
   readonly durationMin: number;
   readonly scenario: string;
   readonly question: string;
@@ -563,6 +565,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "procrastination-revealed",
     title: "The procrastination trade",
     domain: "Habits",
+    labSlug: "choice-machine",
     durationMin: 4,
     scenario:
       "You say a certification matters for your career, but every evening you choose entertainment over studying.",
@@ -586,6 +589,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "rent-cap-shortage",
     title: "The rent cap",
     domain: "Markets",
+    labSlug: "market-without-a-manager",
     durationMin: 5,
     scenario:
       "A city caps rents below market rates. More people want apartments at the capped price, while fewer owners want to provide or maintain them.",
@@ -610,6 +614,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "free-lunch-office",
     title: "The free office lunch",
     domain: "Work",
+    labSlug: "market-without-a-manager",
     durationMin: 4,
     scenario:
       "A company offers free dinner after 7 p.m. Employees appreciate it, and many stay later.",
@@ -633,6 +638,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "surge-pricing-storm",
     title: "The storm ride",
     domain: "Money",
+    labSlug: "market-without-a-manager",
     durationMin: 5,
     scenario:
       "During a storm, ride prices rise. Some riders complain; more drivers also become willing to drive.",
@@ -656,6 +662,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "side-business-focus",
     title: "The side business split",
     domain: "Entrepreneurship",
+    labSlug: "entrepreneurs-discovery",
     durationMin: 5,
     scenario:
       "You split your side-business time across five ideas. None gets enough attention to test demand.",
@@ -678,6 +685,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "cheap-tool-expensive-time",
     title: "The cheap tool",
     domain: "Personal productivity",
+    labSlug: "choice-machine",
     durationMin: 4,
     scenario:
       "You refuse to buy a $30 tool and spend five frustrating hours doing the task manually.",
@@ -699,6 +707,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "diet-revealed-preference",
     title: "The snack drawer",
     domain: "Health",
+    labSlug: "choice-machine",
     durationMin: 4,
     scenario:
       "You say you want to eat clean, but you keep snacks in the drawer and eat them every afternoon.",
@@ -722,6 +731,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "raise-negotiation",
     title: "The raise negotiation",
     domain: "Work",
+    labSlug: "entrepreneurs-discovery",
     durationMin: 5,
     scenario:
       "You want a raise, but your manager has budget limits and needs proof that your work changes outcomes.",
@@ -745,6 +755,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "subscription-creep",
     title: "The forgotten subscription",
     domain: "Money",
+    labSlug: "choice-machine",
     durationMin: 3,
     scenario:
       "A subscription keeps billing because canceling takes ten annoying minutes.",
@@ -768,6 +779,7 @@ export const DAILY_CASES: readonly PraxeologyCase[] = [
     slug: "status-purchase",
     title: "The status purchase",
     domain: "Consumption",
+    labSlug: "money-time-machine",
     durationMin: 4,
     scenario:
       "A person buys an expensive item they barely use because it changes how they feel others perceive them.",

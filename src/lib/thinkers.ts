@@ -136,7 +136,7 @@ export const THINKERS: readonly ThinkerMeta[] = [
     praxeologySignificance:
       "Hayek emphasized dispersed knowledge, price signals, and orders nobody designs but many people help produce through action.",
     praxeosRelevance:
-      "The Signal Orchard and Coordination Engine are Hayekian in form: they show order emerging from local knowledge rather than central command.",
+      "Market Without a Manager uses local priorities, incomplete information, offers, and completed trades to examine how coordination can emerge without a central director.",
     keyWorks: [
       "Prices and Production",
       "The Use of Knowledge in Society",

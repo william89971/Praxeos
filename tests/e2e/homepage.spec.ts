@@ -1,28 +1,32 @@
 import { expect, test } from "@playwright/test";
 
-test("homepage exposes the praxeology practice surface", async ({ page }) => {
-  test.slow();
+test("homepage makes the offer and flagship action clear above the fold", async ({
+  page,
+}) => {
   await page.goto("/");
-
   await expect(page).toHaveTitle(/Praxeos/i);
   await expect(
-    page.getByRole("heading", { name: /Learn praxeology with real-life choices/i }),
+    page.getByRole("heading", { name: "See the structure inside every choice." }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: /Start the intro/i }).first(),
+    page.getByRole("link", { name: "Begin 8-minute journey" }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: /Try a daily case/i })).toBeVisible();
-  await expect(page.getByAltText(/Illustrated study desk/i)).toBeVisible();
-  await expect(page.getByAltText(/Illustrated notebook and note cards/i)).toBeVisible();
-  await expect(page.getByAltText(/vivid chosen path/i)).toBeVisible();
-  await expect(page.getByText("Every action points at a priority.")).toBeVisible();
-  await expect(page.getByText("Chosen").first()).toBeVisible();
-  await expect(page.getByText("Given up").first()).toBeVisible();
-  await expect(page.getByText("Practice box").first()).toBeVisible();
-  await expect(page.getByText("Learn one choice at a time.")).toBeVisible();
-  await expect(page.getByText("Try this today")).toBeVisible();
-  await expect(page.getByText("My saved notes")).toBeVisible();
-  await expect(page.getByText("No need to sound academic.")).toBeVisible();
-  await expect(page.locator('a[href="/learn/praxeology-101"]').first()).toBeAttached();
-  await expect(page.locator('a[href="/cases"]').first()).toBeAttached();
+  await expect(page.getByRole("link", { name: "Explore labs" })).toBeVisible();
+  const mobile = test.info().project.name === "mobile-chromium";
+  if (mobile) await page.getByRole("button", { name: "Open menu" }).click();
+  const navigation = page.getByRole("navigation", {
+    name: mobile ? "Mobile primary" : "Primary",
+  });
+  for (const label of [
+    "Learn",
+    "Practice",
+    "Labs",
+    "Notebook",
+    "Sources",
+    "How It Was Built",
+  ]) {
+    await expect(
+      navigation.getByRole("link", { name: label, exact: true }),
+    ).toBeVisible();
+  }
 });

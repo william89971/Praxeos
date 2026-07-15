@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Praxeos four-Lab product map</title>
+  <desc id="desc">A product map showing the four-Lab learning progression, shared Lab experience, deterministic feedback boundary, optional Claude Guide boundary, and release gates.</desc>
+  <rect width="1600" height="1000" fill="#f4efe3"/>
+  <style>
+    .serif{font-family:Georgia,'Times New Roman',serif;fill:#201b17}.sans{font-family:Arial,sans-serif;fill:#201b17}.mono{font-family:'Courier New',monospace;letter-spacing:2px}.label{font-size:17px;font-weight:700;fill:#963c3c}.rule{stroke:#cfc3ae}.card{fill:#eee6d5;stroke:#cfc3ae}.small{font-size:17px;fill:#645a4f}.body{font-size:20px;fill:#4f473f}.title{font-size:31px;font-weight:700}.step{font-size:18px;font-weight:700}.white{fill:#f8f2e8}
+  </style>
+  <text x="78" y="94" class="serif" font-size="64" font-weight="700">Praxeos Product Map</text>
+  <text x="80" y="137" class="serif" font-size="25" fill="#645a4f">One progression: choice → exchange → discovery → money across time.</text>
+  <line x1="80" y1="170" x2="1520" y2="170" class="rule"/>
+
+  <text x="80" y="220" class="mono label">FOUR-LAB LEARNING PROGRESSION</text>
+  <g transform="translate(80 245)">
+    <rect width="330" height="180" rx="8" class="card"/>
+    <circle cx="44" cy="43" r="24" fill="#9c3d3d"/><text x="37" y="50" class="sans white" font-size="20">1</text>
+    <text x="28" y="94" class="serif title">The Choice Machine</text>
+    <text x="28" y="126" class="sans body">What does one choice reveal?</text>
+    <text x="28" y="157" class="mono small">6–8 MIN · BRANCHING TIMELINE</text>
+  </g>
+  <g transform="translate(450 225)">
+    <rect width="330" height="220" rx="8" fill="#e7ddca" stroke="#963c3c" stroke-width="3"/>
+    <circle cx="44" cy="43" r="24" fill="#3f6859"/><text x="37" y="50" class="sans white" font-size="20">2</text>
+    <text x="28" y="94" class="serif title">Market Without</text>
+    <text x="28" y="128" class="serif title">a Manager</text>
+    <text x="28" y="162" class="sans body">How can strangers coordinate?</text>
+    <text x="28" y="194" class="mono small">FLAGSHIP · 8–10 MIN</text>
+  </g>
+  <g transform="translate(820 245)">
+    <rect width="330" height="180" rx="8" class="card"/>
+    <circle cx="44" cy="43" r="24" fill="#b56a2d"/><text x="37" y="50" class="sans white" font-size="20">3</text>
+    <text x="28" y="94" class="serif title">Entrepreneur’s</text>
+    <text x="28" y="128" class="serif title">Discovery</text>
+    <text x="28" y="157" class="mono small">7–9 MIN · OPPORTUNITY MAP</text>
+  </g>
+  <g transform="translate(1190 245)">
+    <rect width="330" height="180" rx="8" class="card"/>
+    <circle cx="44" cy="43" r="24" fill="#6d5142"/><text x="37" y="50" class="sans white" font-size="20">4</text>
+    <text x="28" y="94" class="serif title">The Money</text>
+    <text x="28" y="128" class="serif title">Time Machine</text>
+    <text x="28" y="157" class="mono small">8–10 MIN · MULTI-LANE TIME</text>
+  </g>
+
+  <text x="80" y="505" class="mono label">SHARED LAB EXPERIENCE</text>
+  <g class="sans step">
+    <rect x="80" y="530" width="190" height="74" rx="37" class="card"/><text x="111" y="575">1 · Question</text>
+    <rect x="285" y="530" width="190" height="74" rx="37" class="card"/><text x="318" y="575">2 · Decide</text>
+    <rect x="490" y="530" width="190" height="74" rx="37" class="card"/><text x="520" y="575">3 · Observe</text>
+    <rect x="695" y="530" width="190" height="74" rx="37" class="card"/><text x="727" y="575">4 · Reveal</text>
+    <rect x="900" y="530" width="190" height="74" rx="37" class="card"/><text x="927" y="575">5 · Interpret</text>
+    <rect x="1105" y="530" width="190" height="74" rx="37" class="card"/><text x="1128" y="575">6 · Compare</text>
+    <rect x="1310" y="530" width="210" height="74" rx="37" class="card"/><text x="1341" y="575">7 · Explore</text>
+  </g>
+
+  <g transform="translate(80 665)">
+    <rect width="455" height="250" rx="8" class="card"/>
+    <text x="28" y="42" class="mono label">DETERMINISTIC BOUNDARY</text>
+    <text x="28" y="82" class="serif title">Transparent self-review</text>
+    <text x="28" y="122" class="sans body">• completed stages and writing</text>
+    <text x="28" y="154" class="sans body">• explicitly selected evidence</text>
+    <text x="28" y="186" class="sans body">• acknowledged assumptions</text>
+    <text x="28" y="218" class="sans body">• revision and checklist state</text>
+    <text x="28" y="242" class="mono" font-size="15" fill="#963c3c">NO KEYWORD GRADING · NO SCORE</text>
+  </g>
+  <g transform="translate(573 665)">
+    <rect width="455" height="250" rx="8" class="card"/>
+    <text x="28" y="42" class="mono" font-size="17" font-weight="700" fill="#3f6859">OPTIONAL CLAUDE GUIDE</text>
+    <text x="28" y="82" class="serif title">One cited question</text>
+    <text x="28" y="122" class="sans body">In: current reasoning + explicit IDs</text>
+    <text x="28" y="154" class="sans body">Grounding: Lab allowlist only</text>
+    <text x="28" y="186" class="sans body">Out: cited notes + one question</text>
+    <text x="28" y="218" class="sans body">Fallback: non-semantic checklist</text>
+    <text x="28" y="242" class="mono" font-size="15" fill="#3f6859">NO PROSE IN URLS OR REDIS</text>
+  </g>
+  <g transform="translate(1065 665)">
+    <rect width="455" height="250" rx="8" class="card"/>
+    <text x="28" y="42" class="mono label">RELEASE GATES</text>
+    <text x="28" y="82" class="serif title">Evidence before claims</text>
+    <text x="28" y="122" class="sans body">• all four Labs technically complete</text>
+    <text x="28" y="154" class="sans body">• five beginners test every Lab</text>
+    <text x="28" y="186" class="sans body">• one evidence-based revision</text>
+    <text x="28" y="218" class="sans body">• final green verification run</text>
+    <text x="28" y="242" class="mono" font-size="15" fill="#963c3c">DRAFT PR · V1.0 PENDING</text>
+  </g>
+  <line x1="80" y1="948" x2="1520" y2="948" class="rule"/>
+  <text x="80" y="978" class="mono small">CANONICAL · praxeos.vercel.app · LOCAL-FIRST · ACCESSIBLE 2D · 2026-07-14</text>
+</svg>

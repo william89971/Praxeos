@@ -21,7 +21,7 @@ export default defineConfig({
     ? {}
     : {
         webServer: {
-          command: `npm run dev -- --hostname 127.0.0.1 --port ${port}`,
+          command: `npm run start -- --hostname 127.0.0.1 --port ${port}`,
           url: baseURL,
           reuseExistingServer: false,
           timeout: 120_000,
@@ -39,6 +39,36 @@ export default defineConfig({
       name: "mobile-chromium",
       use: {
         ...devices["Pixel 7"],
+      },
+    },
+    {
+      name: "mobile-landscape",
+      use: {
+        ...devices["Pixel 7"],
+        viewport: { width: 915, height: 412 },
+      },
+    },
+    {
+      name: "tablet-chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 820, height: 1180 },
+        hasTouch: true,
+      },
+    },
+    {
+      name: "desktop-firefox",
+      use: { ...devices["Desktop Firefox"] },
+    },
+    {
+      name: "desktop-webkit",
+      use: { ...devices["Desktop Safari"] },
+    },
+    {
+      name: "reduced-motion",
+      use: {
+        ...devices["Desktop Chrome"],
+        contextOptions: { reducedMotion: "reduce" },
       },
     },
   ],

@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const LINKS: Array<{ href: string; label: string }> = [
-  { href: "/learn/praxeology-101", label: "Start Here" },
-  { href: "/cases", label: "Practice" },
-  { href: "/glossary", label: "Words" },
-  { href: "/thinkers", label: "Thinkers" },
-  { href: "/modules", label: "Old Stuff" },
-  { href: "/manifesto", label: "Why This Exists" },
+  { href: "/learn", label: "Learn" },
+  { href: "/practice", label: "Practice" },
+  { href: "/labs", label: "Labs" },
+  { href: "/notebook", label: "Notebook" },
+  { href: "/sources", label: "Sources" },
+  { href: "/built", label: "How It Was Built" },
 ];
 
 export function Header() {
@@ -46,7 +46,6 @@ export function Header() {
         position: "sticky",
         top: 0,
         zIndex: 50,
-        backdropFilter: "saturate(1.1) blur(6px)",
       }}
     >
       <div
@@ -61,6 +60,7 @@ export function Header() {
       >
         <Link
           href="/"
+          prefetch={false}
           aria-label="Praxeos home"
           style={{
             textDecoration: "none",
@@ -97,6 +97,7 @@ export function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  prefetch={false}
                   className="label-mono"
                   style={{
                     textDecoration: "none",
@@ -168,6 +169,7 @@ export function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  prefetch={false}
                   className="label-mono"
                   onClick={() => setMobileOpen(false)}
                   style={{

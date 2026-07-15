@@ -2,15 +2,14 @@
 
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { MODULE_REGISTRY } from "@/modules/registry";
+import { LAB_REGISTRY } from "@/labs/registry";
 
 async function main() {
   const manifest = {
     generatedAt: new Date().toISOString(),
     routes: [
       "/opengraph-image",
-      "/manifesto/opengraph-image",
-      ...MODULE_REGISTRY.map((entry) => `/modules/${entry.slug}/opengraph-image`),
+      ...LAB_REGISTRY.map((entry) => `/labs/${entry.slug}/opengraph-image`),
     ],
   };
 

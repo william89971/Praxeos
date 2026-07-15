@@ -9,20 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-
       - run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Run Lighthouse CI
-        run: npx --yes @lhci/cli@0.14.x autorun
-
+      - run: npm run build
+      - run: npm run lighthouse:desktop
+      - run: npm run lighthouse:mobile
       - if: always()
         uses: actions/upload-artifact@v4
         with:

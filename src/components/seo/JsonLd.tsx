@@ -1,6 +1,6 @@
 import type { ModuleMetadata, Source } from "@/types/module";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.org";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.vercel.app";
 
 /**
  * Escape HTML-sensitive characters inside JSON-LD strings so that a
@@ -40,7 +40,7 @@ export function ModuleJsonLd({
   metadata: ModuleMetadata;
   sources: readonly Source[];
 }) {
-  const url = `${SITE_URL}/modules/${metadata.slug}`;
+  const url = `${SITE_URL}/labs/${metadata.slug}`;
   const ogImage = `${url}/opengraph-image`;
 
   const schema = escapeJsonLdValue({
@@ -54,7 +54,7 @@ export function ModuleJsonLd({
     author: {
       "@type": "Person",
       name: "William Menjivar",
-      url: `${SITE_URL}/colophon`,
+      url: `${SITE_URL}/built`,
     },
     publisher: {
       "@type": "Organization",
@@ -95,43 +95,6 @@ export function ModuleJsonLd({
 }
 
 /**
- * Article-schema for the manifesto.
- */
-export function ManifestoJsonLd() {
-  const url = `${SITE_URL}/manifesto`;
-  const schema = escapeJsonLdValue({
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: "Ends and Means — The Praxeos Manifesto",
-    description:
-      "A manifesto on explorable explanations, the Austrian tradition, and the craft of teaching ideas seriously.",
-    image: `${url}/opengraph-image`,
-    datePublished: "2026-04-23",
-    author: {
-      "@type": "Person",
-      name: "William Menjivar",
-      url: `${SITE_URL}/colophon`,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Praxeos",
-      url: SITE_URL,
-    },
-    mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    license: "https://creativecommons.org/licenses/by/4.0/",
-    isAccessibleForFree: true,
-  });
-
-  return (
-    <script
-      type="application/ld+json"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: typed source object, HTML-escaped.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
-
-/**
  * WebSite-schema for the homepage. Includes a SearchAction so Google can
  * offer in-result search once /glossary is wired.
  */
@@ -142,7 +105,7 @@ export function WebsiteJsonLd() {
     name: "Praxeos",
     url: SITE_URL,
     description:
-      "A student-friendly place to learn praxeology through everyday choices, short lessons, and practice notes.",
+      "An interactive learning laboratory for understanding human choices and economic systems through cases, simulations, source-grounded guidance, and reflection.",
     publisher: {
       "@type": "Person",
       name: "William Menjivar",

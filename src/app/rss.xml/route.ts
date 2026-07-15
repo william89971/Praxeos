@@ -1,39 +1,18 @@
-import { MODULE_REGISTRY } from "@/modules/registry";
+import { LAB_REGISTRY } from "@/labs/registry";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.org";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.vercel.app";
 
 export async function GET(): Promise<Response> {
-  const modules = await Promise.all(
-    MODULE_REGISTRY.map(async (entry) => {
-      const mod = await entry.load();
-      return { slug: entry.slug, meta: mod.metadata };
-    }),
-  );
-
-  // Sort newest-first by publishedAt.
-  modules.sort(
-    (a, b) =>
-      new Date(b.meta.publishedAt).getTime() - new Date(a.meta.publishedAt).getTime(),
-  );
-
-  const items = modules
-    .map((m) => {
-      const link = `${SITE_URL}/modules/${m.slug}`;
-      const ogImage = `${link}/opengraph-image`;
-      const pubDate = new Date(m.meta.publishedAt).toUTCString();
-      return `    <item>
-      <title>${escapeXml(m.meta.title)}</title>
+  const items = LAB_REGISTRY.map((lab) => {
+    const link = `${SITE_URL}/labs/${lab.slug}`;
+    return `    <item>
+      <title>${escapeXml(lab.title)}</title>
       <link>${link}</link>
       <guid isPermaLink="true">${link}</guid>
-      <pubDate>${pubDate}</pubDate>
-      <description>${escapeXml(m.meta.subtitle)}</description>
+      <description>${escapeXml(lab.centralQuestion)}</description>
       <dc:creator>William Menjivar</dc:creator>
-      <enclosure url="${ogImage}" type="image/png"/>
     </item>`;
-    })
-    .join("\n");
-
-  const lastBuildDate = new Date().toUTCString();
+  }).join("\n");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
@@ -43,12 +22,10 @@ export async function GET(): Promise<Response> {
     <title>Praxeos</title>
     <link>${SITE_URL}</link>
     <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
-    <description>Practical praxeology lessons, daily cases, and action analysis.</description>
+    <description>Interactive lessons, cases, Labs, sources, and reflection for examining human choices.</description>
     <language>en-us</language>
     <copyright>CC BY 4.0 — William Menjivar</copyright>
-    <managingEditor>squilliam89971@gmail.com (William Menjivar)</managingEditor>
-    <webMaster>squilliam89971@gmail.com (William Menjivar)</webMaster>
-    <lastBuildDate>${lastBuildDate}</lastBuildDate>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <generator>Praxeos (Next.js)</generator>
 ${items}
   </channel>
@@ -62,8 +39,8 @@ ${items}
   });
 }
 
-function escapeXml(s: string): string {
-  return s
+function escapeXml(value: string): string {
+  return value
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")

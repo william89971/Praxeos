@@ -2,67 +2,19 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Crosshair } from "@/components/cursor/Crosshair";
-import { MotionProvider } from "@/components/motion/MotionProvider";
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
 import type { ReactNode } from "react";
 
-const fraunces = localFont({
-  src: [
-    {
-      path: "../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2",
-      weight: "100 900",
-      style: "normal",
-    },
-    {
-      path: "../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2",
-      weight: "100 900",
-      style: "italic",
-    },
-  ],
-  variable: "--font-fraunces",
-  display: "swap",
-  adjustFontFallback: "Times New Roman",
-  preload: true,
-});
-
-const inter = localFont({
-  src: [
-    {
-      path: "../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
-      weight: "100 900",
-      style: "normal",
-    },
-  ],
-  variable: "--font-inter",
-  display: "swap",
-  adjustFontFallback: "Arial",
-  preload: true,
-});
-
-const jetbrainsMono = localFont({
-  src: [
-    {
-      path: "../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2",
-      weight: "100 800",
-      style: "normal",
-    },
-  ],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-  preload: false,
-});
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.org";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Praxeos - Learn praxeology with real-life choices",
+    default: "Praxeos - See the structure inside every choice",
     template: "%s - Praxeos",
   },
   description:
-    "A student-friendly place to learn praxeology with short lessons, everyday examples, practice cases, and saved notes.",
+    "An interactive learning laboratory for understanding human choices and economic systems through cases, simulations, source-grounded Claude guidance, and reflection.",
   keywords: [
     "Austrian economics",
     "praxeology",
@@ -85,15 +37,15 @@ export const metadata: Metadata = {
     siteName: "Praxeos",
     locale: "en_US",
     url: siteUrl,
-    title: "Praxeos - Learn praxeology with real-life choices",
+    title: "Praxeos - See the structure inside every choice",
     description:
-      "Short lessons and everyday examples for understanding purposeful human action.",
+      "Learn through a flagship calculation journey, deterministic feedback, interactive labs, sources, and reflection.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Praxeos - Learn praxeology with real-life choices",
+    title: "Praxeos - See the structure inside every choice",
     description:
-      "Start with ordinary choices, then learn actors, ends, means, tradeoffs, and opportunity cost.",
+      "Begin an eight-minute journey through actors, ends, means, scarcity, prices, and revision.",
   },
   alternates: {
     canonical: siteUrl,
@@ -120,20 +72,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
         <ThemeProvider>
-          <MotionProvider>
-            <Crosshair />
-            <main id="main">{children}</main>
-          </MotionProvider>
+          <Crosshair />
+          <main id="main">{children}</main>
         </ThemeProvider>
       </body>
     </html>
