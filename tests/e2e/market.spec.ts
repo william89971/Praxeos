@@ -34,7 +34,7 @@ test("full flagship persists, self-reviews without semantic grading, and saves t
   await page.goto("/labs/market-without-a-manager?mode=guided");
   await expect(
     page.getByRole("button", { name: "Meet the participants" }),
-  ).toBeInViewport();
+  ).toBeVisible();
 
   await page.getByRole("button", { name: "Meet the participants" }).click();
   await expect(

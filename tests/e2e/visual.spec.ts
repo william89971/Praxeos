@@ -128,6 +128,12 @@ test("flagship visual surfaces stay stable", async ({ page }) => {
     ...snapshotTolerance,
   });
   await prepareSnapshot(page, "/labs", true);
+  if (["desktop-chromium", "reduced-motion"].includes(test.info().project.name)) {
+    // Normalize the final CSS-pixel row across Linux and Windows font rounding.
+    await page.addStyleTag({
+      content: "body::after { content: ''; display: block; height: 1px; }",
+    });
+  }
   await expect(page).toHaveScreenshot("labs-index.png", {
     fullPage: true,
     animations: "disabled",

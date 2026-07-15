@@ -1071,6 +1071,7 @@ button {
 
 .lab-progression__item {
   --lab-accent: var(--accent-action);
+  --lab-accent-ink: var(--lab-accent);
   display: grid;
   grid-template-columns: minmax(5rem, 0.22fr) minmax(0, 1fr) auto;
   align-items: stretch;
@@ -1088,15 +1089,27 @@ button {
 
 .lab-progression__item--money {
   --lab-accent: var(--accent-bitcoin);
+  /* The display orange is intentionally vivid, but needs a darker ink on paper. */
+  --lab-accent-ink: #944000;
 }
 
 .lab-progression__number {
   display: grid;
   place-items: center;
   font: 480 clamp(3rem, 7vw, 7rem) / 1 var(--font-serif);
-  color: var(--lab-accent);
+  color: var(--lab-accent-ink);
   border-inline-end: 1px solid var(--rule);
   background: color-mix(in srgb, var(--lab-accent) 6%, var(--paper));
+}
+
+[data-theme="dark"] .lab-progression__item--money {
+  --lab-accent-ink: var(--accent-bitcoin);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .lab-progression__item--money {
+    --lab-accent-ink: var(--accent-bitcoin);
+  }
 }
 
 .lab-progression__copy {
