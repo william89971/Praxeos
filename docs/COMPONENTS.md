@@ -1,129 +1,47 @@
-# COMPONENTS — The Library
+# Component contracts
 
-Every component, its purpose, and its contract. Kept in sync with `/src/components/` by `bun run docs:components` (script to be implemented).
+This guide describes the shared product components that carry learning state or accessibility behavior. Route-specific presentation may stay local when it has no reusable contract.
 
-## Layout
+## Site shell
 
-### `ModuleLayout` (`src/components/layout/ModuleLayout.tsx`)
+- `SiteHeader` and `Footer` expose Learn, Practice, Labs, Notebook, Sources, and How It Was Built.
+- `ThemeProvider` and `ThemeToggle` preserve the paper-and-ink light and dark editions.
+- `PageTransition` respects the user's motion preference.
 
-Orchestrates the 9-section module page. Server component.
+## Lab foundation
 
-```tsx
-<ModuleLayout
-  metadata={moduleMetadata}
-  sources={sources}
-  sketch={<MySketch />}
-  sketchCaption="1–2 sentence description"
->
-  <EssayMDX />
-</ModuleLayout>
-```
+### `LabFoundation`
 
-| Prop | Type | Notes |
-|---|---|---|
-| `metadata` | `ModuleMetadata` | Drives hero title, meta line, thinkers list, discussion prompt. |
-| `sources` | `readonly Source[]` | Rendered as structured citation list in §5. |
-| `sketch` | `ReactNode` | Full-bleed canvas; typically a client island. |
-| `sketchCaption` | `string` | Displayed beneath the canvas, center-aligned small caps. |
-| `children` | `ReactNode` | Essay body; wrapped in `--measure-prose`. |
+Provides the shared editorial question header, cover artwork, duration, viewpoint statement, Guided/Explore mode control, progress, save state, source drawer, and structured status messages. It must keep loading, restoring, saved, offline, unavailable, invalid-share, error, completed, and reset states explicit.
 
-### `EssayLayout` (planned)
+### `GuidedLabRuntime`
 
-For longform essays not tied to an interactive.
+Runs the shared sequence for The Choice Machine, The Entrepreneur's Discovery, and The Money Time Machine: one decision per stage, visible result, evidence selection, assumption acknowledgement, interpretation, transparent self-review, optional Guide, revision, Notebook save, and exports.
 
-### `Header` / `Footer` / `ReadingProgress` (planned)
+### `MarketLab`
 
-## Typography
+Uses the same contracts with a specialized ten-stage participant network. Displayed prices come only from completed monetary exchanges, while rejected and missed offers remain visible evidence rather than prices.
 
-### `DisplayTitle`
+### `OptionalGuide`
 
-Module hero title in Fraunces opsz 144. Never use outside module/essay heroes.
+Sends only the Lab slug, bounded reasoning, and explicit evidence IDs. It renders provider mode, one question, explanation blocks, citations, why the feedback was offered, insufficiency, and retry state. The deterministic fallback must be labeled non-semantic.
 
-### `Fleuron`
+### `RedesignNotice`
 
-Typographic ornament for section breaks. Variants: `"fleuron"` (❧, default), `"asterism"` (⁂), `"dots"` (· · ·), `"rule"` (thin centered rule).
+Explains compatibility redirects from retired Lab and module URLs. Old product names belong only in this notice, migration history, redirect tests, audits, and the honest case study.
 
-### `PullQuote`
+## Learning surfaces
 
-Italic Fraunces pull quote with oxblood rule. Pass `cite` for attribution.
+- `LessonIndex` lists all eleven lessons with local progress and resume state.
+- `LessonCompletion` marks a lesson locally and points to its connected Lab.
+- `PracticeCases` rotates the daily case by UTC date while keeping the full library available.
+- Notebook components render initial and revised reasoning, selected evidence, assumptions, Guide turns, citations, reflection, and date.
 
-### `Marginalia`
+## Rendering rules
 
-Tufte-style side note. Floats into the right gutter ≥1280px; inline below.
-
-### `Citation`
-
-Superscript citation reference. Pass `n={number}` and optional children for hover title.
-
-### `Footnote`
-
-Inline footnote. Renders a ✦ glyph; the body floats to the gutter.
-
-### `SmallCaps`
-
-OpenType small-caps span. Use for author names and abbreviations.
-
-## Sketch wrappers
-
-### `PosterFallback`
-
-Static pre-rendered image shown under `prefers-reduced-motion` or before a sketch initializes.
-
-### `Sketch` (planned — p5 wrapper)
-
-Bulletproof p5 wrapper: SSR-safe, IntersectionObserver pause, cleanup.
-
-### `ReglSketch` (planned)
-
-Wrapper around regl for instanced WebGL2 rendering.
-
-### `ThreeSketch` (planned)
-
-Wrapper around @react-three/fiber (not used in Fascicle I).
-
-### `ShaderSketch` (planned)
-
-Wrapper around a raw fragment shader, for paper-grain and ink-diffusion effects.
-
-### `SketchControls` (planned)
-
-Standard chrome for slider/toggle panels attached to a sketch.
-
-## Primitives (planned — Radix-under)
-
-`Button`, `Slider`, `Toggle`, `Tooltip`, `VisuallyHidden` — restyled Radix primitives for accessible interactive chrome inside sketches.
-
-## Cursor
-
-### `Crosshair` (`src/components/cursor/Crosshair.tsx`)
-
-Custom desktop cursor. Automatically hidden on touch devices. Strokes change to oxblood on interactive elements.
-
-## Nav
-
-### `ModuleNav` (planned)
-
-Prev/next within a fascicle. Used by `ModuleLayout`.
-
-### `CommandPalette` (planned)
-
-⌘-K command palette — jump to any module, thinker, concept, or glossary entry.
-
-## MDX
-
-### `MDXComponents.tsx`
-
-The canonical essay component set. Imported in two places:
-
-1. `/mdx-components.tsx` (repo root) — required by @next/mdx for MDX page extensions.
-2. Individual module `index.tsx` files where MDX is rendered via `<Essay />`.
-
-Components exposed to MDX: `Citation`, `Marginalia`, `PullQuote`, `Footnote`, `SmallCaps`, and styled `h1`/`h2`/`h3`/`p`/`blockquote`/`hr`.
-
-## When to add a new component
-
-- The functionality genuinely cannot be expressed as a composition of existing components.
-- It will be used in ≥2 places OR it embodies a shared design decision.
-- It has an obvious name and a single job.
-
-Otherwise: inline the JSX, move on.
+- Use semantic HTML for controls and explanations.
+- Use SVG for precise diagrams, with a structured text equivalent in the same state.
+- Generated images contain no important text and always reserve dimensions through `next/image`.
+- New interactive targets are at least 44 by 44 CSS pixels.
+- Reduced motion changes transitions, not the available journey.
+- A shared component is warranted when it carries a repeated contract or design decision; otherwise keep the JSX close to the route.

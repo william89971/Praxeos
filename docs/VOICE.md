@@ -1,98 +1,45 @@
-# VOICE — Editorial Guide
+# Voice and evidence guide
 
-Praxeos is explicitly, unapologetically **Austro-libertarian**. Not neutral pedagogy. Not three-handed economics. The site is the argument that the Austrian tradition is intellectually alive, factually correct in its core theorems, and aesthetically equal to any rival.
-
-That said: the *interactives* are pedagogically austere. The polemic lives in the essays. A reader who only plays with the Monetary Garden, Signal Orchard, Calculation Labyrinth, or Coordination Engine and never reads a word should not feel preached at. A reader who opens `essay.mdx` should feel they have walked into a room where the authors of *Human Action* and *Prices and Production* are taken seriously on their own terms.
+Praxeos is a warm editorial learning laboratory. It takes Austrian economic arguments seriously while clearly distinguishing what the simulation shows, what the model assumes, what a source claims, how an Austrian interpretation reads the evidence, and what a credible counterargument says.
 
 ## Register
 
-- Confident, not strident.
-- Scholarly, not academic. Academic prose is hedged, passive, ritually polite. Scholarly prose is precise, active, and unafraid of conclusions.
-- Rothbard's lucidity + Hazlitt's clarity + a contemporary editorial polish.
-- **No snark. No bitterness.** The ideas are strong enough; pettiness diminishes them.
+- Clear, confident, and hospitable to beginners.
+- Scholarly without assuming prior economics vocabulary.
+- Precise about evidence and uncertainty.
+- Curious before conclusive.
+- Never snarky, triumphalist, or congratulatory by default.
 
-## Vocabulary — prefer / avoid
+## Evidence labels
 
-| Prefer | Avoid |
-|---|---|
-| *the market* / *catallactics* | *free market capitalism* |
-| *central bank intervention* | *monetary stimulus* |
-| *roundabout production* | *supply chain* (when precision matters) |
-| *time preference* | *patience* or *future-orientation* |
-| *entrepreneurial alertness* | *innovation* or *disruption* |
-| *calculation* (Mises's sense) | *optimization* |
-| *spontaneous order* | *the market's invisible hand* (Smith's phrase, not Hayek's) |
-| *homo agens* | *economic agent* |
-| *sound money* | *hard money* (colloquial only) |
+Use these labels consistently:
 
-Never used:
+- `Simulation observation` for something visible in the current event log or state.
+- `Assumption` for a rule chosen by the model builder.
+- `Source claim` for a traceable statement with a stable locator and URL.
+- `Austrian interpretation` for a theory-shaped reading of evidence.
+- `Credible counterargument` for a serious competing explanation or limitation.
 
-- "Late-stage capitalism" — not an Austrian concept; borrowed from a different tradition.
-- "Neoliberal" — imprecise pejorative.
-- "Trickle-down" — a caricature, never a position.
-- "Free-market capitalism" — redundant; the market IS catallactic exchange.
-- "Libertarian" as an aesthetic adjective — it's a political position, not a color.
-- "Problematic," "toxic," "gaslight" — contemporary register that will date the essays in two years.
+Do not turn a model result into a forecast, a source claim into neutral fact, or an interpretation into proof.
 
-## Latin, em-dashes, semicolons — welcome
+## Learning feedback
 
-*A priori*, *mutatis mutandis*, *ceteris paribus*, *ex ante*, *ex post*, *ordo*, *praxeology*, *catallactics*. Readers of Mises read Latin without blinking. Lean into it.
+Deterministic feedback never says a conclusion is correct, mastered, or ideologically sound. It may say that a required field is incomplete, simulation evidence has not been selected, an assumption has not been acknowledged, reasoning has not been revised or confirmed, or self-review is ready.
 
-Em-dashes set off parenthetical arguments; semicolons link related clauses; colons introduce lists and quotes. Punctuate like a 19th-century essayist, not a Twitter thread.
+Do not infer understanding from keywords. Phrase the no-AI path as transparent prompts: “Which visible event supports this?”, “Which model assumption limits the conclusion?”, and “What changed between your first and revised interpretation?”
 
-## Author handling
+The optional Claude Guide may identify distinctions or question reasoning, but it asks exactly one Socratic question, cites factual source notes, does not score the learner, and does not act as an ideological authority.
 
-Name thinkers **in full** on first mention in an essay, then shorten by last name. Use `<SmallCaps>` around names in running prose:
+## Concept reveal
 
-> <SmallCaps>Ludwig von Mises</SmallCaps> argued, in *Die Gemeinwirtschaft* (1922)...
+Experience comes before terminology. A Lab first names the familiar situation, current action, visible change, and why it matters. Only then should it introduce concepts such as opportunity cost, ordinal preference, spontaneous order, entrepreneurial discovery, time preference, or monetary distribution.
 
-Subsequent: "Mises." Book titles in italic. Years in parentheses on first citation. For quotations, always cite page and edition.
+On first use, define specialist language in plain words. Prefer “the option you gave up” before “opportunity cost,” and “what each person wants most right now” before “ordinal priorities.”
 
-### How to treat thinkers with complicated legacies
+## Sources and thinkers
 
-**Rothbard** — quote his economics freely. *Man, Economy, and State* (1962) and *The Ethics of Liberty* (1982) are the canonical references. When quoting, prefer his technical economic writing over his polemical political writing. If a module's topic is ABCT, cite *America's Great Depression* (1963). Do not quote his editorial pieces from the 60s–70s unless directly relevant to the argument.
+Name thinkers in full on first mention and cite the exact work, edition or stable locator when making a factual or textual claim. Quote accurately and sparingly. Present intellectual opponents at their strongest. A source packet should include its evidentiary role, verification note, and a credible limitation or counterargument when relevant.
 
-**Hoppe** — cite *Democracy: The God That Failed* (2001) on time preference and regime-uncertainty topics where it is load-bearing. Do not cite it outside its argumentative contribution. His argumentation ethics work is more philosophically productive than his political applications.
+## Final test
 
-**Mises, Hayek, Menger, Böhm-Bawerk, Kirzner, Lachmann, Salerno, Ammous** — cite freely in both technical and programmatic registers. These are the central voices.
-
-**Keynes, Samuelson, Lange, Lerner, Piketty** — antagonists. Treat with the respect due to genuine intellectual opponents. Quote them accurately and at their best; rebut them on substance.
-
-## Structure of an essay
-
-500–1200 words. Longer is not braver.
-
-1. **Opening sentence** — arresting. Names the phenomenon. The reader is curious by the end of line one.
-2. **Puzzle paragraph** — what did the thinker see that others missed? Sets the stakes.
-3. **Development — 3 to 5 paragraphs.** Each does one job: claim, primary-source grounding, handoff.
-4. **One pull quote** — from a primary source, pulled to stand alone. Not decorative. It should be the best sentence in the room.
-5. **Implication paragraph** — not "so what," but "what now." Connect to a world the reader inhabits.
-6. **Closing sentence** — pointed. Does not hedge.
-
-## Citation apparatus
-
-- Every non-trivial factual claim traces to a source in `sources.ts`.
-- Inline: `<Citation n={3}>Mises, Human Action, p. 14</Citation>`.
-- Marginalia: `<Marginalia>Full sentence of context</Marginalia>` for asides that would otherwise be parentheticals.
-- Footnotes: `<Footnote id="regression">...</Footnote>` for scholarly tangents.
-- Primary sources in `sources.ts` prefer `mises.org/library/...` or `archive.org/details/...` URLs, which outlive publisher churn. Always include `archiveUrl` when the publisher URL might rot.
-
-## Voice calibration — three passages
-
-### Too hedged (wrong)
-
-> Some Austrian economists argue, though there is debate on this point, that socialist planning may face certain informational challenges that could, in theory, impede efficient resource allocation.
-
-### Too strident (wrong)
-
-> Mises destroyed socialism in 1920. Lange got his ass handed to him. Case closed. Smash that like button.
-
-### Right
-
-> In 1920 Mises showed that socialist planning cannot compute. Without market prices for the means of production, there is no common unit by which to compare one production plan against another; the planner is left with preference and improvisation, not calculation. Lange and Lerner spent two decades proposing solutions that each, in turn, smuggled the market back in.
-
-Clear. Historical. Grounded. Not bashful about its conclusions. This is the register.
-
-## A final test
-
-Read the finished essay aloud. If at any point you would be embarrassed to read the line to a graduate seminar on Austrian economics, rewrite. If at any point you would be embarrassed to read the line to a skeptical HN reader, rewrite. The line that passes both tests is the line that ships.
+Read the copy as a beginner, a source-checker, and a skeptical economist. If it hides the next action, blurs observation with interpretation, or claims more than the interface can show, revise it.

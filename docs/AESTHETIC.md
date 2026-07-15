@@ -18,12 +18,12 @@ Praxeos lives on **paper**. The background is warm cream (`#F5F0E6`). Never `#ff
 
 ### Dark mode is a parallel edition
 
-Dark mode is not "flip the colors." It is a **parallel edition** — the same title printed on midnight-colored stock. Paper becomes `#14110D` (coffee-stain), ink becomes `#F0EADA` (bone). Accents do not invert. Bitcoin orange, oxblood, and forest-green hold their ground because they are not decorative; they carry meaning.
+Dark mode is not "flip the colors." It is a **parallel edition** — the same title printed on midnight-colored stock. Paper becomes `#14110D` (coffee-stain), ink becomes `#F0EADA` (bone). Accent hues keep their meaning, while oxblood and forest-green receive lighter dark-edition values so small text and controls retain WCAG contrast.
 
 ### Three accents, three jobs
 
 - **Bitcoin orange** (`#E87722`) appears where money or price signals carry the argument. It is the color of sound-money emergence and appraisable calculation.
-- **Oxblood** (`#8B3A3A`) marks *action* and failure moments — the cursor on interactive elements, correction in the Monetary Garden, wrong turns in the Calculation Labyrinth, and missed-plan shocks in the Coordination Engine.
+- **Oxblood** (`#8B3A3A`) marks *action*, friction, and constraint moments — the cursor on interactive elements, rejected offers in Market Without a Manager, constrained branches in The Choice Machine, and experiments that do not confirm a hypothesis.
 - **Forest green** (`#3A5A4A`) marks *capital* — time preference, patient production, deep roots.
 
 A reader who studies the site for ten minutes will learn this color grammar without being told. This is intentional.

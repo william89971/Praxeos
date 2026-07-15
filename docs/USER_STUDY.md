@@ -1,118 +1,130 @@
-# Five-person flagship study
+# Five-person four-Lab study
 
 Status: **Pending**
 
-Release gate: v1.0 remains blocked until five learners complete this protocol
-and at least one resulting revision is implemented and documented.
+Release gate: v1.0 remains blocked until five real beginners complete and
+evaluate all four finished Labs, at least one evidence-based revision is
+committed, and the full verification suite is rerun.
 
 ## Purpose
 
-Determine whether a learner can understand the homepage offer, complete the
-Calculation Labyrinth without coaching, explain what changed between the priced
-and unpriced runs, and use the feedback to make a more scenario-grounded
-revision. This is formative product research, not a controlled claim about
-educational impact.
+Determine whether a beginner can identify the question, current action,
+resulting change, cause, revealed concept, and next experiment in each Lab
+without William explaining the interface. This is formative product research,
+not a controlled claim about educational impact.
 
-## Participants
+The internal beginner-usability review completed after Market Without a Manager
+was developer validation, not participant evidence. It did not block
+implementation of the remaining Labs and does not count toward this study.
 
-William recruits five people who are not contributors to the repository. Record
-their self-described familiarity with economics as `none`, `some`, or `high`,
-but do not collect names in the repository. Assign IDs `L01` through `L05`.
-Participation is voluntary and may stop at any time.
+## Participants and privacy
 
-## Consent and data boundary
+William recruits five people who are not repository contributors. Record only
+self-described economics familiarity (`none`, `some`, `high`) and anonymous IDs
+`L01` through `L05`. Participation is voluntary and may stop at any time.
 
 Before starting, tell each learner:
 
 - the session tests the product, not the learner;
-- their on-screen work is stored only in that browser unless they export it;
-- the optional Guide sends the current reasoning and normalized lab state to an
-  AI provider, with allowlisted source packets;
+- on-screen work stays in that browser unless exported;
+- the optional Guide sends only current reasoning, explicit evidence IDs, and
+  server-selected source packets to an AI provider;
 - observations will be anonymized; and
-- no raw participant record, recording, name, network identifier, or private
-  quotation will be committed to Git.
+- raw notes, recordings, names, network identifiers, and private quotations
+  never enter Git.
 
-Record only `consent: yes/no`. Stop immediately for `no`. Ask separately for
-permission to paraphrase or quote. Store any raw notes outside the repository;
-only the anonymized summary belongs here.
+Record `consent: yes/no` outside the repository. Stop for `no`. Ask separately
+for quotation or paraphrase permission.
 
-## Session setup
+## Setup
 
-- Use the Vercel preview on the learner’s preferred device.
-- Start with cleared Praxeos local storage.
-- Do not explain praxeology or the journey before the learner reads the page.
-- Alternate Guide conditions: `L01`, `L03`, and `L05` may request the live
-  Guide; `L02` and `L04` use deterministic fallback. If live Claude is
-  unavailable, record the actual fallback and continue.
-- Ask the learner to think aloud only when comfortable. The facilitator may
-  remind them of the task but must not interpret the scenario for them.
+- Use the feature-branch Vercel preview on the learner’s preferred device.
+- Clear Praxeos local storage before each participant begins.
+- Do not explain praxeology, the four questions, or the interface.
+- Alternate Guide availability across participants; deterministic fallback is
+  a valid condition and must remain a complete path.
+- Record hesitation, misclicks, misunderstood terminology, and unclear
+  cause-and-effect as observed behavior—not inferred ability.
 
-## Tasks
+## Tasks for every participant
 
-1. From the homepage, explain in one sentence what Praxeos offers and choose
-   where to begin.
-2. Complete all seven stages of the Calculation Labyrinth.
-3. Refresh once after saving the initial interpretation and resume.
-4. Explain the most important difference between the priced and unpriced runs.
-5. Read deterministic feedback; optionally request the single Guide question in
-   the assigned condition; revise the interpretation.
-6. Save a final reflection, open Notebook, and locate the initial reasoning,
-   revision, feedback, citations, and completion date.
-7. Export either Markdown or the reflection card and explain what the artifact
-   communicates to someone who did not take the journey.
+1. From the homepage, explain in one sentence what Praxeos offers and choose a
+   starting action.
+2. Complete **The Choice Machine**. Explain the selected path, one preserved
+   forgone path, the changed constraint, and what one choice cannot reveal.
+3. Complete **Market Without a Manager**. Explain one offer, one completed or
+   missed trade, where a displayed price came from, and what the ceiling changed.
+4. Complete **The Entrepreneur’s Discovery**. Explain the hypothesis, evidence
+   selected, resources spent, observed customer action, uncertainty that remains,
+   and the next experiment.
+5. Complete **The Money Time Machine**. Compare two monetary rules, identify who
+   experiences the modeled change earlier and later, and name an assumption that
+   prevents treating the output as a forecast.
+6. Refresh during at least one Lab and resume without losing state. Switch to
+   Explore mode after it unlocks and run one comparison.
+7. In every Lab, write an initial interpretation, select visible evidence,
+   acknowledge an assumption, use deterministic self-review or the assigned
+   Guide condition, then revise or explicitly confirm the response.
+8. Open Notebook and locate the initial reasoning, revision, evidence,
+   assumptions, optional Guide question, citations, reflection, and date.
+9. Export Markdown or a reflection card and explain what the artifact
+   communicates to someone who did not complete the Lab.
 
-## Post-session questions
+## Per-Lab comprehension record
 
-Use the learner’s words. Do not suggest an answer.
+Ask without suggesting an answer:
 
-1. What do you think the journey was trying to teach?
-2. What did price markers make easier or harder to decide?
-3. What does opportunity cost mean in this event scenario?
-4. Where did you feel uncertain, stuck, or surprised?
-5. Did the feedback help you revise? Why or why not?
-6. What would you change before another learner tried this?
-7. How confident are you that you could use this lens on a different choice:
-   `not yet`, `somewhat`, or `yes`? Give one example.
+1. What question was this Lab asking?
+2. What action did you take?
+3. What changed immediately afterward?
+4. What caused that change inside the simulation?
+5. What concept did the experience reveal?
+6. What would you try next?
+7. Which assumption most limits what you can conclude?
 
-## Observation rubric
+For each Lab, at least four of five participants must explain the question,
+action, change, cause, concept, and next experiment. Shared confusion requires an
+interaction redesign rather than longer instructions.
 
-Record observed behavior, not inferred ability.
+## Observation record
 
-- Homepage offer understood without help: `yes/no`
-- Flagship action found above the fold: `yes/no`
-- Seven stages completed: `yes/no`
-- Refresh/resume succeeded: `yes/no`
-- Priced/unpriced comparison used scenario evidence: `yes/no`
-- Revision changed meaningfully after feedback: `yes/no`
-- Notebook record found: `yes/no`
-- Export completed: `yes/no`
-- Critical accessibility or recovery failure: short anonymized note or `none`
+Use `yes/no` plus a short anonymized note:
 
-## Anonymized results
+- first homepage action identified within 10 seconds;
+- first meaningful Lab result reached within 30 seconds;
+- guided progress and next action understood;
+- cause and effect described from visible evidence;
+- Explore mode found without state loss;
+- refresh and resume succeeded;
+- deterministic feedback understood as a checklist, not a grade;
+- Notebook record found;
+- export completed;
+- critical keyboard, touch, motion, contrast, recovery, or comprehension issue.
+
+## Anonymized results template
 
 Pending until all five sessions are complete.
 
-| Learner | Prior familiarity | Guide mode | Completed | Resume | Comparison grounded | Meaningful revision | Export | Main friction | Quote permission |
+| Learner | Familiarity | Choice 6/6 | Market 6/6 | Discovery 6/6 | Money 6/6 | Resume | Explore | Export | Main friction |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| L01 | Pending | live/fallback | Pending | Pending | Pending | Pending | Pending | Pending | yes/no |
-| L02 | Pending | deterministic | Pending | Pending | Pending | Pending | Pending | Pending | yes/no |
-| L03 | Pending | live/fallback | Pending | Pending | Pending | Pending | Pending | Pending | yes/no |
-| L04 | Pending | deterministic | Pending | Pending | Pending | Pending | Pending | Pending | yes/no |
-| L05 | Pending | live/fallback | Pending | Pending | Pending | Pending | Pending | Pending | yes/no |
+| L01 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+| L02 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+| L03 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+| L04 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+| L05 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
 
 ## Evidence-based revision log
 
 At least one completed row is required before the draft PR can be marked ready.
 
-| Evidence from learner sessions | Decision | Files or behavior changed | Verification rerun | Status |
+| Shared learner evidence | Interaction decision | Files or behavior changed | Verification rerun | Status |
 | --- | --- | --- | --- | --- |
 | Pending | Pending | Pending | Pending | Blocked |
 
 ## Release decision
 
-After the fifth session, William verifies the anonymized table and primary-source
-checklist. Summarize patterns without turning five sessions into a generalized
-impact claim. Implement at least one revision directly supported by the evidence,
-rerun the entire automated and manual acceptance suite, then record whether the
-draft PR is ready. Until those steps are complete, the release decision is
-`Pending`.
+After the fifth session, William verifies the anonymized summary and the
+primary-source/image checklist. Summarize patterns without generalizing from
+five people to educational impact. Commit at least one revision directly
+supported by the evidence, rerun the complete automated and manual acceptance
+suite, then decide whether the draft PR is ready. Until then: `Pending`.

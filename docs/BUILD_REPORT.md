@@ -1,148 +1,68 @@
-# Praxeos flagship build report
+# Praxeos four-Lab build report
 
-Report date: 2026-07-14
-
-Branch: `codex/praxeos-flagship-v1`
-
+Report date: 2026-07-14  
+Branch: `codex/praxeos-flagship-v1`  
 Release state: **Portfolio candidate — educational validation pending**
 
-This report records observed results. A target is not reported as passing until
-the corresponding command or real flow has been run. Five-learner evidence,
-production verification, and v1.0 remain blocked by design.
+This report records results observed against the four-Lab replacement. No result below is an educational-impact claim.
 
-## Acceptance summary
+## Current acceptance summary
 
-| Area | Actual result | Status |
+| Area | Observed result | Status |
 | --- | --- | --- |
-| Clean install | `npm ci` completed from the regenerated lockfile with Node 22/npm 10.9.3 during foundation verification | Pass |
-| Strict TypeScript | `npm run typecheck` exited 0 | Pass |
-| Unit and deterministic Guide evaluation | 29/29 tests passed across five files; the Guide suite accounts for 12/12 cases | Pass |
-| Formatting and code lint | Biome formatting and lint exited 0 after normalization | Pass |
-| Accessibility lint | ESLint with JSX accessibility rules exited 0 | Pass |
-| Production build | Next.js 16.2.10 generated all target pages after adding the required lab Suspense boundary | Pass |
-| Internal link contracts | Nine current route contracts resolved on the local app | Pass |
-| Primary-source links | Nine route contracts and all four cited source URLs passed after replacing one retired Liberty Fund URL | Pass |
-| Cross-browser flow | The 90-test run produced 82 passes, seven intentional skips, and one WebKit persistence assertion that timed out at 300 ms; after increasing only that assertion's poll window, its five-browser regression suite passed 15/15 with five expected conditional skips | Pass after test-timing correction |
-| Visual regression | Desktop, mobile, and reduced-motion snapshots pass with a strict 50-pixel same-platform tolerance. CI uses the same pinned OFL test fonts with a bounded 4% pixel-ratio allowance for Linux rasterization; production font loading is unchanged | Pass locally and in CI |
-| Desktop Lighthouse | Three-run medians across seven routes: performance 0.99–1.00; accessibility, best practices, and SEO 1.00; LCP 0.81–0.93 s; CLS 0–0.012 | Pass |
-| Mobile Lighthouse | Three-run medians: performance 0.97–0.99; accessibility, best practices, and SEO 1.00; LCP 2.27–2.46 s; CLS 0–0.0003 | Pass |
-| Dependency audit | Production-only audit reports two moderate PostCSS advisories inside Next 16.2.10; the full development tree reports 15 transitive advisories, including Lighthouse tooling. npm offers no safe automatic resolution for the production pair | Blocker documented |
-| Live Claude evaluation | Optional and not run without an explicitly supplied API key | Pending, non-blocking for fallback |
-| Five-person learner study | Protocol and anonymized template exist; no learner results have been entered | Blocking v1.0 |
-| GitHub CI | Head-commit verify passed in 3m37s; head-commit desktop/mobile Lighthouse passed in 6m28s | Pass |
-| Vercel preview | GitHub has no deployment record or Vercel status check for the head commit, so no preview URL exists to walk | Pending external integration |
+| Four canonical Labs | Choice, Market, Discovery, and Money guided/explore routes build and run from the shared registry | Pass |
+| Deterministic feedback boundary | Tests cover explicit completion, evidence, assumptions, revision, and self-review without keyword-based semantic grading | Pass |
+| Unit and Guide evaluation | 43 automated tests pass; 10 opt-in live Claude cases are skipped without a supplied key | Pass with live evaluation pending |
+| Asset manifest | Five editorial image records, derivatives, alt text, attribution/generation fields, and review flags validate | Pass |
+| Cross-browser and responsive flows | Seven Playwright profiles completed: 201 passed, 23 intentional profile-specific skips, 0 failed in 2.5 minutes; the final visual-only change then passed all 3 owned snapshot profiles | Pass |
+| Production build | Next.js 16.2.10 generated all 38 static pages and the current route set after final styling | Pass |
+| Clean install | `npm ci` installed 815 packages from the lockfile; npm reported 15 audit advisories (7 low, 6 moderate, 2 high) | Pass with advisories recorded |
+| Format, lint, accessibility lint, typecheck, links | All final checks passed across 118 formatted/linted files, the source tree, 12 route contracts, and 11 source links | Pass |
+| Lighthouse | Desktop: 30/30 audits passed. Mobile route suite passed except one Chrome `NO_NAVSTART` trace interruption; the rerun for the changed flagship route passed all assertions with 2.462 s median LCP, 0.97 median performance, and 1.00 accessibility, best practices, and SEO | Pass with infrastructure interruption recorded |
+| Live Claude evaluation | Requires an explicitly supplied API key and may spend provider credits | Pending, non-blocking for no-AI path |
+| Vercel feature-branch preview | Must be verified after the branch is pushed and a preview becomes available | Pending external integration |
+| Five-person all-four-Lab study | Protocol exists; no participant results have been entered | Blocking v1.0 |
 
-## Automated coverage exercised
+## Browser matrix exercised
 
-- Versioned store migration from legacy learning and run state.
-- Rubric presence, scenario evidence, concept fit, and key distinctions without
-  numeric scores.
-- Lab determinism and URL serialization that excludes learner writing.
-- Markdown, print record, and reflection-card export generation.
-- Guide provider normalization, citation validation, exactly-one-question
-  enforcement, deterministic fallback, adversarial prompt fixtures, cancellation,
-  retry, offline behavior, and `429` handling.
-- Full journey refresh/resume with initial interpretation, two lab runs, revision,
-  final reflection, Notebook persistence, and downloads.
-- Permanent compatibility redirects and all primary routes.
-- Desktop, Pixel 7 mobile, Firefox, WebKit, and reduced-motion projects.
-- Homepage, journey brief, and Labs index visual snapshots in desktop, mobile,
-  and reduced-motion modes.
+The 224-case matrix ran desktop Chromium, mobile portrait Chromium, mobile landscape Chromium, tablet Chromium, desktop Firefox, desktop WebKit, and reduced-motion Chromium. It covered:
 
-### Intentional browser skips
+- the homepage offer and flagship action;
+- every Lab's core deterministic consequence and Notebook handoff;
+- the full Market journey, refresh/resume, deterministic self-review, and exports;
+- invalid share recovery and Guided/Explore state preservation;
+- offline Guide fallback;
+- permanent compatibility redirects and all primary routes;
+- page overflow, 200% layout equivalence, forced colors, keyboard order, touch-target floors, and reduced motion; and
+- current homepage, progression, Lab cover, flagship stage, mobile, dark-theme, and reduced-motion snapshots.
 
-Seven checks are conditionally skipped in the 90-test matrix:
+The 23 skips are deliberate checks that do not apply to a given profile, primarily visual ownership outside the declared Chromium snapshot projects and device-specific assertions.
 
-- the mobile-only 44 px touch-target assertion in four non-mobile projects;
-- visual snapshots in Firefox and WebKit because snapshots are owned by the
-  three declared Chromium visual projects; and
-- the synthetic Tab-focus assertion in Playwright WebKit on Windows, whose test
-  runtime does not expose macOS full-keyboard-access behavior. The same keyboard
-  assertion passes in Chromium and Firefox.
+## Problems found and corrected during final browser verification
 
-## Actual User Demo Test
+- The optional Guide response was visible but its citation IDs were not copied into the saved Notebook record. Both shared and flagship save paths now persist those IDs.
+- Mobile landscape placed the first flagship action below the initial viewport. A short-landscape layout compacts the cover, progress, and stage spacing while preserving the question and consequence.
+- The full Market path exceeded the original 30-second test allowance once under loaded two-worker Firefox execution. The journey test now has a 60-second ceiling; its assertions and application behavior are unchanged.
+- The first complete seven-profile run produced two failures from the landscape placement and Firefox allowance. Targeted regressions passed 6/6, then the complete matrix passed 201/201 executed checks.
 
-### Tested flow
+## Internal beginner-usability review
 
-On the local app, the browser suite opened the homepage, selected the flagship
-action, completed all seven journey stages, refreshed after the initial
-interpretation, resumed saved state, ran deterministic fallback, rendered a
-mocked citation-bearing Claude turn, handled invalid/offline/`429` responses,
-saved the final record, opened Notebook, and initiated exports. The current
-desktop homepage and journey screenshots were also inspected at original
-resolution.
+The non-participant internal review focused on whether the first action was visible, terminology arrived after experience, the visual hierarchy separated action from evidence, cause and effect were explicit, and developer-facing language was absent. It supported continued implementation of the other three Labs; it does not count toward the five-person study.
 
-### What worked
+## Remaining manual and release gates
 
-- The homepage states the offer and exposes “Begin 8-minute journey” above the
-  fold.
-- Refresh/resume preserved the journey.
-- Share state contained lab parameters and excluded learner prose.
-- Deterministic feedback remained usable when Guide requests failed.
-- The mocked Claude turn showed its question, explanation, and grounding.
-- Reduced motion kept the complete 2D journey and the labs’ controls/readable
-  state instead of replacing them with a static poster.
-- Mobile controls met the 44 px target floor.
-- Compatibility URLs permanently resolved to the target route system.
-
-### What failed and was fixed
-
-- Next 16 production prerendering rejected `useSearchParams` below the dynamic
-  lab route. A semantic Suspense boundary was added and the full build passed.
-- A 29-pixel mobile screenshot difference exposed font antialiasing noise. A
-  tight 50-pixel limit was added; all three visual projects then passed.
-- The external crawl found a retired Liberty Fund `Human Action` URL. The
-  source packet now points to the current FEE edition.
-- Lighthouse exposed insufficient tertiary text contrast in auto-dark mode and
-  the Notebook shell’s `robots.txt` block. Both were corrected; the final
-  desktop and mobile medians pass.
-- The clean final browser run exposed a development-mode progress-store render
-  loop in advanced labs. Progress writes are now idempotent, callbacks are
-  stable, and a five-browser regression check verifies the visited state without
-  a maximum-update-depth error.
-- The first full rerun after that app fix had one WebKit-only persistence check
-  time out at 300 ms. No application error appeared; increasing only the test's
-  polling window to three seconds produced 15/15 passes in the targeted
-  cross-browser suite, with the five documented conditional skips.
-- The first GitHub Actions E2E run passed all 80 executed non-visual checks but
-  failed the three visual projects because Ubuntu substituted different system
-  fonts from the Windows baselines. The screenshot harness now serves pinned
-  OFL test fonts through same-origin Playwright routes. This eliminated the
-  6–7% layout drift and changed image dimensions; the second run retained only
-  1–3% platform rasterization variance. CI therefore allows a bounded 4% pixel
-  ratio while same-platform checks remain limited to 50 pixels. Production
-  retains its fast system-font stack, and all three visual projects pass locally
-  without update mode.
-
-### Remaining improvements and blockers
-
-- Walk the deployed Vercel preview manually with and without a live Guide key.
-- Verify screen-reader announcements with a real assistive-technology pairing,
-  not only DOM/live-region assertions.
-- Verify print output and downloaded artifacts in the deployed preview.
-- Resolve or formally accept the transitive Next/PostCSS advisories when a
-  compatible upstream release exists.
-- Complete five learner sessions and implement at least one evidenced revision.
-
-### Readiness
-
-The local product is a technically verified portfolio candidate. It is **not
-educationally validated**, is **not ready for v1.0**, and must remain on a draft
-PR until the learner-study gate is complete.
+- Walk the final local preview in the in-app browser, including the flagship first consequence.
+- Walk a Vercel feature-branch preview with deterministic fallback and, when explicitly configured, a live Guide.
+- Verify real screen-reader announcements, print output, and downloads on representative hardware.
+- Recruit five real beginners after all four Labs are complete. Every participant evaluates every Lab without William explaining the interface.
+- For each Lab, at least four of five learners must explain the question, action, change, cause, concept, and next experiment.
+- Commit at least one evidence-based revision, rerun every check, and obtain William's explicit approval before considering `main` or v1.0.
 
 ## Security and privacy notes
 
-- No `.env` file, API key, cache, build output, raw participant data, or private
-  Figma material belongs in the repository.
-- `ANTHROPIC_API_KEY` is server-only. Missing or invalid configuration activates
-  deterministic guidance.
-- Rate-limit identifiers are hashed and no learner text is written to Redis.
-- Guide responses use `no-store`; request bodies and history are capped.
+- Environment files, keys, caches, build output, raw participant data, network identifiers, and private design material are excluded from Git.
+- Learner prose remains local unless the learner explicitly invokes the Guide; Guide responses are `no-store` and text is not written to Redis.
+- Share URLs exclude learner prose, Guide output, and unrelated Notebook records.
 - The final staged tree receives a secret-pattern scan before push.
 
-## Release gate
-
-Keep the PR in draft with the label/notice `Educational validation pending`.
-Do not merge, tag, update production, or publish `v1.0.0` until the five-person
-study, one evidence-based revision, complete rerun, and live deployment
-verification are all recorded.
+Until every release gate is complete, the pull request stays draft with `Educational validation pending`. Do not merge, tag, update production, or claim educational impact.
