@@ -33,7 +33,7 @@ export default function HomePage() {
               src="/images/editorial/home-hero.webp"
               width={1600}
               height={900}
-              sizes="(max-width: 760px) 100vw, 34vw"
+              sizes="(max-width: 760px) 100vw, 40vw"
               priority
               alt="Tactile illustrated desk with a notebook branching into everyday choices among time, study, health, relationships, and groceries."
             />

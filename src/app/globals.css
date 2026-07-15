@@ -723,7 +723,7 @@ button {
 
 .editorial-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.65fr);
+  grid-template-columns: minmax(0, 3fr) minmax(24rem, 2fr);
   min-height: min(48rem, calc(100dvh - 5rem));
   border-block-end: 1px solid var(--rule);
 }
@@ -749,7 +749,7 @@ button {
   display: grid;
   align-content: end;
   gap: 1rem;
-  padding: clamp(2rem, 5vw, 4rem);
+  padding: clamp(2rem, 3vw, 3rem);
   border-inline-start: 1px solid var(--rule);
   background: var(--paper-sunk);
 }
