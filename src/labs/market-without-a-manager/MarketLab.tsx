@@ -369,7 +369,16 @@ export default function MarketLab() {
   };
 
   const guideTurn = session?.guideTurn ?? null;
-  const onGuideTurn = (turn: GuideTurn) => persist({ guideTurn: turn });
+  const onGuideTurn = (turn: GuideTurn) =>
+    persist({
+      guideTurn: turn,
+      citationIds: [
+        ...new Set([
+          ...(session?.citationIds ?? []),
+          ...turn.citations.map((citation) => citation.sourceId),
+        ]),
+      ],
+    });
   const activeEventIds = state.events.slice(-6).map((event) => event.id);
 
   return (

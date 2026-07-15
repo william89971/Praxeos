@@ -2047,6 +2047,54 @@ button {
   }
 }
 
+@media (max-height: 520px) and (orientation: landscape) {
+  .lab-editorial-header {
+    gap: 1rem;
+    padding-block: 0.65rem;
+  }
+
+  .lab-editorial-header h1 {
+    max-width: none;
+    margin-block-start: 0.2rem;
+    font-size: clamp(2.35rem, 6vw, 3.4rem);
+  }
+
+  .lab-editorial-header__question {
+    margin-block-start: 0.35rem;
+    font: 520 1rem / 1.2 var(--font-serif);
+  }
+
+  .lab-header-tools {
+    width: 12rem;
+  }
+
+  .lab-header-cover {
+    display: none;
+  }
+
+  .lab-save-strip {
+    min-height: 2rem;
+    padding-block: 0.15rem;
+  }
+
+  .lab-simulation {
+    padding-block: 0.6rem;
+  }
+
+  .lab-stage-heading {
+    margin-block-end: 0.55rem;
+  }
+
+  .lab-stage-heading h2 {
+    margin-block-start: 0.15rem;
+    font-size: var(--step-2);
+  }
+
+  .lab-action-dock {
+    padding: 0.6rem;
+  }
+}
+
 @media print {
   .lab-mode-control,
   .lab-action-dock,

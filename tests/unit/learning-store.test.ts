@@ -68,6 +68,61 @@ describe("private share envelope", () => {
       reason: "malformed",
     });
   });
+
+  it("rejects oversized, unknown-version, and cross-Lab state", () => {
+    expect(decodeShareEnvelope("x".repeat(1_801))).toEqual({
+      ok: false,
+      reason: "oversized",
+    });
+    const unknownVersion = Buffer.from(
+      JSON.stringify({
+        version: 99,
+        labSlug: "choice-machine",
+        seed: "choice-1",
+        mode: "guided",
+        assumptionIds: [],
+        actionIds: [],
+      }),
+    ).toString("base64url");
+    expect(decodeShareEnvelope(unknownVersion)).toEqual({
+      ok: false,
+      reason: "unknown-version",
+    });
+    const market = encodeShareEnvelope({
+      version: 1,
+      labSlug: "market-without-a-manager",
+      seed: "market-1",
+      mode: "guided",
+      assumptionIds: [],
+      actionIds: [],
+    });
+    expect(decodeShareEnvelope(market, "money-time-machine")).toEqual({
+      ok: false,
+      reason: "cross-lab",
+    });
+  });
+
+  it("normalizes unsafe and repeated identifiers without adding prose fields", () => {
+    const encoded = encodeShareEnvelope({
+      version: 1,
+      labSlug: "entrepreneurs-discovery",
+      seed: "Discovery Notes!",
+      mode: "explore",
+      assumptionIds: ["fixed-costs", "fixed-costs"],
+      actionIds: ["test users", "test-users"],
+    });
+    expect(decodeShareEnvelope(encoded)).toMatchObject({
+      ok: true,
+      envelope: {
+        seed: "discoverynotes",
+        assumptionIds: ["fixed-costs"],
+        actionIds: ["testusers", "test-users"],
+      },
+    });
+    expect(Buffer.from(encoded, "base64url").toString("utf8")).not.toMatch(
+      /reasoning|reflection|guide/i,
+    );
+  });
 });
 
 describe("deterministic feedback boundary", () => {

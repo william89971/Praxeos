@@ -5,8 +5,11 @@
       "url": [
         "http://localhost:3000/",
         "http://localhost:3000/learn",
-        "http://localhost:3000/journey/calculation-labyrinth",
         "http://localhost:3000/labs",
+        "http://localhost:3000/labs/choice-machine",
+        "http://localhost:3000/labs/market-without-a-manager",
+        "http://localhost:3000/labs/entrepreneurs-discovery",
+        "http://localhost:3000/labs/money-time-machine",
         "http://localhost:3000/notebook",
         "http://localhost:3000/sources",
         "http://localhost:3000/built"

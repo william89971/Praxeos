@@ -1,5 +1,5 @@
-import type { Concept } from "@/types/module";
 import type { LabSlug } from "@/labs/types";
+import type { Concept } from "@/types/module";
 
 export interface ActionAnalyzerSeed {
   readonly actor: string;

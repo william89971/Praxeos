@@ -77,6 +77,13 @@ async function routeSnapshotFonts(page: Page) {
   });
 }
 
+const visualLabs = [
+  "choice-machine",
+  "market-without-a-manager",
+  "entrepreneurs-discovery",
+  "money-time-machine",
+] as const;
+
 test("flagship visual surfaces stay stable", async ({ page }) => {
   test.skip(
     !["desktop-chromium", "mobile-chromium", "reduced-motion"].includes(
@@ -100,6 +107,32 @@ test("flagship visual surfaces stay stable", async ({ page }) => {
   await prepareSnapshot(page, "/labs");
   await expect(page).toHaveScreenshot("labs-index.png", {
     fullPage: true,
+    animations: "disabled",
+    ...snapshotTolerance,
+  });
+
+  for (const slug of visualLabs) {
+    await prepareSnapshot(page, `/labs/${slug}?mode=guided`);
+    await expect(page).toHaveScreenshot(`lab-cover-${slug}.png`, {
+      fullPage: false,
+      animations: "disabled",
+      ...snapshotTolerance,
+    });
+  }
+
+  await prepareSnapshot(page, "/labs/market-without-a-manager?mode=guided");
+  await page.getByRole("button", { name: "Meet the participants" }).click();
+  await expect(page).toHaveScreenshot("market-first-consequence.png", {
+    fullPage: false,
+    animations: "disabled",
+    ...snapshotTolerance,
+  });
+
+  await prepareSnapshot(page, "/labs");
+  await page.getByRole("button", { name: /^Theme: Auto/ }).click();
+  await page.getByRole("button", { name: /^Theme: Light/ }).click();
+  await expect(page).toHaveScreenshot("labs-index-dark.png", {
+    fullPage: false,
     animations: "disabled",
     ...snapshotTolerance,
   });

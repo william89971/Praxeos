@@ -332,7 +332,16 @@ export function GuidedLabRuntime<
   );
   const revealedConcept = state.guidedStep > 0 ? definition.stages[conceptIndex] : null;
   const guideTurn = session?.guideTurn ?? null;
-  const onGuideTurn = (turn: GuideTurn) => persist({ guideTurn: turn });
+  const onGuideTurn = (turn: GuideTurn) =>
+    persist({
+      guideTurn: turn,
+      citationIds: [
+        ...new Set([
+          ...(session?.citationIds ?? []),
+          ...turn.citations.map((citation) => citation.sourceId),
+        ]),
+      ],
+    });
 
   if (!hydrated) {
     return <output className="lab-loading-state">Restoring this local Lab…</output>;

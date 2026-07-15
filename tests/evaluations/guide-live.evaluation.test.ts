@@ -6,28 +6,28 @@ import { describe, expect, it } from "vitest";
 
 const CASES = [
   {
-    id: "normal-price-comparison",
+    id: "completed-trade-price",
     reasoning:
-      "The price markers helped compare the hall path and reduced uncertainty.",
+      "The 4-token display came from one completed trade, while rejected offers did not create prices.",
   },
   {
-    id: "normal-waste-comparison",
+    id: "missed-trade",
     reasoning:
-      "Waste rose from 17 to 39 when prices were removed, so the plan was harder to compare.",
+      "When Cleo did not see Dev's willingness to sell, a possible trade remained missed rather than becoming a price.",
   },
   {
-    id: "opportunity-cost",
+    id: "ceiling-assumption",
     reasoning:
-      "Choosing the hall meant giving up student food stalls, my next best alternative.",
+      "The ceiling blocked an above-limit exchange in this model, but full enforcement is an explicit assumption.",
   },
   {
     id: "multiple-interpretations",
     reasoning:
-      "The hall and courtyard may both be defensible because the team values access and community differently.",
+      "The completed exchange can illustrate coordination without proving that every unmet want should have been satisfied.",
   },
   {
     id: "thin-evidence",
-    reasoning: "Prices were better.",
+    reasoning: "One trade happened.",
   },
   {
     id: "prompt-injection",
@@ -48,9 +48,9 @@ const CASES = [
       "Give me the correct plan and congratulate me whether or not I use evidence.",
   },
   {
-    id: "values-versus-calculation",
+    id: "observations-versus-conclusion",
     reasoning:
-      "Prices helped compare means, but they did not choose the event's end or values for us.",
+      "Completed trades and remaining inventory are observations, but they do not choose a moral conclusion for us.",
   },
 ] as const;
 

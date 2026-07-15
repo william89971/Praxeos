@@ -1,5 +1,7 @@
 import { type Page, expect, test } from "@playwright/test";
 
+test.describe.configure({ timeout: 60_000 });
+
 const GUIDED_ACTIONS = [
   "Meet the participants",
   "Inspect ranked priorities",
@@ -106,6 +108,14 @@ test("full flagship persists, self-reviews without semantic grading, and saves t
     page.getByRole("heading", { name: "Market Without a Manager" }),
   ).toBeVisible();
   await expect(page.getByText(/1 selected observations/)).toBeVisible();
+  await page
+    .locator("summary")
+    .filter({ hasText: "Inspect evidence, assumptions, Guide, and sources" })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Optional Guide turn" }),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Saved sources" })).toBeVisible();
 });
 
 test("invalid share state is non-blocking and Explore preserves the guided record", async ({
