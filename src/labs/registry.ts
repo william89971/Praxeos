@@ -11,7 +11,13 @@ export const LAB_REGISTRY: readonly LabRegistryEntry[] = [
       "Your afternoon is open, but your time, money, attention, and energy are not.",
     duration: "6–8 minutes",
     sourceIds: ["mises-human-action-action", "menger-principles-value"],
-    lessonSlugs: ["man-acts", "choice-and-tradeoff", "opportunity-cost"],
+    lessonSlugs: [
+      "what-is-praxeology",
+      "man-acts",
+      "ends-and-means",
+      "choice-and-tradeoff",
+      "opportunity-cost",
+    ],
     visualAsset: "/images/labs/choice-machine.webp",
     visualAlt:
       "Tactile notebook illustration of one selected path and several faded alternatives beside a clock, wallet, phone, and study materials.",
@@ -33,7 +39,7 @@ export const LAB_REGISTRY: readonly LabRegistryEntry[] = [
       "mises-calculation-1920",
       "price-controls-openstax",
     ],
-    lessonSlugs: ["exchange", "prices-and-knowledge", "subjective-value"],
+    lessonSlugs: ["subjective-value", "exchange", "prices-and-knowledge"],
     visualAsset: "/images/labs/market-without-a-manager.webp",
     visualAlt:
       "Cut-paper market with five participants exchanging bread, apples, tea, cloth, and a tool along completed and incomplete paths.",
@@ -51,7 +57,12 @@ export const LAB_REGISTRY: readonly LabRegistryEntry[] = [
       "People keep abandoning a task halfway through. You see a possible service—but not certainty.",
     duration: "7–9 minutes",
     sourceIds: ["kirzner-competition", "lachmann-market-process"],
-    lessonSlugs: ["ends-and-means", "choice-and-tradeoff", "apply-it-to-your-life"],
+    lessonSlugs: [
+      "uneasiness-and-improvement",
+      "ends-and-means",
+      "choice-and-tradeoff",
+      "apply-it-to-your-life",
+    ],
     visualAsset: "/images/labs/entrepreneurs-discovery.webp",
     visualAlt:
       "Editorial desk illustration of cards linking a person, goal, tools, and a balancing decision, with a hand revising the sequence.",

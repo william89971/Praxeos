@@ -1,4 +1,6 @@
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { LessonCompletion } from "@/components/learning/LessonCompletion";
+import { LAB_REGISTRY } from "@/labs/registry";
 import { PRAXEOLOGY_101, getPraxeologyLesson } from "@/lib/praxeology";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -21,6 +23,13 @@ export default async function LessonPage({
   if (!lesson) notFound();
   const previous = PRAXEOLOGY_101[lesson.order - 2];
   const next = PRAXEOLOGY_101[lesson.order];
+  const connectedLabs = LAB_REGISTRY.filter((lab) =>
+    lab.lessonSlugs.includes(lesson.slug),
+  ).map((lab) => ({
+    href: `/labs/${lab.slug}`,
+    title: lab.title,
+    question: lab.centralQuestion,
+  }));
   return (
     <SiteChrome>
       <main className="page-shell">
@@ -55,10 +64,10 @@ export default async function LessonPage({
             <p>{lesson.insight}</p>
           </section>
           <aside className="journey-note">
-            Lab connection: {lesson.concepts.join(" · ")}. Continue to{" "}
-            <Link href="/labs">Advanced Labs</Link> when you want to see the distinction
-            move.
+            Working concepts: {lesson.concepts.join(" · ")}. A Lab connection is an
+            invitation to inspect consequences, not an answer key.
           </aside>
+          <LessonCompletion lessonSlug={lesson.slug} labLinks={connectedLabs} />
           <nav className="stage-actions" aria-label="Lesson navigation">
             {previous ? (
               <Link href={`/learn/${previous.slug}`}>← {previous.shortTitle}</Link>

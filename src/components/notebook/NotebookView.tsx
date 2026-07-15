@@ -4,6 +4,7 @@ import { usePraxeosStore } from "@/hooks/usePraxeosStore";
 import { LAB_REGISTRY } from "@/labs/registry";
 import type { EarlierPraxeosRecord, LabSlug } from "@/labs/types";
 import { type StoredLabSession, labSessionToMarkdown } from "@/lib/learning-store";
+import { sourcePacket } from "@/lib/source-packets";
 import Link from "next/link";
 
 export function NotebookView() {
@@ -82,6 +83,74 @@ function SessionRecord({ session }: { session: StoredLabSession }) {
         </p>
         <p className="label-mono">No semantic score assigned</p>
       </div>
+      <details className="notebook-record__details">
+        <summary>Inspect evidence, assumptions, Guide, and sources</summary>
+        <div>
+          <section>
+            <h3>Selected simulation evidence</h3>
+            {session.selectedEvidenceIds.length ? (
+              <ul>
+                {session.selectedEvidenceIds.map((id) => (
+                  <li key={id}>{id}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>None selected.</p>
+            )}
+          </section>
+          <section>
+            <h3>Acknowledged assumptions</h3>
+            {session.acknowledgedAssumptionIds.length ? (
+              <ul>
+                {session.acknowledgedAssumptionIds.map((id) => (
+                  <li key={id}>{id}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>None acknowledged.</p>
+            )}
+          </section>
+          {session.guideTurn ? (
+            <section>
+              <h3>Optional Guide turn</h3>
+              <p>{session.guideTurn.question}</p>
+              <small>{session.guideTurn.providerMode} provider</small>
+            </section>
+          ) : null}
+          {session.citationIds.length ? (
+            <section>
+              <h3>Saved sources</h3>
+              <ul>
+                {session.citationIds.map((id) => {
+                  const source = sourcePacket(id);
+                  return (
+                    <li key={id}>
+                      {source ? (
+                        <a href={source.url} target="_blank" rel="noreferrer">
+                          {source.title} · {source.locator}
+                        </a>
+                      ) : (
+                        id
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          ) : null}
+          {session.reflection ? (
+            <section>
+              <h3>Final reflection</h3>
+              <p>{session.reflection}</p>
+            </section>
+          ) : null}
+        </div>
+      </details>
+      <p className="label-mono">
+        {session.completedAt
+          ? `Completed ${new Date(session.completedAt).toLocaleDateString()}`
+          : `Updated ${new Date(session.updatedAt).toLocaleDateString()}`}
+      </p>
       <button type="button" className="button-secondary" onClick={download}>
         Download readable Markdown
       </button>

@@ -2,6 +2,7 @@ import { SiteChrome } from "@/components/layout/SiteChrome";
 import { SOURCE_PACKETS } from "@/lib/source-packets";
 import { THINKERS } from "@/lib/thinkers";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -13,18 +14,29 @@ export default function SourcesPage() {
   return (
     <SiteChrome>
       <main className="page-shell">
-        <header className="page-section content-header">
-          <p className="label-mono">Sources · inspect the grounding</p>
-          <h1 className="editorial-heading">Read past the interface.</h1>
-          <p>
-            Guide explanations are limited to allowlisted packets that show the claim,
-            stable URL, and locator. The source itself—not an AI summary—remains the
-            place to verify an argument.
-          </p>
-          <div className="editorial-actions">
-            <Link href="/sources/glossary">Open glossary</Link>
-            <Link href="#thinkers">Browse thinkers</Link>
+        <header className="page-section content-header content-header--illustrated">
+          <div>
+            <p className="label-mono">Sources · inspect the grounding</p>
+            <h1 className="editorial-heading">Read past the interface.</h1>
+            <p>
+              Guide explanations are limited to allowlisted packets that show the claim,
+              stable URL, and locator. The source itself—not an AI summary—remains the
+              place to verify an argument.
+            </p>
+            <div className="editorial-actions">
+              <Link href="/sources/glossary">Open glossary</Link>
+              <Link href="#thinkers">Browse thinkers</Link>
+            </div>
           </div>
+          <figure className="transition-figure">
+            <Image
+              src="/images/labs/market-without-a-manager.webp"
+              alt="Cut-paper market with five participants exchanging goods around a shared record."
+              width={1200}
+              height={675}
+              sizes="(max-width: 760px) 100vw, 38vw"
+            />
+          </figure>
         </header>
         <section className="page-section content-grid">
           {SOURCE_PACKETS.map((packet) => (
@@ -36,11 +48,12 @@ export default function SourcesPage() {
               key={packet.id}
             >
               <small>
-                {packet.author} · {packet.locator}
+                {packet.kind} · {packet.author} · {packet.locator}
               </small>
               <div>
                 <h2>{packet.title}</h2>
                 <p>{packet.claims.join(" ")}</p>
+                <p className="source-verification-note">{packet.verificationNote}</p>
               </div>
               <span>Open primary source ↗</span>
             </a>

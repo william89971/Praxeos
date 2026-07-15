@@ -69,7 +69,11 @@
     {
       "id": "market-without-manager-cover",
       "sourceFile": "/images/editorial/market-without-a-manager.png",
-      "placements": ["Labs progression", "Market Without a Manager cover"],
+      "placements": [
+        "Labs progression",
+        "Market Without a Manager cover",
+        "Sources transition"
+      ],
       "altText": "Cut-paper market with five participant portraits, hands exchanging bread, apples, tea, cloth, and a tool along completed and incomplete paths around a central record.",
       "creator": "OpenAI image generation tool",
       "sourceUrl": null,

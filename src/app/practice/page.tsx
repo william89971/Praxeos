@@ -1,4 +1,5 @@
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { PracticeCases } from "@/components/learning/PracticeCases";
 import { DAILY_CASES } from "@/lib/praxeology";
 import type { Metadata } from "next";
 
@@ -20,23 +21,7 @@ export default function PracticePage() {
             defensible reading.
           </p>
         </header>
-        <section className="page-section content-grid">
-          {DAILY_CASES.map((item) => (
-            <article className="content-card" id={item.slug} key={item.slug}>
-              <small>
-                {item.domain} · {item.durationMin} min
-              </small>
-              <div>
-                <h2>{item.title}</h2>
-                <p>{item.scenario}</p>
-              </div>
-              <details>
-                <summary>{item.question}</summary>
-                <p>{item.applyPrompt}</p>
-              </details>
-            </article>
-          ))}
-        </section>
+        <PracticeCases cases={DAILY_CASES} />
       </main>
     </SiteChrome>
   );

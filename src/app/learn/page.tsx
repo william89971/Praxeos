@@ -1,7 +1,8 @@
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { LessonIndex } from "@/components/learning/LessonIndex";
 import { PRAXEOLOGY_101, PRAXEOLOGY_TOTAL_MINUTES } from "@/lib/praxeology";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Learn",
@@ -13,35 +14,29 @@ export default function LearnPage() {
   return (
     <SiteChrome>
       <main className="page-shell">
-        <header className="page-section content-header">
-          <p className="label-mono">
-            Learn · 11 lessons · {PRAXEOLOGY_TOTAL_MINUTES} minutes
-          </p>
-          <h1 className="editorial-heading">A language for examining choices.</h1>
-          <p>
-            Start with ordinary action. Each focused route adds one distinction, one
-            practical activity, and a connection to a lab. Progress is saved only in
-            your browser.
-          </p>
+        <header className="page-section content-header content-header--illustrated">
+          <div>
+            <p className="label-mono">
+              Learn · 11 lessons · {PRAXEOLOGY_TOTAL_MINUTES} minutes
+            </p>
+            <h1 className="editorial-heading">A language for examining choices.</h1>
+            <p>
+              Start with ordinary action. Each focused route adds one distinction, one
+              practical activity, and a named Lab connection. Progress is saved only in
+              your browser.
+            </p>
+          </div>
+          <figure className="transition-figure">
+            <Image
+              src="/images/editorial/home-hero.webp"
+              alt="Tactile illustrated desk with a notebook branching into everyday choices among time, study, health, relationships, and groceries."
+              width={1600}
+              height={900}
+              sizes="(max-width: 760px) 100vw, 38vw"
+            />
+          </figure>
         </header>
-        <section className="page-section content-grid">
-          {PRAXEOLOGY_101.map((lesson) => (
-            <Link
-              className="content-card"
-              key={lesson.slug}
-              href={`/learn/${lesson.slug}`}
-            >
-              <small>
-                Lesson {lesson.order} · {lesson.durationMin} min
-              </small>
-              <div>
-                <h2>{lesson.title}</h2>
-                <p>{lesson.principle}</p>
-              </div>
-              <span>Open lesson →</span>
-            </Link>
-          ))}
-        </section>
+        <LessonIndex lessons={PRAXEOLOGY_101} />
       </main>
     </SiteChrome>
   );
