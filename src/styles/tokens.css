@@ -92,6 +92,10 @@
     --ink-secondary: #b5ac99;
     --ink-tertiary: #8b8275;
 
+    /* Parallel-edition accents preserve hue while meeting text contrast. */
+    --accent-action: #d28a7e;
+    --accent-capital: #7fa38f;
+
     --rule: #2e2820;
     --rule-strong: #4a4133;
 
@@ -109,6 +113,8 @@
       --ink-primary: #f0eada;
       --ink-secondary: #b5ac99;
       --ink-tertiary: #8b8275;
+      --accent-action: #d28a7e;
+      --accent-capital: #7fa38f;
       --rule: #2e2820;
       --rule-strong: #4a4133;
       --accent-bitcoin-wash: rgb(232 119 34 / 0.14);

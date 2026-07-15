@@ -34,6 +34,10 @@ async function assertReachable(url: string) {
       signal: AbortSignal.timeout(10_000),
     });
   }
+  if (response.status === 403) {
+    console.warn(`${url} blocks automated requests with 403; verify in a browser.`);
+    return;
+  }
   if (!response.ok) throw new Error(`${url} returned ${response.status}`);
 }
 

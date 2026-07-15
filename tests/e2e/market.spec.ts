@@ -150,8 +150,9 @@ test("offline Guide failure leaves the transparent self-review usable", async ({
       "The accepted trade is one observation, while the ceiling is an inspectable model rule.",
     );
   await context.setOffline(true);
-  await page.getByRole("button", { name: "Ask one question" }).click();
-  await expect(page.getByText(/You are offline/)).toBeVisible();
+  await expect(
+    page.getByText(/You are offline\. The transparent self-review/),
+  ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Run transparent self-review" }),
   ).toBeEnabled();

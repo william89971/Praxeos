@@ -2,7 +2,6 @@
 
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { usePraxeosStore } from "@/hooks/usePraxeosStore";
-import { OptionalGuide } from "@/labs/components/OptionalGuide";
 import { evaluateSelfReview } from "@/labs/feedback";
 import { decodeShareEnvelope, encodeShareEnvelope } from "@/labs/share";
 import type {
@@ -20,8 +19,8 @@ import {
   labSessionToMarkdown,
   upsertLabSession,
 } from "@/lib/learning-store";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import {
   type ComponentType,
   useCallback,
@@ -30,6 +29,12 @@ import {
   useRef,
   useState,
 } from "react";
+
+const OptionalGuide = dynamic(
+  () =>
+    import("@/labs/components/OptionalGuide").then((module) => module.OptionalGuide),
+  { ssr: false },
+);
 
 export interface GuidedState {
   seed: string;
@@ -100,19 +105,18 @@ export function GuidedLabRuntime<
   Action extends GuidedAction,
   Assumptions extends object,
 >({ definition }: { definition: GuidedLabDefinition<State, Action, Assumptions> }) {
-  const searchParams = useSearchParams();
   const { store, update, hydrated } = usePraxeosStore();
   const initialized = useRef(false);
-  const [mode, setMode] = useState<LabMode>(
-    searchParams.get("mode") === "explore" ? "explore" : "guided",
-  );
+  const [mode, setMode] = useState<LabMode>("guided");
   const [state, setState] = useState<State>(() =>
     definition.engine.create(definition.seed, definition.defaultAssumptions),
   );
   const [session, setSession] = useState<StoredLabSession | null>(null);
   const [change, setChange] = useState<LabExplanation | null>(null);
   const [feedback, setFeedback] = useState<RubricFeedback[]>([]);
-  const [notice, setNotice] = useState("Loading your local Lab record…");
+  const [notice, setNotice] = useState(
+    "Fresh guided session ready. Your first action creates a local record.",
+  );
   const [online, setOnline] = useState(true);
 
   useEffect(() => {
@@ -129,6 +133,7 @@ export function GuidedLabRuntime<
   useEffect(() => {
     if (!hydrated || initialized.current) return;
     initialized.current = true;
+    const searchParams = new URLSearchParams(window.location.search);
     const shared = searchParams.get("share");
     if (shared) {
       const decoded = decodeShareEnvelope(shared, definition.lab.slug);
@@ -178,7 +183,7 @@ export function GuidedLabRuntime<
       return;
     }
     setNotice("Fresh guided session ready. Your first action creates a local record.");
-  }, [definition, hydrated, searchParams, store]);
+  }, [definition, hydrated, store]);
 
   const metrics = useMemo(() => definition.engine.derive(state), [definition, state]);
   const stage =
@@ -332,6 +337,9 @@ export function GuidedLabRuntime<
   );
   const revealedConcept = state.guidedStep > 0 ? definition.stages[conceptIndex] : null;
   const guideTurn = session?.guideTurn ?? null;
+  const shouldRenderGuide = Boolean(
+    guideTurn || session?.initialReasoning.trim() || session?.revision.trim(),
+  );
   const onGuideTurn = (turn: GuideTurn) =>
     persist({
       guideTurn: turn,
@@ -342,10 +350,6 @@ export function GuidedLabRuntime<
         ]),
       ],
     });
-
-  if (!hydrated) {
-    return <output className="lab-loading-state">Restoring this local Lab…</output>;
-  }
 
   return (
     <SiteChrome>
@@ -613,19 +617,39 @@ export function GuidedLabRuntime<
             </output>
           ) : null}
 
-          <OptionalGuide
-            labSlug={definition.lab.slug}
-            reasoning={session?.revision || session?.initialReasoning || ""}
-            observationIds={
-              session?.selectedEvidenceIds ?? observations.map((item) => item.id)
-            }
-            actionIds={(session?.actionLog ?? []).map((action) =>
-              String(action.id ?? ""),
-            )}
-            assumptionIds={session?.acknowledgedAssumptionIds ?? []}
-            turn={guideTurn}
-            onTurn={onGuideTurn}
-          />
+          {!online && shouldRenderGuide ? (
+            <section className="guide-card lab-guide" aria-live="polite">
+              <p className="label-mono">Optional · unavailable offline</p>
+              <h3>Claude Guide is unavailable offline</h3>
+              <p>
+                You are offline. The transparent self-review remains fully available,
+                and your learner writing stays saved in this browser.
+              </p>
+            </section>
+          ) : shouldRenderGuide ? (
+            <OptionalGuide
+              labSlug={definition.lab.slug}
+              reasoning={session?.revision || session?.initialReasoning || ""}
+              observationIds={
+                session?.selectedEvidenceIds ?? observations.map((item) => item.id)
+              }
+              actionIds={(session?.actionLog ?? []).map((action) =>
+                String(action.id ?? ""),
+              )}
+              assumptionIds={session?.acknowledgedAssumptionIds ?? []}
+              turn={guideTurn}
+              onTurn={onGuideTurn}
+            />
+          ) : (
+            <section className="guide-card lab-guide">
+              <p className="label-mono">Optional · source-grounded</p>
+              <h3>Claude Guide unlocks after your first interpretation</h3>
+              <p>
+                Write your own view first. The optional semantic Guide loads only when
+                there is learner reasoning to question.
+              </p>
+            </section>
+          )}
 
           <div className="lab-completion-grid">
             <label>

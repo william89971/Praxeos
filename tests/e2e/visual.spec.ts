@@ -53,16 +53,39 @@ const snapshotFonts = `
     --font-sans: "Praxeos Snapshot Sans", sans-serif !important;
     --font-mono: "Praxeos Snapshot Mono", monospace !important;
   }
+  .lab-interpretation,
+  .lab-viewpoint,
+  .lab-evidence-rail,
+  .market-network-wrap,
+  .market-mobile-focus,
+  .structured-market-record,
+  .lab-progression__item {
+    content-visibility: visible !important;
+    contain-intrinsic-block-size: auto !important;
+  }
 `;
 
 const snapshotTolerance = process.env.CI
   ? { maxDiffPixelRatio: 0.04 }
   : { maxDiffPixels: 50 };
 
-async function prepareSnapshot(page: Page, route: string) {
+async function prepareSnapshot(page: Page, route: string, fullPage = false) {
   await page.goto(route);
   await page.addStyleTag({ content: snapshotFonts });
   await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  if (fullPage) {
+    await page.evaluate(async () => {
+      const step = Math.max(window.innerHeight - 100, 200);
+      for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
+        window.scrollTo(0, y);
+        await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+      }
+      window.scrollTo(0, 0);
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      );
+    });
+  }
 }
 
 async function routeSnapshotFonts(page: Page) {
@@ -92,19 +115,19 @@ test("flagship visual surfaces stay stable", async ({ page }) => {
     "Snapshot projects only",
   );
   await routeSnapshotFonts(page);
-  await prepareSnapshot(page, "/");
+  await prepareSnapshot(page, "/", true);
   await expect(page).toHaveScreenshot("homepage.png", {
     fullPage: true,
     animations: "disabled",
     ...snapshotTolerance,
   });
-  await prepareSnapshot(page, "/labs/market-without-a-manager?mode=guided");
+  await prepareSnapshot(page, "/labs/market-without-a-manager?mode=guided", true);
   await expect(page).toHaveScreenshot("market-guided.png", {
     fullPage: true,
     animations: "disabled",
     ...snapshotTolerance,
   });
-  await prepareSnapshot(page, "/labs");
+  await prepareSnapshot(page, "/labs", true);
   await expect(page).toHaveScreenshot("labs-index.png", {
     fullPage: true,
     animations: "disabled",

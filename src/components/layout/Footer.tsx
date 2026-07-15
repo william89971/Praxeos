@@ -52,22 +52,22 @@ export function Footer() {
             alignItems: "end",
           }}
         >
-          <Link href="/learn" className="label-mono">
+          <Link href="/learn" className="label-mono" prefetch={false}>
             Learn
           </Link>
-          <Link href="/practice" className="label-mono">
+          <Link href="/practice" className="label-mono" prefetch={false}>
             Practice
           </Link>
-          <Link href="/labs" className="label-mono">
+          <Link href="/labs" className="label-mono" prefetch={false}>
             Labs
           </Link>
-          <Link href="/sources" className="label-mono">
+          <Link href="/sources" className="label-mono" prefetch={false}>
             Sources
           </Link>
-          <Link href="/built" className="label-mono">
+          <Link href="/built" className="label-mono" prefetch={false}>
             How It Was Built
           </Link>
-          <Link href="/rss.xml" className="label-mono">
+          <Link href="/rss.xml" className="label-mono" prefetch={false}>
             RSS
           </Link>
           <a

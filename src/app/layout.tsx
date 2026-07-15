@@ -2,7 +2,6 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Crosshair } from "@/components/cursor/Crosshair";
-import { MotionProvider } from "@/components/motion/MotionProvider";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
@@ -79,10 +78,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Skip to content
         </a>
         <ThemeProvider>
-          <MotionProvider>
-            <Crosshair />
-            <main id="main">{children}</main>
-          </MotionProvider>
+          <Crosshair />
+          <main id="main">{children}</main>
         </ThemeProvider>
       </body>
     </html>

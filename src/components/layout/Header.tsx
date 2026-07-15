@@ -60,6 +60,7 @@ export function Header() {
       >
         <Link
           href="/"
+          prefetch={false}
           aria-label="Praxeos home"
           style={{
             textDecoration: "none",
@@ -96,6 +97,7 @@ export function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  prefetch={false}
                   className="label-mono"
                   style={{
                     textDecoration: "none",
@@ -167,6 +169,7 @@ export function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  prefetch={false}
                   className="label-mono"
                   onClick={() => setMobileOpen(false)}
                   style={{

@@ -1,4 +1,4 @@
-import { RedesignNotice } from "@/components/labs/RedesignNotice";
+import { RedesignNoticeFromUrl } from "@/components/labs/RedesignNotice";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { LAB_REGISTRY } from "@/labs/registry";
 import type { Metadata } from "next";
@@ -11,12 +11,7 @@ export const metadata: Metadata = {
     "Four deterministic learning environments for exploring choice, exchange, discovery, and money across time.",
 };
 
-export default async function LabsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ redesigned?: string }>;
-}) {
-  const { redesigned } = await searchParams;
+export default function LabsPage() {
   return (
     <SiteChrome>
       <main className="page-shell">
@@ -31,7 +26,7 @@ export default async function LabsPage({
             grade.
           </p>
         </header>
-        {redesigned ? <RedesignNotice oldSlug={redesigned} /> : null}
+        <RedesignNoticeFromUrl />
         <ol className="page-section lab-progression">
           {LAB_REGISTRY.map((lab) => (
             <li
@@ -42,15 +37,30 @@ export default async function LabsPage({
                 {String(lab.position).padStart(2, "0")}
               </div>
               <div className="lab-progression__copy">
-                <figure className="lab-progression__art">
-                  <Image
-                    src={lab.visualAsset}
-                    width={1200}
-                    height={675}
-                    sizes="(max-width: 760px) 100vw, 62vw"
-                    alt={lab.visualAlt}
-                  />
+                <figure className="lab-progression__art lab-progression__art--desktop">
+                  <picture>
+                    <source
+                      media="(max-width: 760px)"
+                      srcSet="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                    />
+                    <Image
+                      src={lab.visualAsset}
+                      width={1200}
+                      height={675}
+                      sizes="62vw"
+                      alt={lab.visualAlt}
+                    />
+                  </picture>
                 </figure>
+                <details className="lab-progression__art-toggle">
+                  <summary>View editorial cover</summary>
+                  <div
+                    className="lab-progression__art lab-progression__art--mobile"
+                    style={{ backgroundImage: `url("${lab.visualAsset}")` }}
+                    role="img"
+                    aria-label={lab.visualAlt}
+                  />
+                </details>
                 <p className="label-mono">
                   {lab.flagship ? "Flagship journey" : `Lab ${lab.position}`} ·{" "}
                   {lab.duration}
@@ -59,7 +69,7 @@ export default async function LabsPage({
                 <p className="lab-progression__question">{lab.centralQuestion}</p>
                 <p>{lab.familiarSituation}</p>
               </div>
-              <Link href={`/labs/${lab.slug}`}>
+              <Link href={`/labs/${lab.slug}`} prefetch={false}>
                 {lab.flagship ? "Begin guided journey" : "Enter Lab"}{" "}
                 <span aria-hidden="true">→</span>
               </Link>

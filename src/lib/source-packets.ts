@@ -110,7 +110,7 @@ export const SOURCE_PACKETS: readonly SourcePacket[] = [
     id: "kirzner-competition",
     title: "Competition and Entrepreneurship",
     author: "Israel M. Kirzner",
-    url: "https://press.uchicago.edu/ucp/books/book/chicago/C/bo27946131.html",
+    url: "https://press.uchicago.edu/ucp/books/book/chicago/C/bo27304815.html",
     locator: "Chapters 1–2",
     kind: "Austrian interpretation",
     claims: [
@@ -124,7 +124,7 @@ export const SOURCE_PACKETS: readonly SourcePacket[] = [
     id: "lachmann-market-process",
     title: "The Market as an Economic Process",
     author: "Ludwig M. Lachmann",
-    url: "https://mises.org/library/book/market-economic-process",
+    url: "https://www.mercatus.org/hayekprogram/research/books/market-economic-process",
     locator: "Chapters 1 and 3",
     kind: "Austrian interpretation",
     claims: [
@@ -151,9 +151,9 @@ export const SOURCE_PACKETS: readonly SourcePacket[] = [
   },
   {
     id: "cantillon-essay-trade",
-    title: "An Essay on Economic Theory",
+    title: "Essay on the Nature of Trade in General",
     author: "Richard Cantillon",
-    url: "https://oll.libertyfund.org/titles/cantillon-an-essay-on-economic-theory",
+    url: "https://oll.libertyfund.org/titles/essay-on-the-nature-of-trade-in-general-lf-ed",
     locator: "Part II, chapters 6–8",
     kind: "source claim",
     claims: [
@@ -166,10 +166,10 @@ export const SOURCE_PACKETS: readonly SourcePacket[] = [
   },
   {
     id: "fed-monetary-transmission",
-    title: "The Monetary Transmission Mechanism",
-    author: "Federal Reserve Board",
-    url: "https://www.federalreserve.gov/econres/notes/feds-notes/the-monetary-transmission-mechanism-20180615.html",
-    locator: "FEDS Notes, June 15, 2018",
+    title: "How Has the Monetary Transmission Mechanism Evolved Over Time?",
+    author: "Jean Boivin, Michael T. Kiley, and Frederic S. Mishkin",
+    url: "https://www.federalreserve.gov/econres/feds/how-has-the-monetary-transmission-mechanism-evolved-over-time.htm",
+    locator: "FEDS 2010-26, abstract and introduction",
     kind: "credible counterargument",
     claims: [
       "Institutional accounts of monetary transmission include multiple channels, lags, expectations, and financial conditions.",

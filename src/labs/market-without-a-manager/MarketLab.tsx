@@ -2,7 +2,6 @@
 
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { usePraxeosStore } from "@/hooks/usePraxeosStore";
-import { OptionalGuide } from "@/labs/components/OptionalGuide";
 import { evaluateSelfReview } from "@/labs/feedback";
 import { decodeShareEnvelope, encodeShareEnvelope } from "@/labs/share";
 import type { LabMode, RubricFeedback } from "@/labs/types";
@@ -14,8 +13,8 @@ import {
   labSessionToMarkdown,
   upsertLabSession,
 } from "@/lib/learning-store";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   DEFAULT_MARKET_ASSUMPTIONS,
@@ -29,6 +28,12 @@ import {
   marketEngine,
   replayMarket,
 } from "./engine";
+
+const OptionalGuide = dynamic(
+  () =>
+    import("@/labs/components/OptionalGuide").then((module) => module.OptionalGuide),
+  { ssr: false },
+);
 
 const LAB_SLUG = "market-without-a-manager" as const;
 const SEED = "market-2026";
@@ -124,19 +129,18 @@ const SELF_REVIEW_CHECKS = [
 ] as const;
 
 export default function MarketLab() {
-  const searchParams = useSearchParams();
   const { store, update, hydrated } = usePraxeosStore();
   const initialized = useRef(false);
-  const [mode, setMode] = useState<LabMode>(
-    searchParams.get("mode") === "explore" ? "explore" : "guided",
-  );
+  const [mode, setMode] = useState<LabMode>("guided");
   const [state, setState] = useState<MarketState>(() =>
     marketEngine.create(SEED, DEFAULT_MARKET_ASSUMPTIONS),
   );
   const [session, setSession] = useState<StoredLabSession | null>(null);
   const [change, setChange] = useState<MarketEvent | null>(null);
   const [feedback, setFeedback] = useState<RubricFeedback[]>([]);
-  const [notice, setNotice] = useState("Loading your local Lab record…");
+  const [notice, setNotice] = useState(
+    "Fresh guided session ready. Your first action will create a local record.",
+  );
   const [online, setOnline] = useState(true);
 
   useEffect(() => {
@@ -153,6 +157,7 @@ export default function MarketLab() {
   useEffect(() => {
     if (!hydrated || initialized.current) return;
     initialized.current = true;
+    const searchParams = new URLSearchParams(window.location.search);
     const shared = searchParams.get("share");
     if (shared) {
       const decoded = decodeShareEnvelope(shared, LAB_SLUG);
@@ -204,7 +209,7 @@ export default function MarketLab() {
     setNotice(
       "Fresh guided session ready. Your first action will create a local record.",
     );
-  }, [hydrated, searchParams, store]);
+  }, [hydrated, store]);
 
   const metrics = useMemo(() => marketEngine.derive(state), [state]);
   const nextGuidedAction = MARKET_GUIDED_ACTIONS[state.guidedStep];
@@ -369,6 +374,9 @@ export default function MarketLab() {
   };
 
   const guideTurn = session?.guideTurn ?? null;
+  const shouldRenderGuide = Boolean(
+    guideTurn || session?.initialReasoning.trim() || session?.revision.trim(),
+  );
   const onGuideTurn = (turn: GuideTurn) =>
     persist({
       guideTurn: turn,
@@ -653,17 +661,37 @@ export default function MarketLab() {
             </output>
           ) : null}
 
-          <OptionalGuide
-            labSlug={LAB_SLUG}
-            reasoning={session?.revision || session?.initialReasoning || ""}
-            observationIds={session?.selectedEvidenceIds ?? activeEventIds}
-            actionIds={(session?.actionLog ?? []).map((action) =>
-              String(action.id ?? ""),
-            )}
-            assumptionIds={session?.acknowledgedAssumptionIds ?? []}
-            turn={guideTurn}
-            onTurn={onGuideTurn}
-          />
+          {!online && shouldRenderGuide ? (
+            <section className="guide-card lab-guide" aria-live="polite">
+              <p className="label-mono">Optional · unavailable offline</p>
+              <h3>Claude Guide is unavailable offline</h3>
+              <p>
+                You are offline. The transparent self-review remains fully available,
+                and your learner writing stays saved in this browser.
+              </p>
+            </section>
+          ) : shouldRenderGuide ? (
+            <OptionalGuide
+              labSlug={LAB_SLUG}
+              reasoning={session?.revision || session?.initialReasoning || ""}
+              observationIds={session?.selectedEvidenceIds ?? activeEventIds}
+              actionIds={(session?.actionLog ?? []).map((action) =>
+                String(action.id ?? ""),
+              )}
+              assumptionIds={session?.acknowledgedAssumptionIds ?? []}
+              turn={guideTurn}
+              onTurn={onGuideTurn}
+            />
+          ) : (
+            <section className="guide-card lab-guide">
+              <p className="label-mono">Optional · source-grounded</p>
+              <h3>Claude Guide unlocks after your first interpretation</h3>
+              <p>
+                Write your own view first. The optional semantic Guide loads only when
+                there is learner reasoning to question.
+              </p>
+            </section>
+          )}
 
           <div className="lab-completion-grid">
             <label>

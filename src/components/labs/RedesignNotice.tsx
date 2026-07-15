@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const OLD_NAMES: Record<string, string> = {
   "monetary-garden": "Monetary Garden",
@@ -29,4 +29,14 @@ export function RedesignNotice({ oldSlug }: { oldSlug: string }) {
       </button>
     </aside>
   );
+}
+
+export function RedesignNoticeFromUrl() {
+  const [oldSlug, setOldSlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    setOldSlug(new URLSearchParams(window.location.search).get("redesigned"));
+  }, []);
+
+  return oldSlug ? <RedesignNotice oldSlug={oldSlug} /> : null;
 }

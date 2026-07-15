@@ -1121,6 +1121,10 @@ button {
   object-fit: cover;
 }
 
+.lab-progression__art-toggle {
+  display: none;
+}
+
 .lab-progression__copy h2 {
   max-width: 15ch;
   margin: 0;
@@ -1784,6 +1788,8 @@ button {
   gap: 1.5rem;
   padding: clamp(2rem, 5vw, 5rem) var(--gutter-inline);
   border-block-end: 1px solid var(--rule);
+  content-visibility: auto;
+  contain-intrinsic-block-size: 62rem;
 }
 
 .lab-interpretation > header {
@@ -1897,6 +1903,8 @@ button {
   gap: 2rem;
   padding: clamp(2rem, 5vw, 4rem) var(--gutter-inline);
   background: var(--paper-sunk);
+  content-visibility: auto;
+  contain-intrinsic-block-size: 16rem;
 }
 
 .lab-viewpoint p {
@@ -1998,6 +2006,13 @@ button {
     min-height: 19rem;
   }
 
+  .market-network-wrap,
+  .market-mobile-focus,
+  .structured-market-record {
+    content-visibility: auto;
+    contain-intrinsic-block-size: 20rem;
+  }
+
   .market-participant text,
   .market-offer-label {
     display: none;
@@ -2026,6 +2041,8 @@ button {
 
   .lab-evidence-rail {
     display: block;
+    content-visibility: auto;
+    contain-intrinsic-block-size: 46rem;
   }
 
   .market-metrics {
@@ -2146,6 +2163,16 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .lab-progression__item {
+    content-visibility: auto;
+    contain-intrinsic-block-size: 42rem;
+  }
+
+  .lab-progression__item:first-child {
+    content-visibility: visible;
+    contain-intrinsic-block-size: auto;
+  }
+
   .lab-progression__item:nth-child(even) {
     margin-inline-start: 0;
   }
@@ -2156,6 +2183,29 @@ button {
     padding-inline: var(--gutter-inline);
     border-inline-end: 0;
     border-block-end: 1px solid var(--rule);
+  }
+
+  .lab-progression__art--desktop {
+    display: none;
+  }
+
+  .lab-progression__art-toggle {
+    display: block;
+    order: 5;
+    margin-block: 0.75rem 0;
+  }
+
+  .lab-progression__art-toggle summary {
+    cursor: pointer;
+    color: var(--accent-action);
+    font: 700 var(--step--1) var(--font-sans);
+  }
+
+  .lab-progression__art--mobile {
+    min-height: 12rem;
+    margin-block: 0.75rem 0;
+    background-position: center;
+    background-size: cover;
   }
 
   .lab-progression__item > a {
