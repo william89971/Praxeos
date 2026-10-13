@@ -13,10 +13,10 @@ test("lesson overview resumes local progress and names its Lab connection", asyn
   ).toBeVisible();
   await expect(page.getByRole("link", { name: /The Choice Machine/ })).toBeVisible();
   await page.getByRole("button", { name: "Mark lesson complete" }).click();
-  await expect(page.getByText(/stored only in this browser/)).toBeVisible();
+  await expect(page.getByText(/Saved in this browser only/)).toBeVisible();
   await page.goto("/learn");
   await expect(page.getByText("1 of 11", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Resume lessons" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Start Choice Machine" })).toBeVisible();
 });
 
 test("Practice rotates a UTC case and Sources exposes evidence boundaries", async ({

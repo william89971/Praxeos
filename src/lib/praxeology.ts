@@ -77,8 +77,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "The actor preferred immediate relief over the workout in that moment.",
         feedback:
-          "Strong answer. The action reveals the preference at the moment of choice, even if the person says they value fitness.",
-        strong: true,
+          "Observed: the person watched videos for forty minutes instead of working out. A praxeological reading infers that, in that moment, the chosen means served relief rather than the workout. The videos are observed. The motive is inferred, and one action does not prove a lasting preference.",
       },
       {
         label: "The person has no goals.",
@@ -123,8 +122,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "The action, because it shows the preferred state under constraint.",
         feedback:
-          "Strong answer. The student may dislike grades, but avoiding failure ranked above leisure that night.",
-        strong: true,
+          "Observed: the student wrote the essay overnight after saying grades do not matter. The action and the sentence are both visible; they are not the same evidence. Inferring a motive, such as fear of failing, goes beyond the behavior. Praxeology can say what was chosen under that night’s constraints. It cannot see the feeling itself.",
       },
       {
         label: "Neither. Only feelings matter.",
@@ -164,8 +162,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "Weak signups create dissatisfaction.",
         feedback:
-          "Strong answer. The weak signups are the felt gap between the current state and the desired state.",
-        strong: true,
+          "The weak signups are the felt gap between the current state and the desired state.",
       },
       {
         label: "The landing page itself is the end.",
@@ -210,8 +207,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "Money became a means, not the final end.",
         feedback:
-          "Strong answer. The deeper end is schedule control; money is one possible instrument.",
-        strong: true,
+          "The deeper end is schedule control; money is one possible instrument.",
       },
       {
         label: "Money stopped mattering.",
@@ -255,8 +251,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "Rest ranked highest under the circumstances.",
         feedback:
-          "Strong answer. That does not mean rest is always highest. It means rest won in that context.",
-        strong: true,
+          "That does not mean rest is always highest. It means rest won in that context.",
       },
       {
         label: "The other options had no value.",
@@ -304,8 +299,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "The family time and energy given up for the higher wage.",
         feedback:
-          "Strong answer. The wage has to be compared against the life displaced by the commute.",
-        strong: true,
+          "The wage has to be compared against the life displaced by the commute.",
       },
       {
         label: "There is no cost because income went up.",
@@ -349,8 +343,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "The valuing person and circumstances changed.",
         feedback:
-          "Strong answer. Value is relational: a good matters because an actor sees it as useful for an end.",
-        strong: true,
+          "Value is relational: a good matters because an actor sees it as useful for an end.",
       },
       {
         label: "Market value is fake.",
@@ -390,8 +383,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "Present enjoyment versus future capability.",
         feedback:
-          "Strong answer. Time preference is visible in how the actor ranks now against later.",
-        strong: true,
+          "Time preference is visible in how the actor ranks now against later.",
       },
       {
         label: "Good people save; bad people spend.",
@@ -441,8 +433,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
       {
         label: "Both sides benefit ex ante.",
         feedback:
-          "Strong answer. Each side trades because the received good ranks higher than the surrendered good.",
-        strong: true,
+          "Each side trades because the received good ranks higher than the surrendered good.",
       },
       {
         label: "Nobody benefits because values are equal.",
@@ -481,9 +472,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
     choices: [
       {
         label: "It transmits scarcity and preference information.",
-        feedback:
-          "Strong answer. The price condenses many local facts into a signal actors can use.",
-        strong: true,
+        feedback: "The price condenses many local facts into a signal actors can use.",
       },
       {
         label: "It only shows greed.",
@@ -527,8 +516,7 @@ export const PRAXEOLOGY_101: readonly PraxeologyLesson[] = [
     choices: [
       {
         label: "Yes: actor, end, means, constraint, and cost.",
-        feedback: "Strong answer. That is the basic praxeological frame.",
-        strong: true,
+        feedback: "That is the basic praxeological frame.",
       },
       {
         label: "Only if money is involved.",
@@ -904,6 +892,20 @@ export const PRACTICAL_CONCEPTS: Record<Concept, PracticalConcept> = {
     example: "Saving for a tool means future capability outranks present spending.",
     exercise: "Spot one choice where present-you and future-you want different things.",
   },
+};
+
+export const LESSON_SOURCE_IDS: Record<string, string> = {
+  "what-is-praxeology": "mises-human-action-action",
+  "man-acts": "mises-human-action-action",
+  "uneasiness-and-improvement": "mises-human-action-action",
+  "ends-and-means": "mises-human-action-action",
+  "choice-and-tradeoff": "mises-human-action-action",
+  "opportunity-cost": "menger-principles-value",
+  "subjective-value": "menger-principles-value",
+  exchange: "menger-principles-value",
+  "time-preference": "mises-money-credit",
+  "prices-and-knowledge": "hayek-knowledge-1945",
+  "apply-it-to-your-life": "mises-human-action-action",
 };
 
 export function getPraxeologyLesson(slug: string): PraxeologyLesson | undefined {

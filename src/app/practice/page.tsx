@@ -11,18 +11,18 @@ export const metadata: Metadata = {
 export default function PracticePage() {
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <header className="page-section content-header">
           <p className="label-mono">Practice · case library</p>
           <h1 className="editorial-heading">One ordinary choice at a time.</h1>
           <p>
-            There is no answer key hidden behind these cases. Describe an
-            interpretation, test it against the details, and make room for another
-            defensible reading.
+            Answer in your own words if you want. You can also open a worked example or
+            continue without answering. Neither one grades you or marks the case
+            finished.
           </p>
         </header>
         <PracticeCases cases={DAILY_CASES} />
-      </main>
+      </div>
     </SiteChrome>
   );
 }

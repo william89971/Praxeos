@@ -29,9 +29,10 @@
     --accent-capital-wash: rgb(58 90 74 / 0.08);
 
     /* ---------- Typography: families ---------- */
-    --font-serif: ui-serif, Georgia, "Times New Roman", serif;
-    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-mono: ui-monospace, "SFMono-Regular", Consolas, Menlo, monospace;
+    --font-serif: var(--font-fraunces, ui-serif), ui-serif, Georgia, "Times New Roman",
+      serif;
+    --font-sans: var(--font-inter, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-jetbrains, ui-monospace), ui-monospace, Consolas, monospace;
 
     /* ---------- Typography: fluid scale (utopia.fyi) ---------- */
     --step--2: clamp(0.78rem, 0.76rem + 0.1vw, 0.83rem);

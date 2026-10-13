@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function LearnPage() {
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <header className="page-section content-header content-header--illustrated">
           <div>
             <p className="label-mono">
@@ -21,9 +21,10 @@ export default function LearnPage() {
             </p>
             <h1 className="editorial-heading">A language for examining choices.</h1>
             <p>
-              Start with ordinary action. Each focused route adds one distinction, one
-              practical activity, and a named Lab connection. Progress is saved only in
-              your browser.
+              Praxeology studies purposeful action: who is acting, what end they seek,
+              what means they use, and what they give up. Start with lesson 1. Each
+              lesson adds one distinction. Progress is saved in this browser only. It is
+              not copied to your other devices, and clearing site data deletes it.
             </p>
           </div>
           <figure className="transition-figure">
@@ -37,7 +38,7 @@ export default function LearnPage() {
           </figure>
         </header>
         <LessonIndex lessons={PRAXEOLOGY_101} />
-      </main>
+      </div>
     </SiteChrome>
   );
 }

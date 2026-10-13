@@ -94,6 +94,9 @@ const definition: GuidedLabDefinition<MoneyState, MoneyAction, MoneyAssumptions>
         "Outcome indices are illustrative and are not forecasts or measured impacts.",
     },
   ],
+  sourceHref: "/sources#mises-money-credit",
+  exploreLockedReason:
+    "Explore opens after the first guided action. It uses the same rules and keeps this record.",
   sourceClaim:
     "Mises and Cantillon discuss non-neutral monetary change and differential timing; the source packet separates their arguments from modern empirical transmission research.",
   counterargument:

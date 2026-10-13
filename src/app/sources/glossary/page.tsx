@@ -1,7 +1,7 @@
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { GlossaryIndex } from "@/components/learning/GlossaryIndex";
 import { GLOSSARY } from "@/content/glossary";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Glossary",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function GlossaryPage() {
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <header className="page-section content-header">
           <p className="label-mono">Sources · glossary</p>
           <h1 className="editorial-heading">Precise words, open definitions.</h1>
@@ -19,19 +19,8 @@ export default function GlossaryPage() {
             for the primary sources.
           </p>
         </header>
-        <section className="page-section content-grid">
-          {GLOSSARY.map((entry) => (
-            <article className="content-card" id={entry.slug} key={entry.slug}>
-              <small>{entry.thinkers.join(" · ")}</small>
-              <div>
-                <h2>{entry.headword}</h2>
-                <p>{entry.definition}</p>
-              </div>
-              <Link href="/sources">Trace sources →</Link>
-            </article>
-          ))}
-        </section>
-      </main>
+        <GlossaryIndex entries={GLOSSARY} />
+      </div>
     </SiteChrome>
   );
 }

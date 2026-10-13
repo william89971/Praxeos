@@ -11,7 +11,7 @@ export function Footer() {
     >
       <div
         style={{
-          maxWidth: "var(--measure-wide)",
+          maxWidth: "80rem",
           marginInline: "auto",
           paddingInline: "var(--gutter-inline)",
           paddingBlock: "var(--gutter-block)",
@@ -60,6 +60,9 @@ export function Footer() {
           </Link>
           <Link href="/labs" className="label-mono" prefetch={false}>
             Labs
+          </Link>
+          <Link href="/notebook" className="label-mono" prefetch={false}>
+            Notebook
           </Link>
           <Link href="/sources" className="label-mono" prefetch={false}>
             Sources

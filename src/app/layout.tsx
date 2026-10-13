@@ -3,7 +3,29 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Crosshair } from "@/components/cursor/Crosshair";
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import type { ReactNode } from "react";
+
+const fraunces = localFont({
+  src: "../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2",
+  variable: "--font-fraunces",
+  display: "swap",
+  weight: "100 900",
+});
+
+const inter = localFont({
+  src: "../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
+  variable: "--font-inter",
+  display: "swap",
+  weight: "100 900",
+});
+
+const jetbrains = localFont({
+  src: "../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2",
+  variable: "--font-jetbrains",
+  display: "swap",
+  weight: "100 800",
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://praxeos.vercel.app";
 
@@ -39,13 +61,13 @@ export const metadata: Metadata = {
     url: siteUrl,
     title: "Praxeos - See the structure inside every choice",
     description:
-      "Learn through a flagship calculation journey, deterministic feedback, interactive labs, sources, and reflection.",
+      "Learn praxeology by examining actors, ends, means, and alternatives, then watching those distinctions in four labs.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Praxeos - See the structure inside every choice",
     description:
-      "Begin an eight-minute journey through actors, ends, means, scarcity, prices, and revision.",
+      "Start with the structure of a choice, then watch a market of five people and five goods.",
   },
   alternates: {
     canonical: siteUrl,
@@ -72,14 +94,18 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${inter.variable} ${jetbrains.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
         <ThemeProvider>
           <Crosshair />
-          <main id="main">{children}</main>
+          {children}
         </ThemeProvider>
       </body>
     </html>

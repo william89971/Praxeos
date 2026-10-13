@@ -2,15 +2,11 @@ import type { ReactNode } from "react";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
-/**
- * Wraps non-immersive pages with shared Header + Footer chrome.
- * The homepage does NOT use this — its hero is full-bleed.
- */
 export function SiteChrome({ children }: { children: ReactNode }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100dvh" }}>
+    <div className="site-frame">
       <Header />
-      <div style={{ flex: 1 }}>{children}</div>
+      <main id="main">{children}</main>
       <Footer />
     </div>
   );

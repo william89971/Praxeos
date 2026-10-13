@@ -5,7 +5,7 @@ import Link from "next/link";
 export function LabFoundation({ lab }: { lab: LabRegistryEntry }) {
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <header className="page-section lab-cover">
           <div>
             <p className="label-mono">
@@ -32,7 +32,7 @@ export function LabFoundation({ lab }: { lab: LabRegistryEntry }) {
             Return to the four-Lab progression
           </Link>
         </section>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

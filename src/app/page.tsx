@@ -1,4 +1,5 @@
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { StartHere } from "@/components/learning/StartHere";
 import { WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { DAILY_CASES } from "@/lib/praxeology";
 import Image from "next/image";
@@ -10,44 +11,45 @@ export default function HomePage() {
   return (
     <SiteChrome>
       <WebsiteJsonLd />
-      <main>
+      <div>
         <section className="editorial-hero">
           <div className="editorial-hero__copy">
-            <p className="label-mono">Interactive learning laboratory</p>
+            <p className="label-mono">A place to learn praxeology</p>
             <h1>See the structure inside every choice.</h1>
             <p>
-              Learn to notice actors, ends, means, tradeoffs, prices, and scattered
-              knowledge through short cases, deterministic simulations, source-grounded
-              guidance, and reflection.
+              Praxeology is the study of purposeful action. You will practice noticing
+              who is acting, what end they are seeking, what means they use, and which
+              alternative they give up.
             </p>
             <div className="editorial-actions">
-              <Link href="/labs/market-without-a-manager?mode=guided">
-                Begin 8-minute journey
-              </Link>
-              <Link href="/labs">Explore labs</Link>
+              <StartHere />
+              <Link href="/labs">See the four labs</Link>
             </div>
           </div>
           <aside className="editorial-hero__aside">
             <Image
               className="editorial-hero__image"
-              src="/images/editorial/home-hero.webp"
-              width={1600}
-              height={900}
+              src="/images/labs/market-without-a-manager.webp"
+              width={1200}
+              height={675}
               sizes="(max-width: 760px) 100vw, 34vw"
               priority
-              alt="Tactile illustrated desk with a notebook branching into everyday choices among time, study, health, relationships, and groceries."
+              alt="Cut-paper market with five participants exchanging bread, apples, tea, cloth, and a tool."
             />
-            <p className="label-mono">Market Without a Manager</p>
+            <p className="label-mono">Featured demonstration · 8–10 minutes</p>
             <strong>
               5 people
-              <br />6 goods
+              <br />5 goods
               <br />
               no director
             </strong>
             <p>
-              Make and reject offers, watch prices emerge from completed trades, then
-              test what changes when information is incomplete or a ceiling binds.
+              Market Without a Manager lets you watch offers, refusals, and prices among
+              five people and five goods: apples, bread, cloth, tea, and tools.
             </p>
+            <Link href="/labs/market-without-a-manager?mode=guided">
+              Open the market demonstration
+            </Link>
           </aside>
         </section>
         <section className="editorial-grid" aria-label="Ways to learn">
@@ -56,7 +58,7 @@ export default function HomePage() {
             <div>
               <h2>Eleven focused lessons</h2>
               <p>
-                One concept, one practical activity, and one lab connection at a time.
+                One concept at a time, then a lab when you are ready to watch it move.
               </p>
             </div>
           </Link>
@@ -70,15 +72,15 @@ export default function HomePage() {
           <Link className="editorial-card" href="/notebook">
             <small>03 · Notebook</small>
             <div>
-              <h2>Reasoning that changes</h2>
+              <h2>A record you can resume</h2>
               <p>
-                Keep the first interpretation, feedback, revision, citations, and final
-                reflection together.
+                Lessons, sketches, and lab notes stay in this browser. They are not
+                synced, and clearing site data removes them.
               </p>
             </div>
           </Link>
         </section>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

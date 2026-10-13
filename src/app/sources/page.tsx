@@ -13,15 +13,15 @@ export const metadata: Metadata = {
 export default function SourcesPage() {
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <header className="page-section content-header content-header--illustrated">
           <div>
             <p className="label-mono">Sources · inspect the grounding</p>
             <h1 className="editorial-heading">Read past the interface.</h1>
             <p>
-              Guide explanations are limited to allowlisted packets that show the claim,
-              stable URL, and locator. The source itself—not an AI summary—remains the
-              place to verify an argument.
+              The optional guide may cite only a fixed list of sources. Each card names
+              the claim, a stable link, and where to look. The source itself is where
+              you check the argument.
             </p>
             <div className="editorial-actions">
               <Link href="/sources/glossary">Open glossary</Link>
@@ -42,6 +42,7 @@ export default function SourcesPage() {
           {SOURCE_PACKETS.map((packet) => (
             <a
               className="content-card"
+              id={packet.id}
               href={packet.url}
               target="_blank"
               rel="noreferrer"
@@ -81,7 +82,7 @@ export default function SourcesPage() {
           ))}
         </section>
         <section id="manifesto" className="page-section content-header">
-          <p className="label-mono">Manifesto · migrated</p>
+          <p className="label-mono">Why the site is built this way</p>
           <h2 className="editorial-heading">
             The interaction must carry the argument.
           </h2>
@@ -92,7 +93,7 @@ export default function SourcesPage() {
             learner keeps the final judgment.
           </p>
         </section>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

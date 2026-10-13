@@ -11,19 +11,24 @@ export function NotebookView() {
   const { store, hydrated } = usePraxeosStore();
   if (!hydrated) return <output>Opening your local notebook…</output>;
   const sessions = LAB_REGISTRY.flatMap((lab) => store.labSessions[lab.slug]);
-  if (sessions.length === 0 && store.earlierRecords.length === 0) {
+  const lessonNotes = Object.values(store.lessonRecords);
+  const sketches = store.conceptSketches;
+  if (
+    sessions.length === 0 &&
+    store.earlierRecords.length === 0 &&
+    lessonNotes.length === 0 &&
+    sketches.length === 0
+  ) {
     return (
       <section className="guide-card">
         <p className="label-mono">No saved reasoning yet</p>
         <h2>Your first interpretation belongs here.</h2>
         <p>
-          Begin the flagship. Praxeos keeps your initial reasoning, explicitly selected
-          evidence, acknowledged assumptions, optional Guide turn, revision, sources,
-          and reflection in this browser.
+          Start with the first lesson, or open a lab. Sketches and lab notes stay in
+          this browser. They are not copied to other devices, and clearing site data
+          deletes them.
         </p>
-        <Link href="/labs/market-without-a-manager?mode=guided">
-          Begin Market Without a Manager →
-        </Link>
+        <Link href="/learn/what-is-praxeology">Start with the first lesson →</Link>
       </section>
     );
   }
@@ -32,6 +37,32 @@ export function NotebookView() {
     <div className="notebook-records">
       {sessions.map((session) => (
         <SessionRecord key={session.id} session={session} />
+      ))}
+      {lessonNotes.map((note) => (
+        <article className="notebook-record" key={note.lessonSlug}>
+          <header>
+            <div>
+              <p className="label-mono">Lesson note · not graded</p>
+              <h2>{note.lessonSlug}</h2>
+            </div>
+            <Link href={`/learn/${note.lessonSlug}`}>Resume →</Link>
+          </header>
+          <p>{note.selectedChoice || "No choice recorded."}</p>
+          <p>{note.reflection || "No reflection yet."}</p>
+        </article>
+      ))}
+      {sketches.map((sketch) => (
+        <article className="notebook-record" key={sketch.id}>
+          <header>
+            <div>
+              <p className="label-mono">Goal, means, alternative</p>
+              <h2>{sketch.goal || "Untitled sketch"}</h2>
+            </div>
+          </header>
+          <p>Means: {sketch.means || "Not recorded"}</p>
+          <p>Forgone: {sketch.forgone || "Not recorded"}</p>
+          <p>Inferred motive: {sketch.motiveNote || "Not recorded"}</p>
+        </article>
       ))}
       {store.earlierRecords.map((record) => (
         <EarlierRecord key={record.id} record={record} />
@@ -81,7 +112,7 @@ function SessionRecord({ session }: { session: StoredLabSession }) {
           <strong>{session.acknowledgedAssumptionIds.length}</strong> acknowledged
           assumptions
         </p>
-        <p className="label-mono">No semantic score assigned</p>
+        <p className="label-mono">Not graded</p>
       </div>
       <details className="notebook-record__details">
         <summary>Inspect evidence, assumptions, Guide, and sources</summary>

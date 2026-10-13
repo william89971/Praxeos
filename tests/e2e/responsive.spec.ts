@@ -25,7 +25,7 @@ test("200 percent layout equivalent keeps the flagship action usable", async ({
   await page.setViewportSize({ width: 720, height: 540 });
   await page.goto("/labs/market-without-a-manager?mode=guided");
   await expect(
-    page.getByRole("button", { name: "Meet the participants" }),
+    page.getByRole("button", { name: "I expect a visible change" }),
   ).toBeVisible();
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,

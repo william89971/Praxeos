@@ -4,6 +4,30 @@ import { LAB_SLUGS } from "@/labs/types";
 export const LEARNING_STORE_KEY = "praxeos.learning.v3";
 export const LEARNING_STORE_VERSION = 3 as const;
 
+export const LOCAL_RECORD_NOTE =
+  "Saved in this browser only. Praxeos does not copy it to your other devices. Clearing this browser’s site data deletes it.";
+
+export type LessonResponseMode = "answered" | "worked-example" | "continued";
+
+export interface LessonRecord {
+  lessonSlug: string;
+  responseMode: LessonResponseMode | null;
+  selectedChoice: string | null;
+  reflection: string;
+  updatedAt: string;
+}
+
+export interface ConceptSketch {
+  id: string;
+  lessonSlug: string | null;
+  caseSlug: string | null;
+  goal: string;
+  means: string;
+  forgone: string;
+  motiveNote: string;
+  updatedAt: string;
+}
+
 export type StoredLabSession = LabSession<
   Record<string, unknown>,
   Record<string, unknown>,
@@ -19,6 +43,8 @@ export interface LearningStore {
   dismissedLabOnboarding: Partial<Record<LabSlug, boolean>>;
   dismissedRedesignNotice: boolean;
   consentedStudyRecord: boolean;
+  lessonRecords: Record<string, LessonRecord>;
+  conceptSketches: ConceptSketch[];
 }
 
 export function emptyLabSession(
@@ -65,6 +91,8 @@ export function emptyLearningStore(): LearningStore {
     dismissedLabOnboarding: {},
     dismissedRedesignNotice: false,
     consentedStudyRecord: false,
+    lessonRecords: {},
+    conceptSketches: [],
   };
 }
 
@@ -148,7 +176,9 @@ export function labSessionToMarkdown(session: StoredLabSession): string {
       ? session.citationIds.map((id) => `- ${id}`)
       : ["- No citations saved"]),
     "",
-    "_Praxeos does not assign a semantic score to this record._",
+    "_This record is not graded._",
+    "",
+    `_${LOCAL_RECORD_NOTE}_`,
   ];
   return lines.join("\n");
 }
@@ -158,6 +188,8 @@ function normalizeV3(input: Record<string, unknown>): LearningStore {
   next.completedLessons = stringArray(input.completedLessons);
   next.dismissedRedesignNotice = input.dismissedRedesignNotice === true;
   next.consentedStudyRecord = input.consentedStudyRecord === true;
+  next.lessonRecords = normalizeLessonRecords(input.lessonRecords);
+  next.conceptSketches = normalizeSketches(input.conceptSketches);
   next.earlierRecords = Array.isArray(input.earlierRecords)
     ? input.earlierRecords.filter(isEarlierRecord).slice(0, 12)
     : [];
@@ -231,6 +263,53 @@ function isEarlierRecord(value: unknown): value is EarlierPraxeosRecord {
 
 function objectValue(value: unknown): Record<string, unknown> {
   return value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+}
+
+function normalizeLessonRecords(value: unknown): Record<string, LessonRecord> {
+  const records: Record<string, LessonRecord> = {};
+  if (!value || typeof value !== "object") return records;
+  for (const [slug, raw] of Object.entries(value).slice(0, 40)) {
+    if (!raw || typeof raw !== "object") continue;
+    const item = raw as Record<string, unknown>;
+    const mode = item.responseMode;
+    records[slug] = {
+      lessonSlug: slug,
+      responseMode:
+        mode === "answered" || mode === "worked-example" || mode === "continued"
+          ? mode
+          : null,
+      selectedChoice:
+        typeof item.selectedChoice === "string" ? item.selectedChoice : null,
+      reflection:
+        typeof item.reflection === "string" ? item.reflection.slice(0, 4000) : "",
+      updatedAt: typeof item.updatedAt === "string" ? item.updatedAt : "",
+    };
+  }
+  return records;
+}
+
+function normalizeSketches(value: unknown): ConceptSketch[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter(
+      (item): item is Record<string, unknown> =>
+        Boolean(item) && typeof item === "object",
+    )
+    .slice(0, 24)
+    .map((item, index) => ({
+      id: typeof item.id === "string" ? item.id : `sketch-${index}`,
+      lessonSlug: typeof item.lessonSlug === "string" ? item.lessonSlug : null,
+      caseSlug: typeof item.caseSlug === "string" ? item.caseSlug : null,
+      goal: textField(item.goal),
+      means: textField(item.means),
+      forgone: textField(item.forgone),
+      motiveNote: textField(item.motiveNote),
+      updatedAt: typeof item.updatedAt === "string" ? item.updatedAt : "",
+    }));
+}
+
+function textField(value: unknown): string {
+  return typeof value === "string" ? value.slice(0, 2000) : "";
 }
 
 function stringArray(value: unknown): string[] {

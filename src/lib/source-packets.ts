@@ -179,6 +179,36 @@ export const SOURCE_PACKETS: readonly SourcePacket[] = [
     verificationNote:
       "Added to prevent one theoretical tradition from being presented as the only account.",
   },
+  {
+    id: "say-treatise-markets",
+    title: "A Treatise on Political Economy",
+    author: "Jean-Baptiste Say",
+    url: "https://www.econlib.org/book-chapters/chapter-bk-ich-xv/",
+    locator: "Book I, Chapter XV, “Of the Demand or Market for Products”",
+    kind: "source claim",
+    claims: [
+      "Say writes that a product, once created, affords a market for other products to the extent of its own value, because the producer’s means of purchase are other products.",
+      "In the same chapter he treats money as the momentary vehicle of that exchange, not as the source of demand.",
+    ],
+    labSlugs: [],
+    verificationNote:
+      "Econlib text of the Prinsep translation, Book I, Chapter XV, checked for the product-and-market passage.",
+  },
+  {
+    id: "keynes-general-theory-classical",
+    title: "The General Theory of Employment, Interest and Money",
+    author: "John Maynard Keynes",
+    url: "https://www.marxists.org/reference/subject/economics/keynes/general-theory/ch02.htm",
+    locator: "Chapter 2, section on the classical postulates",
+    kind: "credible counterargument",
+    claims: [
+      "Keynes describes the classical teaching, from the time of Say and Ricardo, as the doctrine that supply creates its own demand.",
+      "He takes that doctrine to mean that the whole of the costs of production must be spent, in aggregate, on purchasing the product, and he rejects that claim.",
+    ],
+    labSlugs: [],
+    verificationNote:
+      "Chapter 2 of the General Theory, Marxists Internet Archive transcription, checked for Keynes’s own wording of the classical doctrine.",
+  },
 ] as const;
 
 export function sourcePacket(id: string): SourcePacket | undefined {

@@ -20,10 +20,15 @@ async function clearLocalRecord(page: Page) {
   await page.evaluate(() => window.localStorage.clear());
 }
 
+async function takeGuidedStep(page: Page, label: string) {
+  await page.getByRole("button", { name: "I expect a visible change" }).click();
+  await page.getByRole("button", { name: label }).click();
+}
+
 async function completeGuidedMarket(page: Page) {
   await page.goto("/labs/market-without-a-manager?mode=guided");
   for (const label of GUIDED_ACTIONS) {
-    await page.getByRole("button", { name: label }).click();
+    await takeGuidedStep(page, label);
   }
 }
 
@@ -33,30 +38,30 @@ test("full flagship persists, self-reviews without semantic grading, and saves t
   await clearLocalRecord(page);
   await page.goto("/labs/market-without-a-manager?mode=guided");
   await expect(
-    page.getByRole("button", { name: "Meet the participants" }),
+    page.getByRole("button", { name: "I expect a visible change" }),
   ).toBeVisible();
 
-  await page.getByRole("button", { name: "Meet the participants" }).click();
+  await takeGuidedStep(page, "Meet the participants");
   await expect(
     page
       .getByRole("complementary", { name: "Evidence and change summary" })
       .getByText(/Each person arrives with different goods/),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Inspect ranked priorities" }).click();
-  await page.getByRole("button", { name: "Attempt the barter" }).click();
+  await takeGuidedStep(page, "Inspect ranked priorities");
+  await takeGuidedStep(page, "Attempt the barter");
   await expect(page.getByRole("button", { name: "Explore" })).toBeEnabled();
-  await page.getByRole("button", { name: "Introduce money" }).click();
-  await page.getByRole("button", { name: "Offer 2 tokens for bread" }).click();
+  await takeGuidedStep(page, "Introduce money");
+  await takeGuidedStep(page, "Offer 2 tokens for bread");
   const evidenceRail = page.getByRole("complementary", {
     name: "Evidence and change summary",
   });
   await expect(evidenceRail.getByText(/requires at least 4 tokens/)).toBeVisible();
   await expect(evidenceRail.getByText(/No completed monetary trade/)).toBeVisible();
-  await page.getByRole("button", { name: "Offer 4 tokens for bread" }).click();
+  await takeGuidedStep(page, "Offer 4 tokens for bread");
   await expect(evidenceRail.getByText(/Ben accepts 4 tokens/)).toBeVisible();
   await expect(evidenceRail.getByText("4 tokens", { exact: true })).toBeVisible();
   for (const label of GUIDED_ACTIONS.slice(6)) {
-    await page.getByRole("button", { name: label }).click();
+    await takeGuidedStep(page, label);
   }
 
   await page
@@ -82,10 +87,10 @@ test("full flagship persists, self-reviews without semantic grading, and saves t
   }
   await page.getByRole("button", { name: "Run transparent self-review" }).click();
   await expect(page.getByText("ready for self-review")).toBeVisible();
-  await expect(page.getByText(/semantic grade is being assigned/)).toBeVisible();
+  await expect(page.getByText(/does not grade your conclusion/)).toBeVisible();
 
   await page.getByRole("button", { name: "Ask one question" }).click();
-  await expect(page.getByText("Deterministic fallback")).toBeVisible();
+  await expect(page.getByText("Using the saved sources")).toBeVisible();
   await expect(page.locator(".guide-question")).toContainText("?");
 
   await page
@@ -124,9 +129,9 @@ test("invalid share state is non-blocking and Explore preserves the guided recor
   await clearLocalRecord(page);
   await page.goto("/labs/market-without-a-manager?share=not-valid");
   await expect(page.getByText(/share link was malformed/)).toBeVisible();
-  await page.getByRole("button", { name: "Meet the participants" }).click();
-  await page.getByRole("button", { name: "Inspect ranked priorities" }).click();
-  await page.getByRole("button", { name: "Attempt the barter" }).click();
+  await takeGuidedStep(page, "Meet the participants");
+  await takeGuidedStep(page, "Inspect ranked priorities");
+  await takeGuidedStep(page, "Attempt the barter");
   await page.getByRole("button", { name: "Explore" }).click();
   await page.getByRole("button", { name: "Barter bread for tea" }).click();
   await expect(
@@ -135,6 +140,7 @@ test("invalid share state is non-blocking and Explore preserves the guided recor
       .getByText(/Ben offers bread for tea/),
   ).toBeVisible();
   await page.getByRole("button", { name: "Guided" }).click();
+  await page.getByRole("button", { name: "I expect a visible change" }).click();
   await expect(page.getByRole("button", { name: "Introduce money" })).toBeVisible();
 });
 
@@ -151,7 +157,7 @@ test("offline Guide failure leaves the transparent self-review usable", async ({
     );
   await context.setOffline(true);
   await expect(
-    page.getByText(/You are offline\. The transparent self-review/),
+    page.getByText(/You are offline\. The self-review remains available/),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Run transparent self-review" }),

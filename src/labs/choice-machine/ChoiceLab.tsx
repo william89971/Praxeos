@@ -16,6 +16,7 @@ import {
   activityLabel,
   choiceActionById,
   choiceEngine,
+  choiceStageControl,
   normalizeChoiceAssumptions,
 } from "./engine";
 
@@ -79,8 +80,12 @@ const definition: GuidedLabDefinition<ChoiceState, ChoiceAction, ChoiceAssumptio
       label: "A choice reveals only a momentary ranking under these conditions.",
     },
   ],
+  resolveStage: choiceStageControl,
+  exploreLockedReason:
+    "Explore opens after you inspect the limits. It uses the same rules and keeps this record.",
   sourceClaim:
-    "Mises treats action as choosing among ends with scarce means; the source packet distinguishes that claim from what this scenario directly observes.",
+    "Mises treats action as choosing among ends with scarce means. That is a claim inside his framework, not a measurement this scenario can prove.",
+  sourceHref: "/sources#mises-human-action-action",
   counterargument:
     "Observed choices can be shaped by habit, framing, social pressure, incomplete awareness, or mistaken beliefs that this four-counter model does not represent.",
   reflectionPrompt:

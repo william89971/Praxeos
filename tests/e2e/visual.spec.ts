@@ -150,6 +150,7 @@ test("flagship visual surfaces stay stable", async ({ page }) => {
   }
 
   await prepareSnapshot(page, "/labs/market-without-a-manager?mode=guided");
+  await page.getByRole("button", { name: "I expect a visible change" }).click();
   await page.getByRole("button", { name: "Meet the participants" }).click();
   await expect(page).toHaveScreenshot("market-first-consequence.png", {
     fullPage: false,

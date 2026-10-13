@@ -9,13 +9,17 @@ test("Choice Machine preserves alternatives, self-review, and Notebook handoff",
 
   for (const action of [
     "Inspect the limits",
-    "Choose the community event",
+    "Expect help at the community event",
+    "Help at the community event",
+    "Expect to give up take a paid shift",
     "Reveal the paths not taken",
+    "Expect study and rest to still fit",
     "Lose two available hours",
-    "Revise the choice",
+    "Expect to revise toward study for the exam",
+    "Study for the exam",
     "Open interpretation",
   ]) {
-    await page.getByRole("button", { name: new RegExp(action) }).click();
+    await page.getByRole("button", { name: action, exact: true }).click();
   }
 
   await expect(
@@ -67,6 +71,7 @@ test("Entrepreneur's Discovery spends resources without revealing a perfect path
     "Run a limited student pilot",
     "Choose pivot and preserve resources",
   ]) {
+    await page.getByRole("button", { name: "I expect a visible change" }).click();
     await page.getByRole("button", { name: new RegExp(action) }).click();
   }
 
@@ -101,6 +106,7 @@ test("Money Time Machine compares traceable illustrative scenarios", async ({
     "Test higher asset pass-through",
     "Open interpretation",
   ]) {
+    await page.getByRole("button", { name: "I expect a visible change" }).click();
     await page.getByRole("button", { name: new RegExp(action) }).click();
   }
 

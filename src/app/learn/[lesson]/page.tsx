@@ -1,5 +1,5 @@
 import { SiteChrome } from "@/components/layout/SiteChrome";
-import { LessonCompletion } from "@/components/learning/LessonCompletion";
+import { LessonStudio } from "@/components/learning/LessonStudio";
 import { LAB_REGISTRY } from "@/labs/registry";
 import { PRAXEOLOGY_101, getPraxeologyLesson } from "@/lib/praxeology";
 import type { Metadata } from "next";
@@ -32,7 +32,7 @@ export default async function LessonPage({
   }));
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <article className="page-section content-header">
           <p className="label-mono">
             Lesson {lesson.order} of {PRAXEOLOGY_101.length} · {lesson.durationMin}{" "}
@@ -41,33 +41,8 @@ export default async function LessonPage({
           <h1 className="editorial-heading">{lesson.title}</h1>
           <p>{lesson.principle}</p>
         </article>
-        <section
-          className="page-section journey-copy"
-          style={{ paddingBlock: "var(--gutter-block)" }}
-        >
-          <div className="guide-card">
-            <p className="label-mono">Situation</p>
-            <h2>{lesson.scenario}</h2>
-            <p>{lesson.prompt}</p>
-          </div>
-          <div className="content-grid">
-            {lesson.choices.map((choice) => (
-              <article className="content-card" key={choice.label}>
-                <h3>{choice.label}</h3>
-                <p>{choice.feedback}</p>
-              </article>
-            ))}
-          </div>
-          <section>
-            <p className="label-mono">Practice activity</p>
-            <h2>{lesson.applyPrompt}</h2>
-            <p>{lesson.insight}</p>
-          </section>
-          <aside className="journey-note">
-            Working concepts: {lesson.concepts.join(" · ")}. A Lab connection is an
-            invitation to inspect consequences, not an answer key.
-          </aside>
-          <LessonCompletion lessonSlug={lesson.slug} labLinks={connectedLabs} />
+        <section className="page-section journey-copy lesson-studio">
+          <LessonStudio lesson={lesson} labLinks={connectedLabs} />
           <nav className="stage-actions" aria-label="Lesson navigation">
             {previous ? (
               <Link href={`/learn/${previous.slug}`}>← {previous.shortTitle}</Link>
@@ -77,13 +52,11 @@ export default async function LessonPage({
             {next ? (
               <Link href={`/learn/${next.slug}`}>{next.shortTitle} →</Link>
             ) : (
-              <Link href="/labs/market-without-a-manager?mode=guided">
-                Final synthesis →
-              </Link>
+              <Link href="/labs/choice-machine">Choice Machine →</Link>
             )}
           </nav>
         </section>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

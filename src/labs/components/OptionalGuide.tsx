@@ -74,9 +74,9 @@ export function OptionalGuide({
       <p className="label-mono">Optional · source-grounded</p>
       <h3 id="optional-guide-heading">Ask Claude for one Socratic question</h3>
       <p>
-        Semantic guidance is optional. Claude receives this Lab’s current reasoning,
-        explicit evidence IDs, and server-selected source packets—never other Notebook
-        entries.
+        This question is optional. Claude receives this lab’s current reasoning, the
+        evidence you selected, and a fixed set of sources for this lab. It does not see
+        your other notebook entries, and it does not grade you.
       </p>
       <div className="lab-inline-actions">
         <button
@@ -108,7 +108,9 @@ export function OptionalGuide({
       {turn ? (
         <div className="guide-result">
           <p className="guide-mode">
-            {turn.providerMode === "claude" ? "Claude Guide" : "Deterministic fallback"}
+            {turn.providerMode === "claude"
+              ? "Claude Guide"
+              : "Using the saved sources"}
           </p>
           {turn.blocks.map((block, index) => (
             <div key={`${block.category}-${index}`}>

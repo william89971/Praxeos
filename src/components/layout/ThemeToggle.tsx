@@ -24,17 +24,7 @@ export function ThemeToggle() {
       type="button"
       onClick={() => setTheme(next)}
       aria-label={`Theme: ${label}. Click to switch to ${next}.`}
-      className="label-mono"
-      style={{
-        border: "1px solid var(--rule)",
-        borderRadius: "var(--radius-sm)",
-        padding: "0.35rem 0.7rem",
-        color: "var(--ink-secondary)",
-        background: "transparent",
-        cursor: "pointer",
-        minWidth: "9ch",
-        textAlign: "center",
-      }}
+      className="label-mono theme-toggle"
     >
       {label}
     </button>

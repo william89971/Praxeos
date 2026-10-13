@@ -2,6 +2,7 @@
 
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { usePraxeosStore } from "@/hooks/usePraxeosStore";
+import { LabReflection } from "@/labs/components/LabReflection";
 import { evaluateSelfReview } from "@/labs/feedback";
 import { decodeShareEnvelope, encodeShareEnvelope } from "@/labs/share";
 import type {
@@ -11,7 +12,10 @@ import type {
   LabRegistryEntry,
   RubricFeedback,
 } from "@/labs/types";
+import type { LabSlug } from "@/labs/types";
 import type { GuideTurn } from "@/lib/guide/types";
+import { labState, lessonState, recommendNext } from "@/lib/journey";
+import type { ActivityRef } from "@/lib/journey";
 import {
   type StoredLabSession,
   activeLabSession,
@@ -19,8 +23,10 @@ import {
   labSessionToMarkdown,
   upsertLabSession,
 } from "@/lib/learning-store";
+import { LOCAL_RECORD_NOTE } from "@/lib/learning-store";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import {
   type ComponentType,
   useCallback,
@@ -64,6 +70,19 @@ export interface AssumptionOption {
   label: string;
 }
 
+export interface StageOption<Action extends GuidedAction> {
+  action: Action;
+  label: string;
+  disabled?: boolean;
+  reason?: string | null;
+}
+
+export interface StageControl<Action extends GuidedAction> {
+  kind: "prediction" | "choice" | "single";
+  prompt: string;
+  options: readonly StageOption<Action>[];
+}
+
 export interface GuidedLabDefinition<
   State extends GuidedState,
   Action extends GuidedAction,
@@ -81,8 +100,11 @@ export interface GuidedLabDefinition<
   normalizeAssumptions: (value: Record<string, unknown>) => Assumptions;
   Visual: ComponentType<{ state: State; metrics: GuidedMetrics }>;
   sourceClaim: string;
+  sourceHref?: string;
   counterargument: string;
   reflectionPrompt: string;
+  resolveStage?: (state: State) => StageControl<Action> | null;
+  exploreLockedReason?: string;
 }
 
 const SELF_REVIEW_CHECKS = [
@@ -118,6 +140,9 @@ export function GuidedLabRuntime<
     "Fresh guided session ready. Your first action creates a local record.",
   );
   const [online, setOnline] = useState(true);
+  const [skipInitial, setSkipInitial] = useState(false);
+  const [skipEvidence, setSkipEvidence] = useState(false);
+  const [skipLimits, setSkipLimits] = useState(false);
 
   useEffect(() => {
     const sync = () => setOnline(navigator.onLine);
@@ -139,7 +164,7 @@ export function GuidedLabRuntime<
       const decoded = decodeShareEnvelope(shared, definition.lab.slug);
       if (!decoded.ok) {
         setNotice(
-          `That share link was ${decoded.reason}. A fresh deterministic session is ready.`,
+          `That share link was ${decoded.reason}. A fresh guided session is ready.`,
         );
         return;
       }
@@ -286,7 +311,7 @@ export function GuidedLabRuntime<
     setChange(null);
     setFeedback([]);
     update((currentStore) => upsertLabSession(currentStore, freshSession));
-    setNotice("Reset complete. A fresh deterministic session is ready.");
+    setNotice("Reset complete. A fresh guided session is ready.");
   };
 
   const share = async () => {
@@ -302,7 +327,9 @@ export function GuidedLabRuntime<
     url.search = "";
     url.searchParams.set("share", encoded);
     await navigator.clipboard.writeText(url.toString());
-    setNotice("Share link copied. It contains simulation IDs only—no learner prose.");
+    setNotice(
+      "Share link copied. It contains the simulation steps only, not your writing.",
+    );
   };
 
   const complete = () => {
@@ -325,7 +352,7 @@ export function GuidedLabRuntime<
       session.revision || session.initialReasoning || definition.lab.centralQuestion,
     );
     const title = escapeXml(definition.lab.title.toUpperCase());
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#f5f0e6"/><rect x="40" y="40" width="1120" height="550" fill="none" stroke="#b8ad97"/><text x="85" y="115" fill="#8b3a3a" font-family="monospace" font-size="20" letter-spacing="3">PRAXEOS · ${title}</text><foreignObject x="85" y="165" width="1000" height="310"><div xmlns="http://www.w3.org/1999/xhtml" style="font: 48px/1.12 Georgia,serif;color:#1c1814">${text}</div></foreignObject><text x="85" y="540" fill="#5c5348" font-family="monospace" font-size="18">Evidence: ${session.selectedEvidenceIds.length} · assumptions: ${session.acknowledgedAssumptionIds.length} · no semantic score</text></svg>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#f5f0e6"/><rect x="40" y="40" width="1120" height="550" fill="none" stroke="#b8ad97"/><text x="85" y="115" fill="#8b3a3a" font-family="monospace" font-size="20" letter-spacing="3">PRAXEOS · ${title}</text><foreignObject x="85" y="165" width="1000" height="310"><div xmlns="http://www.w3.org/1999/xhtml" style="font: 48px/1.12 Georgia,serif;color:#1c1814">${text}</div></foreignObject><text x="85" y="540" fill="#5c5348" font-family="monospace" font-size="18">Evidence: ${session.selectedEvidenceIds.length} · assumptions: ${session.acknowledgedAssumptionIds.length} · not graded</text></svg>`;
     downloadFile(`praxeos-${definition.lab.slug}-reflection.svg`, svg, "image/svg+xml");
   };
 
@@ -335,7 +362,43 @@ export function GuidedLabRuntime<
     0,
     Math.min(state.guidedStep - 1, definition.stages.length - 1),
   );
-  const revealedConcept = state.guidedStep > 0 ? definition.stages[conceptIndex] : null;
+  const stageControl =
+    mode === "guided" ? (definition.resolveStage?.(state) ?? null) : null;
+  const localPredictionKey = `local-predict-${state.guidedStep}-`;
+  const localPredictionChosen = (session?.localPredictionIds ?? []).some((id) =>
+    id.startsWith(localPredictionKey),
+  );
+  const needsLocalPrediction =
+    mode === "guided" && !definition.resolveStage && Boolean(nextGuidedAction);
+  const wroteInterpretation = Boolean(session?.initialReasoning.trim());
+  const conceptOpenedEarly = Boolean(session?.conceptRevealedEarly);
+  const conceptVisible =
+    state.guidedStep > 0 &&
+    ((wroteInterpretation && !conceptOpenedEarly) || conceptOpenedEarly);
+  const revealedConcept =
+    conceptVisible && state.guidedStep > 0 ? definition.stages[conceptIndex] : null;
+  const showEvidence = wroteInterpretation || skipInitial;
+  const showLimits =
+    showEvidence && ((session?.selectedEvidenceIds.length ?? 0) > 0 || skipEvidence);
+  const showRevision =
+    showLimits && ((session?.acknowledgedAssumptionIds.length ?? 0) > 0 || skipLimits);
+  const nextActivity = recommendNext(
+    (activity: ActivityRef) => {
+      if (activity.kind === "lesson") {
+        return lessonState(
+          store.completedLessons.includes(activity.slug),
+          Boolean(store.lessonRecords[activity.slug]),
+        );
+      }
+      if (activity.kind === "lab") {
+        return labState(activeLabSession(store, activity.slug as LabSlug));
+      }
+      return "not-started";
+    },
+    { kind: "lab", slug: definition.lab.slug },
+  );
+  const showNext =
+    Boolean(session?.completedAt) || nextActivity.state === "in-progress";
   const guideTurn = session?.guideTurn ?? null;
   const shouldRenderGuide = Boolean(
     guideTurn || session?.initialReasoning.trim() || session?.revision.trim(),
@@ -353,7 +416,7 @@ export function GuidedLabRuntime<
 
   return (
     <SiteChrome>
-      <main className={`guided-lab guided-lab--${definition.lab.accent}`}>
+      <div className={`guided-lab guided-lab--${definition.lab.accent}`}>
         <header className="lab-editorial-header">
           <div>
             <p className="label-mono">
@@ -386,11 +449,18 @@ export function GuidedLabRuntime<
                 type="button"
                 aria-pressed={mode === "explore"}
                 disabled={!exploreUnlocked}
+                aria-describedby={exploreUnlocked ? undefined : "explore-lock-reason"}
                 onClick={() => switchMode("explore")}
               >
                 Explore
               </button>
             </div>
+            {exploreUnlocked ? null : (
+              <p id="explore-lock-reason" className="explore-lock-reason">
+                {definition.exploreLockedReason ??
+                  "Explore opens after the first guided action. It uses the same rules and keeps this record."}
+              </p>
+            )}
           </div>
         </header>
 
@@ -406,7 +476,7 @@ export function GuidedLabRuntime<
                 <p className="label-mono">
                   {mode === "guided"
                     ? `Stage ${Math.min(state.guidedStep + 1, definition.stages.length)} of ${definition.stages.length}`
-                    : "Explore the same deterministic environment"}
+                    : "Explore the same rules"}
                 </p>
                 <h2 id="current-guided-question">
                   {mode === "guided"
@@ -439,7 +509,54 @@ export function GuidedLabRuntime<
                     : "Explore actions preserve your guided record and use the same rules."}
                 </p>
               </div>
-              {mode === "guided" && nextGuidedAction ? (
+              {mode === "guided" && stageControl ? (
+                <div className="stage-options">
+                  <p>{stageControl.prompt}</p>
+                  {stageControl.options.map((option) => (
+                    <button
+                      key={option.action.id}
+                      type="button"
+                      className={
+                        stageControl.kind === "single"
+                          ? "button-primary"
+                          : "button-secondary"
+                      }
+                      disabled={option.disabled}
+                      onClick={() => dispatch(option.action)}
+                    >
+                      {option.label}
+                      {option.disabled && option.reason ? ` — ${option.reason}` : ""}
+                    </button>
+                  ))}
+                </div>
+              ) : mode === "guided" &&
+                needsLocalPrediction &&
+                !localPredictionChosen ? (
+                <div className="stage-options">
+                  <p>Before the consequence, what do you expect?</p>
+                  {[
+                    ["change", "I expect a visible change"],
+                    ["still", "I expect no visible change"],
+                    ["unsure", "I am not sure yet"],
+                  ].map(([id, label]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      className="button-secondary"
+                      onClick={() =>
+                        persist({
+                          localPredictionIds: [
+                            ...(session?.localPredictionIds ?? []),
+                            `${localPredictionKey}${id}`,
+                          ],
+                        })
+                      }
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              ) : mode === "guided" && nextGuidedAction ? (
                 <button
                   type="button"
                   className="button-primary"
@@ -500,19 +617,41 @@ export function GuidedLabRuntime<
                 </div>
               ))}
             </section>
-            <section>
-              <p className="evidence-kind">concept reveal</p>
-              <h3>{revealedConcept ? revealedConcept.concept : "Experience first"}</h3>
-              <p>
-                {revealedConcept
-                  ? revealedConcept.why
-                  : "Praxeos names the concept only after the first consequence."}
-              </p>
+            <section className="role-explanation">
+              <p className="evidence-kind">concept</p>
+              {revealedConcept ? (
+                <>
+                  <h3>{revealedConcept.concept}</h3>
+                  <p>{revealedConcept.why}</p>
+                </>
+              ) : (
+                <>
+                  <h3>Concept waits</h3>
+                  <p>
+                    The name of the concept stays hidden until you write an initial
+                    interpretation, or until you ask to see it.
+                  </p>
+                  {state.guidedStep > 0 ? (
+                    <button
+                      type="button"
+                      className="text-button"
+                      onClick={() => {
+                        if (!wroteInterpretation)
+                          persist({ conceptRevealedEarly: true });
+                      }}
+                    >
+                      Show the concept now
+                    </button>
+                  ) : null}
+                </>
+              )}
             </section>
-            <section>
+            <section className="role-source">
               <p className="evidence-kind">source claim</p>
               <p>{definition.sourceClaim}</p>
-              <a href="/sources">Open the source packet →</a>
+              <a href={definition.sourceHref ?? "/sources#mises-human-action-action"}>
+                Open the source for this claim →
+              </a>
             </section>
             <section>
               <p className="evidence-kind">credible counterargument</p>
@@ -521,146 +660,75 @@ export function GuidedLabRuntime<
           </aside>
         </div>
 
-        <section className="lab-interpretation page-section">
-          <header>
-            <p className="label-mono">Interpret · select · compare</p>
-            <h2>What does the record support—and what can’t it settle?</h2>
-            <p>
-              Praxeos checks completion, explicitly selected observations, acknowledged
-              assumptions, revision, and the visible checklist. It does not grade the
-              meaning or ideology of your conclusion.
-            </p>
-          </header>
-
-          <div className="lab-reasoning-grid">
-            <label>
-              <span>Initial interpretation</span>
-              <textarea
-                value={session?.initialReasoning ?? ""}
-                onChange={(event) => setWriting("initialReasoning", event.target.value)}
-                placeholder="What do you think happened, and which visible event shaped that view?"
+        <LabReflection
+          initialReasoning={session?.initialReasoning ?? ""}
+          revision={session?.revision ?? ""}
+          reflection={session?.reflection ?? ""}
+          evidence={observations.map((observation, index) => ({
+            id: observation.id,
+            title: observation.title,
+            detail: observation.detail,
+            latest: index === observations.length - 1,
+          }))}
+          selectedEvidenceIds={session?.selectedEvidenceIds ?? []}
+          assumptions={definition.assumptions}
+          acknowledgedAssumptionIds={session?.acknowledgedAssumptionIds ?? []}
+          selfReviewChecks={session?.selfReviewChecks ?? []}
+          reviewChecks={SELF_REVIEW_CHECKS}
+          feedback={feedback}
+          conceptVisible={conceptVisible}
+          offerComparison={wroteInterpretation && !conceptOpenedEarly}
+          onShowConcept={() => {
+            if (!wroteInterpretation) persist({ conceptRevealedEarly: true });
+          }}
+          onContinueInitial={() => setSkipInitial(true)}
+          onContinueEvidence={() => setSkipEvidence(true)}
+          onContinueLimits={() => setSkipLimits(true)}
+          showEvidence={showEvidence}
+          showLimits={showLimits}
+          showRevision={showRevision}
+          onWriting={setWriting}
+          onToggle={toggleList}
+          onSelfReview={runSelfReview}
+          reflectionPrompt={definition.reflectionPrompt}
+          reviewOpen={state.completed || Boolean(session?.completedAt)}
+          guide={
+            !online && shouldRenderGuide ? (
+              <section className="guide-card lab-guide" aria-live="polite">
+                <p className="label-mono">Optional · unavailable offline</p>
+                <h3>The optional guide is unavailable offline</h3>
+                <p>
+                  You are offline. The self-review remains available, and your writing
+                  stays saved in this browser. {LOCAL_RECORD_NOTE}
+                </p>
+              </section>
+            ) : shouldRenderGuide ? (
+              <OptionalGuide
+                labSlug={definition.lab.slug}
+                reasoning={session?.revision || session?.initialReasoning || ""}
+                observationIds={
+                  session?.selectedEvidenceIds ?? observations.map((item) => item.id)
+                }
+                actionIds={(session?.actionLog ?? []).map((action) =>
+                  String(action.id ?? ""),
+                )}
+                assumptionIds={session?.acknowledgedAssumptionIds ?? []}
+                turn={guideTurn}
+                onTurn={onGuideTurn}
               />
-            </label>
-            <fieldset>
-              <legend>Select visible simulation evidence</legend>
-              {observations.length ? (
-                observations.map((observation) => (
-                  <label key={observation.id} className="lab-check-row">
-                    <input
-                      type="checkbox"
-                      checked={(session?.selectedEvidenceIds ?? []).includes(
-                        observation.id,
-                      )}
-                      onChange={() => toggleList("selectedEvidenceIds", observation.id)}
-                    />
-                    <span>{observation.title}</span>
-                  </label>
-                ))
-              ) : (
-                <p>Complete an action before selecting evidence.</p>
-              )}
-            </fieldset>
-            <fieldset>
-              <legend>Acknowledge a model assumption</legend>
-              {definition.assumptions.map((assumption) => (
-                <label key={assumption.id} className="lab-check-row">
-                  <input
-                    type="checkbox"
-                    checked={(session?.acknowledgedAssumptionIds ?? []).includes(
-                      assumption.id,
-                    )}
-                    onChange={() =>
-                      toggleList("acknowledgedAssumptionIds", assumption.id)
-                    }
-                  />
-                  <span>{assumption.label}</span>
-                </label>
-              ))}
-            </fieldset>
-            <label>
-              <span>Revision or explicit confirmation</span>
-              <textarea
-                value={session?.revision ?? ""}
-                onChange={(event) => setWriting("revision", event.target.value)}
-                placeholder="After reviewing evidence and assumptions, what changes—or stays the same?"
-              />
-            </label>
-            <fieldset>
-              <legend>Transparent self-review checklist</legend>
-              {SELF_REVIEW_CHECKS.map((check) => (
-                <label key={check.id} className="lab-check-row">
-                  <input
-                    type="checkbox"
-                    checked={(session?.selfReviewChecks ?? []).includes(check.id)}
-                    onChange={() => toggleList("selfReviewChecks", check.id)}
-                  />
-                  <span>{check.label}</span>
-                </label>
-              ))}
-            </fieldset>
-          </div>
-
-          <div className="lab-inline-actions">
-            <button type="button" className="button-primary" onClick={runSelfReview}>
-              Run transparent self-review
-            </button>
-          </div>
-          {feedback.length ? (
-            <output className="self-review-results">
-              {feedback.map((item) => (
-                <article key={item.id}>
-                  <p className="label-mono">{item.status}</p>
-                  <p>{item.message}</p>
-                  <small>Based on: {item.basedOn}</small>
-                </article>
-              ))}
-            </output>
-          ) : null}
-
-          {!online && shouldRenderGuide ? (
-            <section className="guide-card lab-guide" aria-live="polite">
-              <p className="label-mono">Optional · unavailable offline</p>
-              <h3>Claude Guide is unavailable offline</h3>
-              <p>
-                You are offline. The transparent self-review remains fully available,
-                and your learner writing stays saved in this browser.
-              </p>
-            </section>
-          ) : shouldRenderGuide ? (
-            <OptionalGuide
-              labSlug={definition.lab.slug}
-              reasoning={session?.revision || session?.initialReasoning || ""}
-              observationIds={
-                session?.selectedEvidenceIds ?? observations.map((item) => item.id)
-              }
-              actionIds={(session?.actionLog ?? []).map((action) =>
-                String(action.id ?? ""),
-              )}
-              assumptionIds={session?.acknowledgedAssumptionIds ?? []}
-              turn={guideTurn}
-              onTurn={onGuideTurn}
-            />
-          ) : (
-            <section className="guide-card lab-guide">
-              <p className="label-mono">Optional · source-grounded</p>
-              <h3>Claude Guide unlocks after your first interpretation</h3>
-              <p>
-                Write your own view first. The optional semantic Guide loads only when
-                there is learner reasoning to question.
-              </p>
-            </section>
-          )}
-
-          <div className="lab-completion-grid">
-            <label>
-              <span>Final reflection</span>
-              <textarea
-                value={session?.reflection ?? ""}
-                onChange={(event) => setWriting("reflection", event.target.value)}
-                placeholder={definition.reflectionPrompt}
-              />
-            </label>
-            <div>
+            ) : (
+              <section className="guide-card lab-guide">
+                <p className="label-mono">Optional · source-grounded</p>
+                <h3>The optional guide waits for your first interpretation</h3>
+                <p>
+                  Write your own view first. The guide can ask one question from the
+                  sources for this lab. It does not grade you.
+                </p>
+              </section>
+            )
+          }
+          actions={
+            <div className="lab-inline-actions">
               <button type="button" className="button-primary" onClick={complete}>
                 Save reflection to Notebook
               </button>
@@ -693,21 +761,29 @@ export function GuidedLabRuntime<
               <button type="button" className="text-button" onClick={reset}>
                 Reset Lab
               </button>
+              <p className="local-record-note">{LOCAL_RECORD_NOTE}</p>
             </div>
-          </div>
-        </section>
+          }
+          nextStep={
+            showNext ? (
+              <p className="next-activity">
+                <Link href={nextActivity.href}>{nextActivity.label} →</Link>
+              </p>
+            ) : null
+          }
+        />
 
         <footer className="lab-viewpoint">
           <p className="label-mono">Viewpoint boundary</p>
           <p>
-            Praxeos uses simplified deterministic models to make choices and
-            consequences inspectable. A simulation observation is not a universal fact,
-            an assumption is not evidence, a source claim needs a locator, an Austrian
+            Praxeos uses simplified models with fixed rules so choices and consequences
+            can be inspected. A simulation observation is not a universal fact, an
+            assumption is not evidence, a source claim needs a locator, an Austrian
             interpretation is one argument, and credible counterarguments belong beside
             it.
           </p>
         </footer>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

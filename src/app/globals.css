@@ -11,9 +11,9 @@
    ========================================================================== */
 
 @theme {
-  --font-serif: ui-serif, Georgia, "Times New Roman", serif;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", Consolas, Menlo, monospace;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Consolas, monospace;
 
   --color-paper: var(--paper);
   --color-paper-elevated: var(--paper-elevated);
@@ -724,20 +724,20 @@ button {
 .editorial-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(17rem, 0.65fr);
-  min-height: min(48rem, calc(100dvh - 5rem));
   border-block-end: 1px solid var(--rule);
 }
 .editorial-hero__copy {
   display: grid;
   align-content: center;
-  gap: 1.4rem;
-  padding: clamp(3rem, 8vw, 8rem) var(--gutter-inline);
+  gap: 1.15rem;
+  padding: clamp(1.75rem, 4vw, 3.5rem) var(--gutter-inline);
 }
 .editorial-hero h1 {
-  max-width: 10ch;
+  max-width: 16ch;
   margin: 0;
-  font: 520 clamp(4rem, 9vw, 9rem) / 0.86 var(--font-serif);
-  letter-spacing: -0.06em;
+  font: 520 clamp(2.6rem, 5.2vw, 4.6rem) / 0.96 var(--font-serif);
+  letter-spacing: -0.045em;
+  text-wrap: balance;
 }
 .editorial-hero__copy > p {
   max-width: 55ch;
@@ -810,7 +810,7 @@ button {
 .content-header {
   display: grid;
   gap: 1rem;
-  padding-block: clamp(3rem, 8vw, 7rem);
+  padding-block: clamp(1.5rem, 4vw, 3.25rem);
   border-block-end: 1px solid var(--rule);
 }
 .content-header p {
@@ -942,14 +942,19 @@ button {
 }
 .content-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  grid-template-columns: 1fr;
   border-inline-start: 1px solid var(--rule);
+}
+@media (min-width: 800px) {
+  .content-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .content-card {
   display: grid;
-  align-content: space-between;
+  align-content: start;
   gap: 1rem;
-  min-height: 18rem;
+  min-height: 0;
   padding: 1.5rem;
   color: inherit;
   text-decoration: none;
@@ -1316,10 +1321,11 @@ button {
 }
 
 .lab-editorial-header h1 {
-  max-width: 12ch;
+  max-width: 18ch;
   margin: 0.4rem 0 0;
-  font: 510 clamp(3rem, 6.2vw, 6rem) / 0.88 var(--font-serif);
-  letter-spacing: -0.055em;
+  font: 510 clamp(2.2rem, 4vw, 3.5rem) / 0.98 var(--font-serif);
+  letter-spacing: -0.04em;
+  text-wrap: balance;
 }
 
 .lab-editorial-header__question {
@@ -2234,4 +2240,175 @@ button {
     border-inline-start: 0;
     border-block-start: 1px solid var(--rule);
   }
+}
+
+.site-frame {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+.site-frame > main {
+  flex: 1;
+}
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding-inline: var(--gutter-inline);
+  padding-block: 0.85rem;
+  border-block-end: 1px solid var(--rule);
+  background: var(--paper);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+.site-header a[aria-current="page"] {
+  color: var(--ink-primary);
+  box-shadow: inset 0 -1px 0 var(--accent-action);
+}
+.site-header .nav-meta {
+  color: var(--ink-tertiary);
+}
+.theme-toggle {
+  padding: 0.35rem 0.15rem;
+  color: var(--ink-secondary);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.explore-lock-reason,
+.local-record-note {
+  max-width: 42ch;
+  margin: 0.35rem 0 0;
+  color: var(--ink-secondary);
+  font: 500 var(--step--1) / 1.45 var(--font-sans);
+}
+fieldset.lesson-choices,
+fieldset.role-observation,
+fieldset.role-explanation,
+.lab-review-disclosure fieldset {
+  min-inline-size: 0;
+  margin: 0;
+}
+fieldset.lesson-choices,
+.lab-review-disclosure fieldset {
+  border: 0;
+  padding: 0;
+}
+.stage-options,
+.lesson-choices,
+.lesson-pace,
+.lesson-finish {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+.stage-options {
+  justify-content: flex-start;
+}
+.stage-options p {
+  flex-basis: 100%;
+}
+.glossary-tools nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 0.9rem;
+}
+.editorial-hero p,
+.content-header p,
+.lab-editorial-header p,
+.lab-editorial-header__question,
+.lab-evidence-rail p,
+.lab-action-dock p,
+.editorial-card p {
+  hyphens: none;
+}
+.lesson-studio,
+.lesson-distinctions,
+.concept-sketch,
+.lesson-reflection {
+  display: grid;
+  gap: 0.9rem;
+}
+.concept-sketch,
+.lesson-reflection,
+.case-prompt {
+  max-width: var(--measure-prose);
+}
+.concept-sketch label,
+.lesson-reflection,
+.case-prompt label {
+  display: grid;
+  gap: 0.35rem;
+}
+.concept-sketch input,
+.concept-sketch textarea,
+.lesson-reflection textarea,
+.case-prompt textarea {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink-primary);
+  font: var(--step-0) / 1.45 var(--font-serif);
+}
+.concept-sketch textarea,
+.lesson-reflection textarea,
+.case-prompt textarea {
+  min-height: 6.5rem;
+  resize: vertical;
+}
+.role-question {
+  padding-inline-start: 0.8rem;
+  border-inline-start: 2px solid var(--accent-action);
+}
+.role-action {
+  padding-inline-start: 0.8rem;
+  border-inline-start: 2px solid var(--ink-primary);
+}
+.role-observation {
+  padding-inline-start: 0.8rem;
+  border-inline-start: 2px solid var(--accent-capital);
+}
+.role-explanation {
+  padding-inline-start: 0.8rem;
+  border-inline-start: 2px solid var(--rule-strong);
+}
+.role-source {
+  padding-inline-start: 0.8rem;
+  border-inline-start: 2px solid var(--accent-bitcoin);
+}
+.lesson-waiting,
+.next-activity {
+  max-width: var(--measure-prose);
+  color: var(--ink-secondary);
+}
+.content-card.is-selected {
+  background: var(--paper-sunk);
+}
+.glossary-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.8rem;
+  align-items: center;
+  margin-block: 0.5rem 1rem;
+}
+.glossary-tools input {
+  min-width: min(100%, 18rem);
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--ink-primary);
+}
+.button-primary,
+.button-secondary,
+.text-button {
+  min-height: 44px;
 }

@@ -62,7 +62,7 @@ export function evaluateSelfReview(input: SelfReviewInput): RubricFeedback[] {
       id: "ready-for-self-review",
       status: "ready for self-review",
       message:
-        "The required record and comparison checklist are complete. No semantic grade is being assigned.",
+        "The required record and comparison checklist are complete. This checklist does not grade your conclusion.",
       basedOn: "completion",
     });
   }

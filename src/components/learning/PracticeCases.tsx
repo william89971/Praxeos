@@ -5,6 +5,60 @@ import type { PraxeologyCase } from "@/lib/praxeology";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+export function CasePrompt({ item }: { item: PraxeologyCase }) {
+  const [response, setResponse] = useState("");
+  const [open, setOpen] = useState<"answer" | "example" | "skip" | null>(null);
+  return (
+    <div className="case-prompt role-question">
+      <p>{item.question}</p>
+      <label>
+        <span className="sr-only">Your response</span>
+        <textarea
+          value={response}
+          onChange={(event) => setResponse(event.target.value)}
+          placeholder="What do you notice? Answering is optional."
+        />
+      </label>
+      <div className="lesson-pace">
+        <button
+          type="button"
+          className="button-secondary"
+          onClick={() => setOpen("answer")}
+          disabled={!response.trim()}
+        >
+          Compare my response
+        </button>
+        <button
+          type="button"
+          className="text-button"
+          onClick={() => setOpen("example")}
+        >
+          Show a worked example
+        </button>
+        <button type="button" className="text-button" onClick={() => setOpen("skip")}>
+          Continue without answering
+        </button>
+      </div>
+      {open ? (
+        <div className="role-explanation">
+          {open === "answer" ? (
+            <p>
+              Your note: {response}. The reading below is an interpretation, not a
+              grade.
+            </p>
+          ) : (
+            <p>
+              This reading is open for pace. It does not record the case as finished.
+            </p>
+          )}
+          <p>{item.insight}</p>
+          <p>{item.applyPrompt}</p>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function PracticeCases({ cases }: { cases: readonly PraxeologyCase[] }) {
   const [todayIndex, setTodayIndex] = useState<number | null>(null);
 
@@ -29,10 +83,7 @@ export function PracticeCases({ cases }: { cases: readonly PraxeologyCase[] }) {
             </small>
             <h2>{today.title}</h2>
             <p>{today.scenario}</p>
-            <details>
-              <summary>{today.question}</summary>
-              <p>{today.applyPrompt}</p>
-            </details>
+            <CasePrompt item={today} />
             <Link href={`/labs/${today.labSlug}`}>
               Continue in {getLab(today.labSlug).title} →
             </Link>
@@ -51,10 +102,7 @@ export function PracticeCases({ cases }: { cases: readonly PraxeologyCase[] }) {
               <h2>{item.title}</h2>
               <p>{item.scenario}</p>
             </div>
-            <details>
-              <summary>{item.question}</summary>
-              <p>{item.applyPrompt}</p>
-            </details>
+            <CasePrompt item={item} />
             <Link href={`/labs/${item.labSlug}`}>
               Lab connection · {getLab(item.labSlug).shortTitle} →
             </Link>

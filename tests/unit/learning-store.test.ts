@@ -40,9 +40,97 @@ describe("versioned local learning store", () => {
     const store = upsertLabSession(emptyLearningStore(), session);
     expect(store.labSessions["choice-machine"]).toHaveLength(1);
     expect(labSessionToMarkdown(session)).toContain("The Choice Machine");
-    expect(labSessionToMarkdown(session)).toContain("does not assign a semantic score");
+    expect(labSessionToMarkdown(session)).toContain("This record is not graded.");
+    expect(labSessionToMarkdown(session)).toContain(
+      "does not copy it to your other devices",
+    );
+  });
+
+  it("keeps an older v3 record that has no lesson fields", () => {
+    const session = emptyLabSession(
+      "choice-machine",
+      "2026-07-14T00:00:00.000Z",
+      "choice-2026",
+    );
+    session.guidedStep = 3;
+    session.initialReasoning = "Unfinished thought";
+    session.completedAt = null;
+    const migrated = migrateLearningStore({
+      version: 3,
+      completedLessons: ["what-is-praxeology"],
+      labSessions: { "choice-machine": [session] },
+      activeSessionIds: { "choice-machine": session.id },
+    });
+    expect(migrated.lessonRecords).toEqual({});
+    expect(migrated.conceptSketches).toEqual([]);
+    expect(migrated.completedLessons).toEqual(["what-is-praxeology"]);
+    expect(migrated.labSessions["choice-machine"][0]).toMatchObject({
+      id: session.id,
+      guidedStep: 3,
+      completedAt: null,
+      initialReasoning: "Unfinished thought",
+    });
+    expect(migrated.activeSessionIds["choice-machine"]).toBe(session.id);
+  });
+
+  it("keeps new lesson writing after a reload-shaped parse", () => {
+    const store = emptyLearningStore();
+    store.lessonRecords["what-is-praxeology"] = {
+      lessonSlug: "what-is-praxeology",
+      responseMode: "answered",
+      selectedChoice:
+        "The actor preferred immediate relief over the workout in that moment.",
+      reflection: "I watched videos instead of training.",
+      updatedAt: "2026-10-13T00:00:00.000Z",
+    };
+    store.conceptSketches.push({
+      id: "sketch-1",
+      lessonSlug: "what-is-praxeology",
+      caseSlug: null,
+      goal: "Feel less restless",
+      means: "Open the phone",
+      forgone: "The workout",
+      motiveNote: "Relief is an inference, not something I observed directly.",
+      updatedAt: "2026-10-13T00:00:00.000Z",
+    });
+    const reloaded = migrateLearningStore(JSON.parse(JSON.stringify(store)));
+    expect(reloaded.lessonRecords["what-is-praxeology"]?.reflection).toContain(
+      "videos",
+    );
+    expect(reloaded.conceptSketches[0]?.forgone).toBe("The workout");
+  });
+
+  it("leaves learner writing and local predictions out of share URLs", () => {
+    const session = emptyLabSession("choice-machine");
+    session.initialReasoning = "My private sentence about rest and study.";
+    session.revision = "A revised private sentence.";
+    session.reflection = "Do not publish this reflection.";
+    session.localPredictionIds = ["local-predict-0-change"];
+    session.actionLog = [
+      { id: "inspect-constraints" },
+      { id: "predict-select-community-event" },
+      { id: "choose-community-event" },
+    ];
+    const encoded = encodeShareEnvelope({
+      version: 1,
+      labSlug: session.labSlug,
+      seed: session.seed,
+      mode: session.mode,
+      assumptionIds: session.acknowledgedAssumptionIds,
+      actionIds: session.actionLog.map((action) => String(action.id ?? "")),
+    });
+    expect(encoded).not.toContain("private");
+    expect(encoded).not.toContain("reflection");
+    expect(decodeStored(encoded)).not.toContain("local-predict");
+    expect(decodeStored(encoded)).toContain("predict-select-community-event");
+    expect(decodeStored(encoded)).toContain("choose-community-event");
   });
 });
+
+function decodeStored(encoded: string): string {
+  const padded = encoded.replaceAll("-", "+").replaceAll("_", "/");
+  return Buffer.from(padded, "base64").toString("utf8");
+}
 
 describe("private share envelope", () => {
   it("round-trips bounded simulation IDs without learner prose", () => {

@@ -11,14 +11,15 @@ export const metadata: Metadata = {
 export default function NotebookPage() {
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <header className="page-section content-header content-header--illustrated">
           <div>
             <p className="label-mono">Notebook · local-first</p>
             <h1 className="editorial-heading">Keep the change, not a score.</h1>
             <p>
-              Praxeos stores this record in your browser. It has no account, permanent
-              transcript, or pseudo-telemetry queue.
+              Notes stay in this browser. They are not copied to your other devices.
+              Clearing this browser’s site data deletes them. There is no account and no
+              score.
             </p>
           </div>
           <figure className="transition-figure">
@@ -37,7 +38,7 @@ export default function NotebookPage() {
         >
           <NotebookView />
         </section>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

@@ -8,22 +8,22 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Labs",
   description:
-    "Four deterministic learning environments for exploring choice, exchange, discovery, and money across time.",
+    "Four labs for choice, exchange, discovery, and money across time. Begin with a choice.",
 };
 
 export default function LabsPage() {
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <header className="page-section content-header labs-index-header">
           <p className="label-mono">Four Labs · one learning progression</p>
           <h1 className="editorial-heading">
             Begin with a choice. Follow it into a system.
           </h1>
           <p>
-            Each Lab begins with one guided decision, reveals the consequence before the
-            concept, and then opens into exploration. No score. No hidden semantic
-            grade.
+            The lab path starts with a choice, then a market, then discovery, then money
+            across time. Market Without a Manager is the featured demonstration. Nothing
+            here grades your conclusion.
           </p>
         </header>
         <RedesignNoticeFromUrl />
@@ -62,7 +62,7 @@ export default function LabsPage() {
                   />
                 </details>
                 <p className="label-mono">
-                  {lab.flagship ? "Flagship journey" : `Lab ${lab.position}`} ·{" "}
+                  {lab.flagship ? "Featured demonstration" : `Lab ${lab.position}`} ·{" "}
                   {lab.duration}
                 </p>
                 <h2>{lab.title}</h2>
@@ -70,7 +70,7 @@ export default function LabsPage() {
                 <p>{lab.familiarSituation}</p>
               </div>
               <Link href={`/labs/${lab.slug}`} prefetch={false}>
-                {lab.flagship ? "Begin guided journey" : "Enter Lab"}{" "}
+                {lab.position === 1 ? "Start with this choice" : "Enter lab"}{" "}
                 <span aria-hidden="true">→</span>
               </Link>
             </li>
@@ -79,14 +79,14 @@ export default function LabsPage() {
         <aside className="page-section viewpoint-statement">
           <p className="label-mono">How to read the Labs</p>
           <p>
-            Praxeos uses simplified deterministic models to make choices and
-            consequences inspectable. A simulation observation is not a universal fact,
-            an assumption is not evidence, a source claim needs a locator, an Austrian
-            interpretation is one argument, and credible counterarguments belong beside
-            it.
+            These labs use simplified models with fixed rules so a choice and its
+            consequence can be inspected. A simulation observation is not a universal
+            fact, an assumption is not evidence, a source claim needs a locator, an
+            Austrian interpretation is one argument, and credible counterarguments
+            belong beside it.
           </p>
         </aside>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

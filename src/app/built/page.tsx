@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 
 const sections = [
   [
-    "Problem and intended learners",
-    "Economic ideas are often presented as conclusions to memorize. Praxeos is for curious beginners who need an ordinary situation, one visible decision at a time, an inspectable consequence, and a private record of how their interpretation changed.",
+    "The learner problem",
+    "A beginner can meet praxeology as a list of conclusions. The intended experience is plainer: one ordinary situation, a response the learner controls, a visible consequence, and a private note of what changed. The path starts at the first lesson, then the Choice Machine, and keeps the market lab easy to find.",
   ],
   [
-    "William’s decisions",
-    "William chose the progression from individual choice to exchange, entrepreneurial discovery, and money across time; made Market Without a Manager the flagship; kept the warm editorial identity; and drew a hard boundary between transparent deterministic checks and optional semantic guidance.",
+    "William’s decisions on record",
+    "The repository records that William conceived and directed Praxeos. He chose the progression from individual choice to exchange, entrepreneurial discovery, and money across time; made Market Without a Manager the featured demonstration; kept the warm editorial identity; and separated checklist checks from optional guidance. A private motive story is not in the project record, so this page does not invent one.",
   ],
   [
     "Abandoned approaches",
@@ -26,7 +26,7 @@ const sections = [
   ],
   [
     "Claude and Codex contribution",
-    "Codex assisted with implementation, fixtures, documentation, and verification under William’s product direction. Claude is an optional in-product Guide: it can question reasoning with allowlisted, cited sources, but it cannot score a conclusion or become an ideological authority.",
+    "Codex assisted with implementation, fixtures, documentation, and verification under William’s product direction. Claude is an optional in-product guide: it can ask about reasoning using a fixed list of cited sources, and it cannot score a conclusion.",
   ],
   [
     "Architecture",
@@ -49,20 +49,21 @@ const sections = [
 export default function BuiltPage() {
   return (
     <SiteChrome>
-      <main className="page-shell">
+      <div className="page-shell">
         <header className="page-section content-header">
           <p className="label-mono">Case study · educational validation pending</p>
           <h1 className="editorial-heading">
-            Four learning Labs, one evidence boundary.
+            Beginners need to see the structure of a choice.
           </h1>
           <p>
-            This page separates William’s decisions, AI-assisted implementation,
-            simulation output, automated checks, internal review, and evidence that
-            still has to come from real learners.
+            This page keeps William’s recorded decisions, AI-assisted implementation,
+            simulation output, automated checks, and the learner study that has not been
+            run. It does not report learning gains.
           </p>
           <div className="editorial-actions">
+            <Link href="/learn/what-is-praxeology">Start with the first lesson</Link>
             <Link href="/labs/market-without-a-manager?mode=guided">
-              Run the 90-second demo path
+              Open the 8–10 minute market demonstration
             </Link>
             <a
               href="https://www.figma.com/design/ZiEe4IeEPtGfkMeXLwE1Zk"
@@ -98,8 +99,9 @@ export default function BuiltPage() {
               style={{ width: "100%", height: "auto" }}
             />
             <figcaption>
-              One action starts the flagship. Learn, Practice, Labs, Notebook, and
-              Sources remain visible without competing with it.
+              Before this revision the homepage sent people straight into the market.
+              The first action is now the first lesson. The market stays beside it as
+              the featured demonstration, with five people and five goods.
             </figcaption>
           </figure>
           <figure className="content-card">
@@ -148,20 +150,27 @@ export default function BuiltPage() {
 
         <section className="page-section content-grid" aria-label="System architecture">
           <article className="content-card">
-            <small>1 · deterministic core</small>
-            <h2>Seed + assumptions + actions</h2>
-            <p>Pure engines replay the same state and expose every change.</p>
-          </article>
-          <article className="content-card">
-            <small>2 · local learning record</small>
-            <h2>Evidence + assumptions + revision</h2>
-            <p>Learner prose stays in the browser and never enters share URLs.</p>
-          </article>
-          <article className="content-card">
-            <small>3 · optional semantic layer</small>
-            <h2>Allowlisted packets + one question</h2>
+            <small>1 · Replayable models</small>
+            <h2>Seed, assumptions, and actions</h2>
             <p>
-              Invalid, unavailable, offline, or limited Guide calls fall back safely.
+              The lab engines replay the same state from the same steps. Market offers
+              stay guided so one demonstration can be compared with another.
+            </p>
+          </article>
+          <article className="content-card">
+            <small>2 · Local learning record</small>
+            <h2>Evidence, assumptions, and revision</h2>
+            <p>
+              Writing stays in the browser. It is not synced, and it is not placed in a
+              share link.
+            </p>
+          </article>
+          <article className="content-card">
+            <small>3 · Optional guide</small>
+            <h2>A fixed list of sources, one question</h2>
+            <p>
+              If the guide is missing, offline, or limited, the self-review still works.
+              The guide does not grade the learner.
             </p>
           </article>
         </section>
@@ -170,11 +179,12 @@ export default function BuiltPage() {
           <p className="label-mono">Five-person study · Pending</p>
           <h2 className="editorial-heading">v1.0 waits for all four Labs.</h2>
           <p>
-            Five real beginners must complete and evaluate every finished Lab without
-            William explaining the interface. Hesitation, misclicks, terminology, and
-            unclear cause-and-effect will be recorded anonymously. At least one
-            evidence-based product revision and a final verification run are required
-            before this draft PR can become a release candidate.
+            Five real beginners still have to complete and evaluate every lab without
+            William explaining the interface. That study has not been run. Hesitation,
+            misclicks, terminology, and unclear cause and effect would be recorded
+            anonymously. Automated checks can show that the models replay, that old
+            records still load, and that share links omit writing. They cannot show that
+            a beginner understood praxeology.
           </p>
           <div className="editorial-actions">
             <a href="/images/attribution.json">Inspect image attribution</a>
@@ -183,7 +193,7 @@ export default function BuiltPage() {
             </a>
           </div>
         </section>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

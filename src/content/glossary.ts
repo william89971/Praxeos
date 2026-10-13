@@ -14,6 +14,9 @@ export interface GlossaryEntry {
   thinkers: readonly ThinkerSlug[];
   /** Slugs of modules that treat the concept. */
   modules: readonly string[];
+  sourceIds?: readonly string[];
+  /** framework = a praxeological proposition; interpretation = a school’s argument; contested = a disputed historical or empirical claim. */
+  status?: "framework" | "interpretation" | "contested";
 }
 
 export const GLOSSARY: readonly GlossaryEntry[] = [
@@ -22,8 +25,10 @@ export const GLOSSARY: readonly GlossaryEntry[] = [
     headword: "Action axiom",
     sortKey: "action axiom",
     definition:
-      "The proposition, foundational to praxeology, that human beings engage in purposive behaviour — employing means to reach ends. Mises held it to be a priori true: the denial of the axiom is itself an action. All of economics is, on the Misesian account, implication of the axiom.",
+      "Within praxeology, action is purposeful behavior: a person employs means toward an end. Mises treats this as a starting point of the science. On his account, denying the proposition is itself an action, and the economic theorems he defends are implications of it. That is his framework, not a claim that every other school accepts the same starting point.",
     thinkers: ["mises", "hoppe", "rothbard"],
+    sourceIds: ["mises-human-action-action"],
+    status: "framework",
     modules: [],
   },
   {
@@ -58,8 +63,10 @@ export const GLOSSARY: readonly GlossaryEntry[] = [
     headword: "Economic calculation",
     sortKey: "economic calculation",
     definition:
-      "The practical ability of an economic actor — firm or society — to compare alternative uses of scarce means by a common unit of valuation. Mises's 1920 argument: socialism cannot calculate because it lacks markets for capital goods, hence no prices for them, hence no unit.",
+      "Calculation, in this framework, is the comparison of alternative uses of scarce means in a common unit. Mises’s 1920 argument is that a socialist commonwealth lacks markets for capital goods and therefore lacks the money prices those comparisons use. The argument is contested; the market lab demonstrates a small model of prices, not a proof of the full thesis.",
     thinkers: ["mises", "salerno", "hayek"],
+    sourceIds: ["mises-calculation-1920"],
+    status: "interpretation",
     modules: ["calculation-problem"],
   },
   {
@@ -94,8 +101,9 @@ export const GLOSSARY: readonly GlossaryEntry[] = [
     headword: "Regime uncertainty",
     sortKey: "regime uncertainty",
     definition:
-      "Robert Higgs's term for the destruction of economic coordination when policy becomes unpredictable. Even mild policies imposed erratically raise time preference, shorten planning horizons, and suppress long-structure investment, because entrepreneurs cannot commit capital under unknowable future rules.",
-    thinkers: ["hoppe"],
+      "Robert Higgs’s term for the difficulty of planning when people cannot tell which rules will govern their property. He used it to discuss investment during the Great Depression and the later recovery. Austrian writers sometimes connect that hesitation to shorter plans. The term is Higgs’s, and the further claims about time preference are a separate theoretical step.",
+    thinkers: [],
+    status: "contested",
     modules: [],
   },
   {
@@ -103,8 +111,10 @@ export const GLOSSARY: readonly GlossaryEntry[] = [
     headword: "Regression theorem",
     sortKey: "regression theorem",
     definition:
-      "Mises's 1912 proof that the purchasing power of any money today must trace, via a chain of prior exchange values, back to some earlier point at which the good was valued for non-monetary reasons. Solves the chicken-and-egg puzzle of monetary value.",
+      "Mises’s regression theorem is an argument, first set out in The Theory of Money and Credit (1912), that the purchasing power of a money today depends on a chain of earlier exchange values, ending in a time when the good was valued for a non-monetary use. It is his solution to the question of how a money’s value can be explained without circularity.",
     thinkers: ["mises", "menger", "ammous"],
+    sourceIds: ["mises-money-credit"],
+    status: "interpretation",
     modules: ["halving-garden"],
   },
   {
@@ -121,8 +131,10 @@ export const GLOSSARY: readonly GlossaryEntry[] = [
     headword: "Say's law",
     sortKey: "says law",
     definition:
-      "Supply creates its own demand — properly stated: production is the source of demand, because goods trade against goods. Money mediates but does not create purchasing power. The Keynesian underconsumptionist response denies this by importing a money-supply confusion into a goods-supply phenomenon.",
-    thinkers: ["rothbard", "mises"],
+      "In Book I, Chapter XV of A Treatise on Political Economy, Say argues that production opens a demand for products: a product affords a market for other products to the extent of its own value, and money is the momentary vehicle of that exchange. The slogan “supply creates its own demand” is Keynes’s description, in chapter 2 of the General Theory, of what he calls the classical doctrine. Keynes rejects that doctrine, taking it to mean that the costs of production are necessarily spent, in aggregate, on the product. The disagreement is about whether production and demand can fall out of joint, not a cartoon of either author.",
+    thinkers: ["mises", "rothbard"],
+    sourceIds: ["say-treatise-markets", "keynes-general-theory-classical"],
+    status: "contested",
     modules: [],
   },
   {
@@ -130,8 +142,10 @@ export const GLOSSARY: readonly GlossaryEntry[] = [
     headword: "Sound money",
     sortKey: "sound money",
     definition:
-      "Money whose issuance is constrained by something other than a political authority's preference — historically the cost of extracting gold, digitally the cost of mining Bitcoin. The constraint is the point: it prevents the debasement that every unconstrained issuer has, in history, chosen.",
-    thinkers: ["rothbard", "ammous", "mises"],
+      "In the Misesian framework, sound money is money whose quantity is not set to serve a political authority’s spending. Mises treats purchasing power as emerging from exchange and treats a politically managed expansion as a source of redistribution and calculation error. Historical commodity standards and Bitcoin’s issuance rule are examples writers in this tradition discuss. They are not proof that every unconstrained issuer has debased a currency.",
+    thinkers: ["mises", "rothbard", "ammous"],
+    sourceIds: ["mises-money-credit"],
+    status: "interpretation",
     modules: ["halving-garden"],
   },
   {
@@ -157,8 +171,10 @@ export const GLOSSARY: readonly GlossaryEntry[] = [
     headword: "Time preference",
     sortKey: "time preference",
     definition:
-      "The universal fact that a present good is, ceteris paribus, valued more than an otherwise identical future good. Böhm-Bawerk's pure time-preference theory locates interest here. Time preference is individual-relative; low time preference enables the saving that sustains long production structures.",
+      "Praxeology treats a present satisfaction as preferred, other things equal, to the same satisfaction available only later. Böhm-Bawerk and Mises locate the explanation of interest in that ranking. How strong the preference is differs by person and moment. The claim is about the structure of action, not a survey of every historical saver.",
     thinkers: ["bohm-bawerk", "mises", "hoppe"],
+    sourceIds: ["mises-money-credit"],
+    status: "framework",
     modules: ["time-preference-forest"],
   },
 ];

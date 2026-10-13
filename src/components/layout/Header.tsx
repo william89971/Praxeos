@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -14,7 +15,10 @@ const LINKS: Array<{ href: string; label: string }> = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const current = (href: string) =>
+    pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
   const menuBtnRef = useRef<HTMLButtonElement>(null);
   const prevOpenRef = useRef(mobileOpen);
 
@@ -37,27 +41,8 @@ export function Header() {
   }, [mobileOpen]);
 
   return (
-    <header
-      style={{
-        paddingInline: "var(--gutter-inline)",
-        paddingBlock: "1.25rem",
-        borderBlockEnd: "1px solid var(--rule)",
-        background: "var(--paper)",
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "var(--measure-wide)",
-          marginInline: "auto",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "1rem",
-        }}
-      >
+    <header className="site-header">
+      <div className="site-header__inner">
         <Link
           href="/"
           prefetch={false}
@@ -98,11 +83,11 @@ export function Header() {
                 <Link
                   href={link.href}
                   prefetch={false}
-                  className="label-mono"
-                  style={{
-                    textDecoration: "none",
-                    color: "var(--ink-secondary)",
-                  }}
+                  className={
+                    link.href === "/built" ? "label-mono nav-meta" : "label-mono"
+                  }
+                  aria-current={current(link.href) ? "page" : undefined}
+                  style={{ textDecoration: "none" }}
                 >
                   {link.label}
                 </Link>
@@ -170,7 +155,10 @@ export function Header() {
                 <Link
                   href={link.href}
                   prefetch={false}
-                  className="label-mono"
+                  className={
+                    link.href === "/built" ? "label-mono nav-meta" : "label-mono"
+                  }
+                  aria-current={current(link.href) ? "page" : undefined}
                   onClick={() => setMobileOpen(false)}
                   style={{
                     textDecoration: "none",

@@ -75,6 +75,10 @@ export interface LabSession<
   citationIds: string[];
   completedAt: string | null;
   updatedAt: string;
+  /** Predefined local prediction ids. Never copied into a share URL. */
+  localPredictionIds?: string[];
+  /** True when the concept was opened before an initial interpretation existed. */
+  conceptRevealedEarly?: boolean;
 }
 
 export interface ShareEnvelope {

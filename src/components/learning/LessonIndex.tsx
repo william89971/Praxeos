@@ -1,6 +1,10 @@
 "use client";
 
 import { usePraxeosStore } from "@/hooks/usePraxeosStore";
+import type { LabSlug } from "@/labs/types";
+import { labState, lessonState, recommendNext } from "@/lib/journey";
+import type { ActivityRef } from "@/lib/journey";
+import { activeLabSession } from "@/lib/learning-store";
 import type { PraxeologyLesson } from "@/lib/praxeology";
 import Link from "next/link";
 
@@ -11,9 +15,19 @@ export function LessonIndex({
 }) {
   const { store, hydrated } = usePraxeosStore();
   const completed = new Set(store.completedLessons);
-  const nextLesson =
-    lessons.find((lesson) => !completed.has(lesson.slug)) ?? lessons[0];
   const completedCount = lessons.filter((lesson) => completed.has(lesson.slug)).length;
+  const next = recommendNext((activity: ActivityRef) => {
+    if (activity.kind === "lesson") {
+      return lessonState(
+        completed.has(activity.slug),
+        Boolean(store.lessonRecords[activity.slug]),
+      );
+    }
+    if (activity.kind === "lab") {
+      return labState(activeLabSession(store, activity.slug as LabSlug));
+    }
+    return "not-started";
+  });
 
   return (
     <>
@@ -31,13 +45,9 @@ export function LessonIndex({
               : "lessons completed"}
           </span>
         </div>
-        {nextLesson ? (
-          <Link className="button-primary" href={`/learn/${nextLesson.slug}`}>
-            {completedCount > 0 && completedCount < lessons.length
-              ? "Resume lessons"
-              : "Begin lesson 1"}
-          </Link>
-        ) : null}
+        <Link className="button-primary" href={next.href}>
+          {hydrated ? next.label : "Begin lesson 1"}
+        </Link>
       </section>
       <section className="page-section content-grid">
         {lessons.map((lesson) => {

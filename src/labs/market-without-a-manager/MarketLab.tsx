@@ -2,11 +2,16 @@
 
 import { SiteChrome } from "@/components/layout/SiteChrome";
 import { usePraxeosStore } from "@/hooks/usePraxeosStore";
+import { LabReflection } from "@/labs/components/LabReflection";
 import { evaluateSelfReview } from "@/labs/feedback";
 import { decodeShareEnvelope, encodeShareEnvelope } from "@/labs/share";
 import type { LabMode, RubricFeedback } from "@/labs/types";
+import type { LabSlug } from "@/labs/types";
 import type { GuideTurn } from "@/lib/guide/types";
+import { labState, lessonState, recommendNext } from "@/lib/journey";
+import type { ActivityRef } from "@/lib/journey";
 import {
+  LOCAL_RECORD_NOTE,
   type StoredLabSession,
   activeLabSession,
   emptyLabSession,
@@ -15,6 +20,7 @@ import {
 } from "@/lib/learning-store";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   DEFAULT_MARKET_ASSUMPTIONS,
@@ -142,6 +148,9 @@ export default function MarketLab() {
     "Fresh guided session ready. Your first action will create a local record.",
   );
   const [online, setOnline] = useState(true);
+  const [skipInitial, setSkipInitial] = useState(false);
+  const [skipEvidence, setSkipEvidence] = useState(false);
+  const [skipLimits, setSkipLimits] = useState(false);
 
   useEffect(() => {
     const sync = () => setOnline(navigator.onLine);
@@ -215,6 +224,36 @@ export default function MarketLab() {
   const nextGuidedAction = MARKET_GUIDED_ACTIONS[state.guidedStep];
   const stage = STAGES[Math.min(state.guidedStep, STAGES.length - 1)];
   const exploreUnlocked = state.guidedStep >= 3;
+  const marketPredictionKey = `local-predict-${state.guidedStep}-`;
+  const marketPredictionChosen = (session?.localPredictionIds ?? []).some((id) =>
+    id.startsWith(marketPredictionKey),
+  );
+  const wroteInterpretation = Boolean(session?.initialReasoning.trim());
+  const conceptOpenedEarly = Boolean(session?.conceptRevealedEarly);
+  const conceptVisible =
+    state.guidedStep > 0 &&
+    ((wroteInterpretation && !conceptOpenedEarly) || conceptOpenedEarly);
+  const showEvidence = wroteInterpretation || skipInitial;
+  const showLimits =
+    showEvidence && ((session?.selectedEvidenceIds.length ?? 0) > 0 || skipEvidence);
+  const showRevision =
+    showLimits && ((session?.acknowledgedAssumptionIds.length ?? 0) > 0 || skipLimits);
+  const recentEvents = state.events.slice(-6);
+  const nextActivity = recommendNext(
+    (activity: ActivityRef) => {
+      if (activity.kind === "lesson") {
+        return lessonState(
+          store.completedLessons.includes(activity.slug),
+          Boolean(store.lessonRecords[activity.slug]),
+        );
+      }
+      if (activity.kind === "lab") {
+        return labState(activeLabSession(store, activity.slug as LabSlug));
+      }
+      return "not-started";
+    },
+    { kind: "lab", slug: LAB_SLUG },
+  );
 
   const persist = useCallback(
     (patch: Partial<StoredLabSession>) => {
@@ -369,7 +408,7 @@ export default function MarketLab() {
         session.initialReasoning ||
         "A market is a record of separate plans meeting.",
     );
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#f5f0e6"/><rect x="40" y="40" width="1120" height="550" fill="none" stroke="#b8ad97"/><text x="85" y="115" fill="#8b3a3a" font-family="monospace" font-size="20" letter-spacing="3">PRAXEOS · MARKET WITHOUT A MANAGER</text><foreignObject x="85" y="165" width="1000" height="310"><div xmlns="http://www.w3.org/1999/xhtml" style="font: 52px/1.12 Georgia,serif;color:#1c1814">${text}</div></foreignObject><text x="85" y="540" fill="#5c5348" font-family="monospace" font-size="18">Selected evidence: ${session.selectedEvidenceIds.length} · assumptions: ${session.acknowledgedAssumptionIds.length} · no semantic score</text></svg>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#f5f0e6"/><rect x="40" y="40" width="1120" height="550" fill="none" stroke="#b8ad97"/><text x="85" y="115" fill="#8b3a3a" font-family="monospace" font-size="20" letter-spacing="3">PRAXEOS · MARKET WITHOUT A MANAGER</text><foreignObject x="85" y="165" width="1000" height="310"><div xmlns="http://www.w3.org/1999/xhtml" style="font: 52px/1.12 Georgia,serif;color:#1c1814">${text}</div></foreignObject><text x="85" y="540" fill="#5c5348" font-family="monospace" font-size="18">Selected evidence: ${session.selectedEvidenceIds.length} · assumptions: ${session.acknowledgedAssumptionIds.length} · not graded</text></svg>`;
     downloadFile("praxeos-market-reflection.svg", svg, "image/svg+xml");
   };
 
@@ -387,14 +426,14 @@ export default function MarketLab() {
         ]),
       ],
     });
-  const activeEventIds = state.events.slice(-6).map((event) => event.id);
-
   return (
     <SiteChrome>
-      <main className="market-lab">
+      <div className="market-lab">
         <header className="lab-editorial-header">
           <div>
-            <p className="label-mono">Flagship · 8–10 minutes · Lab 2 of 4</p>
+            <p className="label-mono">
+              Featured demonstration · 8–10 minutes · Lab 2 of 4
+            </p>
             <h1>Market Without a Manager</h1>
             <p className="lab-editorial-header__question">
               How can strangers coordinate without one person directing them?
@@ -422,11 +461,18 @@ export default function MarketLab() {
                 type="button"
                 aria-pressed={mode === "explore"}
                 disabled={!exploreUnlocked}
+                aria-describedby={exploreUnlocked ? undefined : "market-explore-lock"}
                 onClick={() => switchMode("explore")}
               >
                 Explore
               </button>
             </div>
+            {exploreUnlocked ? null : (
+              <p id="market-explore-lock" className="explore-lock-reason">
+                Explore opens after you attempt the first exchange. It uses the same
+                rules and keeps this record.
+              </p>
+            )}
           </div>
         </header>
 
@@ -462,7 +508,32 @@ export default function MarketLab() {
                     : "Explore actions reuse the same participant rules and inventory."}
                 </p>
               </div>
-              {mode === "guided" ? (
+              {mode === "guided" && nextGuidedAction && !marketPredictionChosen ? (
+                <div className="stage-options">
+                  <p>Before the consequence, what do you expect?</p>
+                  {[
+                    ["change", "I expect a visible change"],
+                    ["still", "I expect no visible change"],
+                    ["unsure", "I am not sure yet"],
+                  ].map(([id, label]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      className="button-secondary"
+                      onClick={() =>
+                        persist({
+                          localPredictionIds: [
+                            ...(session?.localPredictionIds ?? []),
+                            `${marketPredictionKey}${id}`,
+                          ],
+                        })
+                      }
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              ) : mode === "guided" ? (
                 nextGuidedAction ? (
                   <button
                     type="button"
@@ -548,13 +619,45 @@ export default function MarketLab() {
             <section>
               <p className="evidence-kind">source claim</p>
               <p>
-                Hayek describes prices as communicating some dispersed information—not
-                all knowledge and not a command.{" "}
+                Hayek’s 1945 argument: prices can communicate some dispersed knowledge
+                without anyone holding the whole picture.{" "}
                 <a href="https://www.econlib.org/library/Essays/hykKnw.html">
-                  Read the locator
+                  Hayek, “The Use of Knowledge in Society,” sections I–VI
                 </a>
-                .
+                . <a href="/sources#hayek-knowledge-1945">Claim in the source list</a>.
               </p>
+            </section>
+            <section className="role-explanation">
+              <p className="evidence-kind">concept</p>
+              {conceptVisible ? (
+                <>
+                  <h3>A price is a completed exchange</h3>
+                  <p>
+                    In this model, a displayed price records that a monetary offer was
+                    accepted. It does not reveal every motive behind the trade.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h3>Concept waits</h3>
+                  <p>
+                    The interpretation of price stays hidden until you write what you
+                    saw, or until you ask to see it.
+                  </p>
+                  {state.guidedStep > 0 ? (
+                    <button
+                      type="button"
+                      className="text-button"
+                      onClick={() => {
+                        if (!wroteInterpretation)
+                          persist({ conceptRevealedEarly: true });
+                      }}
+                    >
+                      Show the concept now
+                    </button>
+                  ) : null}
+                </>
+              )}
             </section>
             <section>
               <p className="evidence-kind">credible counterargument</p>
@@ -567,142 +670,77 @@ export default function MarketLab() {
           </aside>
         </div>
 
-        <section id="interpretation" className="lab-interpretation">
-          <header>
-            <p className="label-mono">Interpret · select · compare</p>
-            <h2>What do the events support—and what can’t this model settle?</h2>
-            <p>
-              Praxeos checks only whether you completed the record, selected visible
-              evidence, acknowledged assumptions, and revised or confirmed your
-              response. It does not grade the meaning of your conclusion.
-            </p>
-          </header>
-          <div className="lab-reasoning-grid">
-            <label>
-              <span>Initial interpretation</span>
-              <textarea
-                value={session?.initialReasoning ?? ""}
-                onChange={(event) =>
-                  setReasoning("initialReasoning", event.target.value)
-                }
-                placeholder="What seems to coordinate the participants? What remains unresolved?"
+        <LabReflection
+          initialReasoning={session?.initialReasoning ?? ""}
+          revision={session?.revision ?? ""}
+          reflection={session?.reflection ?? ""}
+          evidence={recentEvents.map((event, index) => ({
+            id: event.id,
+            title: event.title,
+            detail: event.detail,
+            latest: index === recentEvents.length - 1,
+          }))}
+          selectedEvidenceIds={session?.selectedEvidenceIds ?? []}
+          assumptions={ASSUMPTIONS}
+          acknowledgedAssumptionIds={session?.acknowledgedAssumptionIds ?? []}
+          selfReviewChecks={session?.selfReviewChecks ?? []}
+          reviewChecks={SELF_REVIEW_CHECKS}
+          feedback={feedback}
+          conceptVisible={conceptVisible}
+          offerComparison={wroteInterpretation && !conceptOpenedEarly}
+          onShowConcept={() => {
+            if (!wroteInterpretation) persist({ conceptRevealedEarly: true });
+          }}
+          onContinueInitial={() => setSkipInitial(true)}
+          onContinueEvidence={() => setSkipEvidence(true)}
+          onContinueLimits={() => setSkipLimits(true)}
+          showEvidence={showEvidence}
+          showLimits={showLimits}
+          showRevision={showRevision}
+          onWriting={setReasoning}
+          onToggle={(field, id) => {
+            if (field === "selectedEvidenceIds") toggleEvidence(id);
+            else if (field === "acknowledgedAssumptionIds") toggleAssumption(id);
+            else toggleSelfReview(id);
+          }}
+          onSelfReview={runSelfReview}
+          reflectionPrompt="What would you test next in this market?"
+          reviewOpen={state.completed || Boolean(session?.completedAt)}
+          guide={
+            !online && shouldRenderGuide ? (
+              <section className="guide-card lab-guide" aria-live="polite">
+                <p className="label-mono">Optional · unavailable offline</p>
+                <h3>The optional guide is unavailable offline</h3>
+                <p>
+                  You are offline. The self-review remains available, and your writing
+                  stays saved in this browser. {LOCAL_RECORD_NOTE}
+                </p>
+              </section>
+            ) : shouldRenderGuide ? (
+              <OptionalGuide
+                labSlug={LAB_SLUG}
+                reasoning={session?.revision || session?.initialReasoning || ""}
+                observationIds={session?.selectedEvidenceIds ?? []}
+                actionIds={(session?.actionLog ?? []).map((action) =>
+                  String(action.id ?? ""),
+                )}
+                assumptionIds={session?.acknowledgedAssumptionIds ?? []}
+                turn={guideTurn}
+                onTurn={onGuideTurn}
               />
-            </label>
-            <fieldset>
-              <legend>Select visible simulation evidence</legend>
-              {state.events.slice(-6).map((event) => (
-                <label key={event.id} className="lab-check-row">
-                  <input
-                    type="checkbox"
-                    checked={(session?.selectedEvidenceIds ?? []).includes(event.id)}
-                    onChange={() => toggleEvidence(event.id)}
-                  />
-                  <span>
-                    <strong>{event.title}</strong>
-                    {event.detail}
-                  </span>
-                </label>
-              ))}
-              {state.events.length === 0 ? (
-                <p>Complete a market action first.</p>
-              ) : null}
-            </fieldset>
-            <fieldset>
-              <legend>Acknowledge model assumptions</legend>
-              {ASSUMPTIONS.map((assumption) => (
-                <label key={assumption.id} className="lab-check-row">
-                  <input
-                    type="checkbox"
-                    checked={(session?.acknowledgedAssumptionIds ?? []).includes(
-                      assumption.id,
-                    )}
-                    onChange={() => toggleAssumption(assumption.id)}
-                  />
-                  <span>{assumption.label}</span>
-                </label>
-              ))}
-            </fieldset>
-            <label>
-              <span>Revision or explicit confirmation</span>
-              <textarea
-                value={session?.revision ?? ""}
-                onChange={(event) => setReasoning("revision", event.target.value)}
-                placeholder="After reviewing the selected evidence and assumptions, what changes—or stays the same?"
-              />
-            </label>
-            <fieldset>
-              <legend>Transparent self-review checklist</legend>
-              {SELF_REVIEW_CHECKS.map((check) => (
-                <label key={check.id} className="lab-check-row">
-                  <input
-                    type="checkbox"
-                    checked={(session?.selfReviewChecks ?? []).includes(check.id)}
-                    onChange={() => toggleSelfReview(check.id)}
-                  />
-                  <span>{check.label}</span>
-                </label>
-              ))}
-            </fieldset>
-          </div>
-          <div className="lab-inline-actions">
-            <button type="button" className="button-primary" onClick={runSelfReview}>
-              Run transparent self-review
-            </button>
-          </div>
-          {feedback.length ? (
-            <output className="self-review-results">
-              {feedback.map((item) => (
-                <article key={item.id}>
-                  <p className="label-mono">{item.status}</p>
-                  <p>{item.message}</p>
-                  <small>Based on: {item.basedOn}</small>
-                </article>
-              ))}
-            </output>
-          ) : null}
-
-          {!online && shouldRenderGuide ? (
-            <section className="guide-card lab-guide" aria-live="polite">
-              <p className="label-mono">Optional · unavailable offline</p>
-              <h3>Claude Guide is unavailable offline</h3>
-              <p>
-                You are offline. The transparent self-review remains fully available,
-                and your learner writing stays saved in this browser.
-              </p>
-            </section>
-          ) : shouldRenderGuide ? (
-            <OptionalGuide
-              labSlug={LAB_SLUG}
-              reasoning={session?.revision || session?.initialReasoning || ""}
-              observationIds={session?.selectedEvidenceIds ?? activeEventIds}
-              actionIds={(session?.actionLog ?? []).map((action) =>
-                String(action.id ?? ""),
-              )}
-              assumptionIds={session?.acknowledgedAssumptionIds ?? []}
-              turn={guideTurn}
-              onTurn={onGuideTurn}
-            />
-          ) : (
-            <section className="guide-card lab-guide">
-              <p className="label-mono">Optional · source-grounded</p>
-              <h3>Claude Guide unlocks after your first interpretation</h3>
-              <p>
-                Write your own view first. The optional semantic Guide loads only when
-                there is learner reasoning to question.
-              </p>
-            </section>
-          )}
-
-          <div className="lab-completion-grid">
-            <label>
-              <span>Final reflection</span>
-              <textarea
-                value={session?.reflection ?? ""}
-                onChange={(event) => setReasoning("reflection", event.target.value)}
-                placeholder="What would you test next in this market?"
-              />
-            </label>
-            <div>
+            ) : (
+              <section className="guide-card lab-guide">
+                <p className="label-mono">Optional · source-grounded</p>
+                <h3>The optional guide waits for your first interpretation</h3>
+                <p>
+                  Write your own view first. The guide can ask one question from the
+                  sources for this lab. It does not grade you.
+                </p>
+              </section>
+            )
+          }
+          actions={
+            <div className="lab-inline-actions">
               <button type="button" className="button-primary" onClick={complete}>
                 Save reflection to Notebook
               </button>
@@ -735,21 +773,29 @@ export default function MarketLab() {
               <button type="button" className="text-button" onClick={reset}>
                 Reset Lab
               </button>
+              <p className="local-record-note">{LOCAL_RECORD_NOTE}</p>
             </div>
-          </div>
-        </section>
+          }
+          nextStep={
+            session?.completedAt || nextActivity.state === "in-progress" ? (
+              <p className="next-activity">
+                <Link href={nextActivity.href}>{nextActivity.label} →</Link>
+              </p>
+            ) : null
+          }
+        />
 
         <footer className="lab-viewpoint">
           <p className="label-mono">Viewpoint boundary</p>
           <p>
-            Praxeos uses simplified deterministic models to make choices and
-            consequences inspectable. A simulation observation is not a universal fact,
-            an assumption is not evidence, a source claim needs a locator, an Austrian
+            Praxeos uses simplified models with fixed rules so choices and consequences
+            can be inspected. A simulation observation is not a universal fact, an
+            assumption is not evidence, a source claim needs a locator, an Austrian
             interpretation is one argument, and credible counterarguments belong beside
             it.
           </p>
         </footer>
-      </main>
+      </div>
     </SiteChrome>
   );
 }

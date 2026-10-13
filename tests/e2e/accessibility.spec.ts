@@ -8,17 +8,17 @@ test("keyboard navigation reaches the primary action", async ({ page }) => {
   await page.goto("/");
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
-  for (let index = 0; index < 10; index += 1) {
+  for (let index = 0; index < 16; index += 1) {
     if (
       await page
-        .getByRole("link", { name: "Begin 8-minute journey" })
+        .getByRole("link", { name: "Start with the first lesson" })
         .evaluate((element) => element === document.activeElement)
     )
       break;
     await page.keyboard.press("Tab");
   }
   await expect(
-    page.getByRole("link", { name: "Begin 8-minute journey" }),
+    page.getByRole("link", { name: "Start with the first lesson" }),
   ).toBeFocused();
 });
 
@@ -27,8 +27,9 @@ test("reduced motion keeps full lab controls and readable state", async ({ page 
   await page.goto("/labs/market-without-a-manager?mode=guided");
   await expect(page.locator("canvas")).toHaveCount(0);
   await expect(
-    page.getByRole("button", { name: "Meet the participants" }),
+    page.getByRole("button", { name: "I expect a visible change" }),
   ).toBeVisible();
+  await page.getByRole("button", { name: "I expect a visible change" }).click();
   await page.getByRole("button", { name: "Meet the participants" }).click();
   await expect(
     page
@@ -42,7 +43,7 @@ test("mobile flagship controls meet the touch target floor", async ({ page }) =>
   test.skip(test.info().project.name !== "mobile-chromium", "Mobile project only");
   await page.goto("/labs/market-without-a-manager?mode=guided");
   const box = await page
-    .getByRole("button", { name: "Meet the participants" })
+    .getByRole("button", { name: "I expect a visible change" })
     .boundingBox();
   expect(box?.height).toBeGreaterThanOrEqual(44);
   await expect(
@@ -58,6 +59,7 @@ test("advanced lab progress is persisted without a render loop", async ({ page }
 
   await page.addInitScript(() => window.localStorage.clear());
   await page.goto("/labs/market-without-a-manager");
+  await page.getByRole("button", { name: "I expect a visible change" }).click();
   await page.getByRole("button", { name: "Meet the participants" }).click();
   await expect
     .poll(

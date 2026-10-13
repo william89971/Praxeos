@@ -43,7 +43,7 @@ export class DeterministicGuideProvider implements GuideProvider {
       ],
       citations: citation ? [citation] : [],
       whyThisFeedback:
-        "Claude is unavailable, so Praxeos used only explicit evidence selections, acknowledged assumptions, and the allowlisted source packet. It did not interpret semantic correctness.",
+        "Claude is unavailable, so Praxeos used only the evidence you selected, the assumptions you acknowledged, and a fixed source for this lab. It did not interpret semantic correctness.",
       insufficiency:
         evidenceCount === 0 || assumptionCount === 0
           ? "needs-more-evidence"

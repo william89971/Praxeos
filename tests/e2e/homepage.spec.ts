@@ -9,9 +9,9 @@ test("homepage makes the offer and flagship action clear above the fold", async 
     page.getByRole("heading", { name: "See the structure inside every choice." }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Begin 8-minute journey" }),
+    page.getByRole("link", { name: "Start with the first lesson" }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "Explore labs" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "See the four labs" })).toBeVisible();
   const mobile = test.info().project.name === "mobile-chromium";
   if (mobile) await page.getByRole("button", { name: "Open menu" }).click();
   const navigation = page.getByRole("navigation", {

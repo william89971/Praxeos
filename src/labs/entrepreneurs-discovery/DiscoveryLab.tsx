@@ -93,6 +93,9 @@ const definition: GuidedLabDefinition<
       label: "Signals are simplified as weak, mixed, or strong.",
     },
   ],
+  sourceHref: "/sources#kirzner-competition",
+  exploreLockedReason:
+    "Explore opens after the first guided action. It uses the same rules and keeps this record.",
   sourceClaim:
     "Kirzner describes entrepreneurial discovery as alertness within a market process; the source packet presents the locator and competing accounts of innovation.",
   counterargument:
